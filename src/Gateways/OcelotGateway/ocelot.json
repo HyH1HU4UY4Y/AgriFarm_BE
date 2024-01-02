@@ -1,0 +1,71 @@
+{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/catalog/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.38.0.2",
+          "Port": 80
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/resource/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.38.0.5",
+          "Port": 80
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/store/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/api/suppliers/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.38.0.4",
+          "Port": 80
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/user/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.38.0.6",
+          "Port": 80
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/pay/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.38.0.3",
+          "Port": 80
+        }
+      ]
+    }
+
+  ]
+
+}
