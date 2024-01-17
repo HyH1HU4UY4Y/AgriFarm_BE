@@ -14,9 +14,8 @@ namespace Infrastructure.FarmSite.Config
         public void Configure(EntityTypeBuilder<Site> builder)
         {
             builder
-                .Ignore(e => e.Components)
-                .Ignore(e => e.Subscripts);
-
+                .Ignore(e => e.Components);
+/*
             builder.HasData(new List<Site>{
                 new()
                 {
@@ -32,7 +31,7 @@ namespace Infrastructure.FarmSite.Config
                     IsActive = false,
                     Intro = "A very  long   intro"
                 }
-            });
+            });*/
         }
     }
 }

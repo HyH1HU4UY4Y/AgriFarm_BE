@@ -2,7 +2,7 @@
 
 namespace SharedDomain.Entities.FarmComponents
 {
-    public class Document : BaseEntity, ITraceableItem
+    public class Document : BaseEntity
     {
         public Guid SiteId { get; set; }
         public Site Site { get; set; }
@@ -12,10 +12,6 @@ namespace SharedDomain.Entities.FarmComponents
 
         public string Resource { get; set; }
 
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public DateTime LastModify { get; set; } = DateTime.Now;
-        public bool IsDeleted { get; set; } = false;
-        public DateTime? DeletedDate { get; set; }
 
         public ICollection<ComponentDocument> Components { get; set; }
 

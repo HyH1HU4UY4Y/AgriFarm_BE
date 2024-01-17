@@ -3,16 +3,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SharedApplication.Authorize;
 using SharedDomain.Entities.Users;
 
 namespace Infrastructure.Identity
 {
     public static class ServiceRegistryExtensions
     {
-        public static IServiceCollection AddInfras<T>(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfras(this IServiceCollection services, IConfiguration configuration)
         {
-            var applicationAssembly = typeof(T).Assembly;
-
+            
             services.AddDbContext<IdentityContext>(o =>
             {
                 o.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
@@ -41,6 +41,9 @@ namespace Infrastructure.Identity
                 options.SignIn.RequireConfirmedPhoneNumber = false;
                 options.User.RequireUniqueEmail = true;
             });
+
+
+            services.AddAuthModule(configuration);
 
             return services;
         }

@@ -1,5 +1,6 @@
 ﻿using Application.CommonExtensions;
 using Microsoft.EntityFrameworkCore;
+using SharedApplication.MultiTenant;
 using SharedDomain.Entities.Base;
 using System;
 using System.Collections.Generic;
@@ -11,13 +12,17 @@ namespace SharedApplication.Persistence
 {
     public abstract class BaseDbContext : DbContext
     {
+        
+
         protected BaseDbContext()
         {
         }
 
         protected BaseDbContext(DbContextOptions options) : base(options)
         {
+            
         }
+
 
 
         public override int SaveChanges()
@@ -46,8 +51,8 @@ namespace SharedApplication.Persistence
                 switch (history.State)
                 {
                     case EntityState.Deleted:
-                        history.Entity.IsDeleted = true;
-                        history.Entity.DeletedDate = DateTime.Now;
+                        if(history.Entity.IsDeleted == true)
+                            history.Entity.DeletedDate = DateTime.Now;
                         break;
                     case EntityState.Modified:
                         history.Entity.LastModify = DateTime.Now;

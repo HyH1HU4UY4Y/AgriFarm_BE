@@ -19,11 +19,11 @@ namespace Service.FarmRegistry.Commands
 
     public class ResolveFormCommandHandler : ICommandHandler<ResolveFormCommand, Unit>
     {
-        private readonly ICommandRepository<RegistrationContext, FarmRegistration> _command;
+        private readonly ISQLRepository<RegistrationContext, FarmRegistration> _command;
         private readonly IUnitOfWork<RegistrationContext> _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ResolveFormCommandHandler(IMapper mapper, IUnitOfWork<RegistrationContext> unitOfWork, ICommandRepository<RegistrationContext, FarmRegistration> command)
+        public ResolveFormCommandHandler(IMapper mapper, IUnitOfWork<RegistrationContext> unitOfWork, ISQLRepository<RegistrationContext, FarmRegistration> command)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SharedDomain.Entities.Subscribe;
 using SharedApplication.Persistence;
 using SharedDomain.Entities.FarmComponents;
+using SharedApplication.MultiTenant;
 
 namespace Infrastructure.FarmSite
 {
@@ -11,18 +12,15 @@ namespace Infrastructure.FarmSite
     {
         public static IServiceCollection AddInfras(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDefaultSQLDB<SiteContext>(configuration);
+            services.AddDefaultSQLDB<SiteContext>(configuration)
+                    .AddMultiTenant(configuration);
 
-            services.AddSQLCommandRepo<SiteContext, Site>()
-                    .AddSQLCommandRepo<SiteContext, CapitalState>()
-                    .AddSQLCommandRepo<SiteContext, Document>();
+            services.AddSQLRepo<SiteContext, Site>()
+                    .AddSQLRepo<SiteContext, CapitalState>()
+                    .AddSQLRepo<SiteContext, Document>()
+                    .AddSQLRepo<SiteContext, Subscripton>();
                     
-            /*
-                        services.AddScoped<ISolutionQueryRepo, SolutionQueryRepo>()
-            .AddScoped<IRegistryQueryRepo, RegistryQueryRepo>()
-                            
-            */
-
+            
             return services;
         }
     }

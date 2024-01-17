@@ -4,10 +4,10 @@ using SharedDomain.Exceptions;
 
 namespace Service.Identity.Commands.Auth
 {
-    public record AuthorizeResponse(string Token, UserInforResponse UserInfo);
+    public record AuthorizeResponse(string Token, UserInforResponse UserInfo, bool IsSuccess = true);
     public record UserInforResponse(string Name, List<string> Roles);
 
-    public record TokenCommand(string UserName, string Password): ICommand<AuthorizeResponse>;
+    public record TokenCommand(string UserName, string Password, string SiteKey = null): ICommand<AuthorizeResponse>;
 
 
     public class TokenCommandHandler : ICommandHandler<TokenCommand, AuthorizeResponse>
@@ -30,19 +30,23 @@ namespace Service.Identity.Commands.Auth
                 throw new BadRequestException("Invalid username or password");
             }
 
-            var (user, roles) = await _identityService.GetUserDetailsAsync(await _identityService.GetUserIdAsync(request.UserName));
+            var user = _identityService.GetFullMember(e=>e.UserName == request.UserName).Result;
+            if (user == null) {
+                return new(null, null, false);
+            }
 
-            string token = _tokenGenerator.GenerateJwt(user);
+            string token = _tokenGenerator.GenerateJwt(user!.Info, user.Claims);
 
             return new AuthorizeResponse
             (
-                
+
                 token,
-                new (
-                    user.UserName,
-                    roles.ToList()
+                new(
+                    user.Info.UserName,
+                    user.Roles
                 )
             );
+            //throw new NotImplementedException();
         }
     }
 }

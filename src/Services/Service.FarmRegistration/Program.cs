@@ -1,9 +1,12 @@
 using SharedApplication;
 using SharedApplication.Middleware;
-using Infrastructure.CommonShared.Authorize;
-using Infrastructure.FarmRegistry;
 
 using SharedApplication.CORS;
+using SharedApplication.Authorize;
+
+using Infrastructure.FarmRegistry;
+using SharedApplication.Persistence;
+using Infrastructure.FarmRegistry.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +28,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.EnsureDataInit<RegistrationContext>().Wait();
 
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -1,40 +1,20 @@
-﻿using SharedDomain.Entities.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SharedApplication.Authorize.Services;
+using SharedDomain.Defaults;
+using SharedDomain.Entities.Users;
 
 namespace SharedApplication.Authorize.Contracts
 {
     public interface IIdentityService
     {
-        // User section
-        Task<(bool isSucceed, string userId)> CreateUserAsync(string userName, string password, string email, string fullName, List<string> roles);
         Task<bool> SigninUserAsync(string userName, string password);
-        Task<string> GetUserIdAsync(string userName);
-        Task<(Member, IList<string> roles)> GetUserDetailsAsync(string userId);
-        Task<(string userId, string fullName, string UserName, string email, IList<string> roles)> GetUserDetailsByUserNameAsync(string userName);
-        Task<string> GetUserNameAsync(string userId);
-        Task<bool> DeleteUserAsync(string userId);
+        Task AddScopes(Member member, string[] scope);
+        Task<Member?> CreateUserInTypes(Member member, AccountType type = AccountType.Member);
+        Member? FindAccount(Func<Member, bool> filter);
+        Task<List<Member>> FindAccounts(Func<Member, bool> filter = null);
+        Task<FullUserResult?> GetFullMember(Func<Member, bool> filter);
+        IEnumerable<(Member member, List<string> roles)> GetMembersWithRoles(Func<Member, bool> filter = null);
+        Task<bool> IsInRoleAsync(Func<Member, bool> filter, string role);
         Task<bool> IsUniqueUserName(string userName);
-        Task<List<(string id, string fullName, string userName, string email)>> GetAllUsersAsync();
-        Task<List<(string id, string userName, string email, IList<string> roles)>> GetAllUsersDetailsAsync();
-        Task<bool> UpdateUserProfile(string id, string fullName, string email, IList<string> roles);
-
-        // Role Section
-        Task<bool> CreateRoleAsync(string roleName);
-        Task<bool> DeleteRoleAsync(string roleId);
-        Task<List<(string id, string roleName)>> GetRolesAsync();
-        Task<(string id, string roleName)> GetRoleByIdAsync(string id);
-        Task<bool> UpdateRole(string id, string roleName);
-
-        // User's Role section
-        Task<bool> IsInRoleAsync(string userId, string role);
-        Task<List<string>> GetUserRolesAsync(string userId);
-        Task<bool> AssignUserToRole(string userName, IList<string> roles);
-        Task<bool> UpdateUsersRole(string userName, IList<string> usersRole);
-
-
+        Task<bool> UpdateUserProfile(Member member, IList<string> roles);
     }
 }

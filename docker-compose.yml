@@ -22,7 +22,7 @@ services:
  
     rabbitmq:
         image: rabbitmq:3-management
-        container_name: 'MsgBus'
+        container_name: 'Farm-RBMsgBus'
         ports:
             - 5672:5672
             - 15672:15672
@@ -30,6 +30,9 @@ services:
         networks:
             agri.network:
                 ipv4_address: 10.38.0.12
+        environment:
+            - RABBITMQ_DEFAULT_USER=farmer
+            - RABBITMQ_DEFAULT_PASS=farmer
 
     service.register:
         build:
@@ -41,8 +44,8 @@ services:
         networks:
           agri.network:
             ipv4_address: 10.38.0.3
-        #ports:
-        # - "1111:80"
+        ports:
+         - "80:80"
         depends_on:
           - sqldb
 

@@ -1,10 +1,12 @@
 using SharedApplication;
 using SharedApplication.Middleware;
-using Infrastructure.CommonShared.Authorize;
-
 
 using SharedApplication.CORS;
 using Infrastructure.FarmSite;
+using SharedApplication.Authorize;
+using EventBus;
+using Service.FarmSite.Consumers;
+using EventBus.Defaults;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,13 @@ builder.Services.AddInfras(builder.Configuration);
 builder.Services.AddSharedApplication<Program>();
 builder.Services.AddJWTAuthorization();
 builder.Services.AddGlobalErrorMiddleware();
+
+builder.Services.AddDefaultEventBusExtension<Program>(
+    builder.Configuration,
+    (config, context) =>
+{
+    config.AddReceiveEndpoint<FarmRegistedSuccessConsumer>(EventQueue.RegistFarmQueue, context);
+});
 
 
 builder.Services.AddControllers();
