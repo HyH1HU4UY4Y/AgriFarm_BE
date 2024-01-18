@@ -15,11 +15,6 @@ services:
           - ACCEPT_EULA=Y
           - MSSQL_PID=Developer
 
-        volumes: 
-          - ./sqldb/data:/var/opt/mssql/data
-          - ./sqldb/log:/var/opt/mssql/log
-          - ./sqldb/secrets:/var/opt/mssql/secrets
-
     rabbitmq:
         image: rabbitmq:3-management
         container_name: 'Farm-RBMsgBus'
