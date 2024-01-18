@@ -19,7 +19,7 @@ services:
           - ./sqldb/data:/var/opt/mssql/data
           - ./sqldb/log:/var/opt/mssql/log
           - ./sqldb/secrets:/var/opt/mssql/secrets
- 
+
     rabbitmq:
         image: rabbitmq:3-management
         container_name: 'Farm-RBMsgBus'
@@ -33,7 +33,6 @@ services:
         environment:
             - RABBITMQ_DEFAULT_USER=farmer
             - RABBITMQ_DEFAULT_PASS=farmer
-            
 
     gateway.ocelot:
         build:
@@ -48,7 +47,6 @@ services:
           agri.network:
             ipv4_address: 10.38.0.2
 
-          
     service.registration:
         build:
           context: .
