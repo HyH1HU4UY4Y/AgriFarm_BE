@@ -21,7 +21,7 @@ namespace Infrastructure.Registration.Migrations
                     Name = table.Column<string>(type: "varchar(150)", nullable: true),
                     Description = table.Column<string>(type: "varchar(5000)", maxLength: 5000, nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    DurationHour = table.Column<long>(type: "bigint", nullable: true),
+                    DurationInMonth = table.Column<long>(type: "bigint", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModify = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -37,12 +37,12 @@ namespace Infrastructure.Registration.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "varchar(150)", nullable: false),
-                    Content = table.Column<string>(type: "varchar(5000)", maxLength: 5000, nullable: true),
+                    FirstName = table.Column<string>(type: "varchar(150)", nullable: false),
+                    LastName = table.Column<string>(type: "varchar(150)", nullable: false),
                     Phone = table.Column<string>(type: "varchar(150)", nullable: true),
                     Email = table.Column<string>(type: "varchar(150)", nullable: false),
                     Address = table.Column<string>(type: "varchar(5000)", maxLength: 5000, nullable: true),
-                    SiteKey = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
+                    SiteCode = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
                     SiteName = table.Column<string>(type: "varchar(150)", nullable: false),
                     SolutionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -65,12 +65,12 @@ namespace Infrastructure.Registration.Migrations
 
             migrationBuilder.InsertData(
                 table: "PackageSolutions",
-                columns: new[] { "Id", "CreatedDate", "DeletedDate", "Description", "DurationHour", "IsDeleted", "LastModify", "Name", "Price" },
+                columns: new[] { "Id", "CreatedDate", "DeletedDate", "Description", "DurationInMonth", "IsDeleted", "LastModify", "Name", "Price" },
                 values: new object[,]
                 {
-                    { new Guid("2feec9a3-1685-4220-80f3-435dcce6a99a"), new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5508), null, "This is vip solution", 79000L, false, new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5509), "Solution 3", 1000m },
-                    { new Guid("c5e6a8eb-ac87-453d-a8e5-098cd119ec04"), new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5505), null, "This is medium solution", 7800L, false, new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5506), "Solution 2", 100m },
-                    { new Guid("e89cf903-ef59-4098-a0aa-17869be91538"), new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5420), null, "This is cheapest solution", 750L, false, new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5429), "Solution 1", 10m }
+                    { new Guid("3c9cca4d-0899-45de-951e-8a3e8364758c"), new DateTime(2024, 1, 18, 16, 57, 18, 871, DateTimeKind.Local).AddTicks(9281), null, "This is cheapest solution", 6L, false, new DateTime(2024, 1, 18, 16, 57, 18, 871, DateTimeKind.Local).AddTicks(9289), "Solution 1", 10m },
+                    { new Guid("6b9af8b1-8658-4840-b062-3d772658b66b"), new DateTime(2024, 1, 18, 16, 57, 18, 871, DateTimeKind.Local).AddTicks(9299), null, "This is medium solution", 12L, false, new DateTime(2024, 1, 18, 16, 57, 18, 871, DateTimeKind.Local).AddTicks(9299), "Solution 2", 100m },
+                    { new Guid("a8fb146b-ea75-48de-9921-b171b946a82d"), new DateTime(2024, 1, 18, 16, 57, 18, 871, DateTimeKind.Local).AddTicks(9300), null, "This is vip solution", 24L, false, new DateTime(2024, 1, 18, 16, 57, 18, 871, DateTimeKind.Local).AddTicks(9301), "Solution 3", 1000m }
                 });
 
             migrationBuilder.CreateIndex(

@@ -9,8 +9,9 @@ using SharedDomain.Exceptions;
 namespace Service.FarmRegistry.Commands
 {
     public record RegistFarmCommand
-        (string Name, string Content, string Phone
-        , string Email, string Address, string SiteKey
+        (string Name, string? FirstName
+        , string? LastName, string Phone
+        , string Email, string Address, string SiteCode
         , string SiteName, Guid SolutionId
         , string PaymentDetail) :IRequest<RegisterFormResponse>;
         
@@ -35,8 +36,9 @@ namespace Service.FarmRegistry.Commands
 
         public Task<RegisterFormResponse> Handle(RegistFarmCommand request, CancellationToken cancellationToken)
         {
+            
             var solution = _solRepo.GetOne(e => e.Id == request.SolutionId).Result;
-            if (solution == null) throw new NotFoundException("Solution not exist!");
+            if (solution == null) throw new Exception("Solution not exist!");
 
             var entity = _mapper.Map<FarmRegistration>(request);
             entity.Cost = solution.Price;

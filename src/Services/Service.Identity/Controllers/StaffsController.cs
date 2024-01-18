@@ -2,15 +2,18 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Identity.Commands;
+using Service.Identity.DTOs;
 using Service.Identity.Queries;
+using SharedDomain.Defaults;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Service.Identity.Controllers
 {
-    [Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = Roles.Admin)]
     public class StaffsController : ControllerBase
     {
         private IMediator _mediator;
@@ -21,28 +24,48 @@ namespace Service.Identity.Controllers
         }
 
         // GET: api/<StaffsController>
-        [HttpGet]
-        public async Task<IActionResult> GetStaff(Guid siteId)
+        [HttpGet("get")]
+        public async Task<IActionResult> GetStaff([FromQuery]Guid siteId, [FromQuery]Guid? userId = null)
         {
-            var rs = await _mediator.Send(new GetStaffsQuery { SiteId = siteId });
+            if (userId == null)
+            {
+                var users = await _mediator.Send(new GetStaffsQuery { SiteId = siteId });
 
-            return Ok(rs);
+                return Ok(users);
+            }
+
+            var user = await _mediator.Send(new GetMemberByIdQuery 
+            { 
+                SiteId = siteId, 
+                UserId = (Guid)userId 
+            });
+
+            return Ok(user);
+            
         }
 
-        // GET api/<StaffsController>/5
-        [HttpGet()]
-        public string Get()
+        
+        [HttpGet("value")]
+        public string GetValue()
         {
             return "value";
         }
 
         // POST api/<StaffsController>
         [HttpPost("add-new-staff")]
-        public async Task<IActionResult> AddNewStaff([FromBody] CreateMemberCommand request)
+        public async Task<IActionResult> AddNewStaff([FromQuery]Guid siteId, [FromBody] AddStaffRequest request)
         {
-            var rs = await _mediator.Send(request);
+            var rs = await _mediator.Send(new CreateMemberCommand
+            {
+                SiteId = siteId,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Password = request.Password,
+                UserName = request.UserName,
+                AccountType = AccountType.Member
+            });
 
-            return Ok();
+            return Ok(rs);
         }
 
         // PUT api/<StaffsController>/5

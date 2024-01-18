@@ -3,6 +3,7 @@ using Infrastructure.FarmRegistry.Contexts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedDomain.Entities.Subscribe;
+using SharedApplication.MultiTenant;
 
 namespace Infrastructure.FarmRegistry
 {
@@ -14,7 +15,9 @@ namespace Infrastructure.FarmRegistry
 
             services
                 .AddSQLRepo<RegistrationContext, FarmRegistration>()
-                .AddSQLRepo<RegistrationContext, PackageSolution>();
+                .AddSQLRepo<RegistrationContext, PackageSolution>()
+                .AddMultiTenant(configuration);
+                
 
             return services;
         }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Infrastructure.Soil.Migrations
+namespace Infrastructure.FarmSite.Migrations
 {
     /// <inheritdoc />
     public partial class init : Migration
@@ -17,8 +17,12 @@ namespace Infrastructure.Soil.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "varchar(150)", nullable: false),
-                    SiteKey = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Intro = table.Column<string>(type: "varchar(150)", nullable: true),
+                    SiteCode = table.Column<string>(type: "varchar(150)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    AvatarImg = table.Column<string>(type: "varchar(150)", nullable: true),
+                    LogoImg = table.Column<string>(type: "varchar(150)", nullable: true),
+                    PaymentDetail = table.Column<string>(type: "varchar(150)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModify = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -30,16 +34,13 @@ namespace Infrastructure.Soil.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BaseComponent",
+                name: "CapitalStates",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SiteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "varchar(150)", nullable: false),
-                    Description = table.Column<string>(type: "varchar(150)", nullable: false),
-                    IsConsumable = table.Column<bool>(type: "bit", nullable: false),
-                    Unit = table.Column<string>(type: "varchar(150)", nullable: false),
-                    Notes = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Amount = table.Column<double>(type: "float", nullable: false),
+                    Description = table.Column<string>(type: "varchar(150)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModify = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -47,66 +48,23 @@ namespace Infrastructure.Soil.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BaseComponent", x => x.Id);
+                    table.PrimaryKey("PK_CapitalStates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BaseComponent_Sites_SiteId",
+                        name: "FK_CapitalStates_Sites_SiteId",
                         column: x => x.SiteId,
                         principalTable: "Sites",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "FarmLands",
+                name: "Documents",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Position = table.Column<string>(type: "varchar(150)", nullable: false),
-                    Acreage = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FarmLands", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FarmLands_BaseComponent_Id",
-                        column: x => x.Id,
-                        principalTable: "BaseComponent",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Properties",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ComponentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "varchar(150)", nullable: false),
-                    Value = table.Column<double>(type: "float", nullable: false),
-                    Require = table.Column<double>(type: "float", nullable: false),
-                    Unit = table.Column<string>(type: "varchar(150)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModify = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Properties", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Properties_BaseComponent_ComponentId",
-                        column: x => x.ComponentId,
-                        principalTable: "BaseComponent",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Activities",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SiteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Description = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Resource = table.Column<string>(type: "varchar(150)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModify = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -114,27 +72,24 @@ namespace Infrastructure.Soil.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Activities", x => x.Id);
+                    table.PrimaryKey("PK_Documents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Activities_FarmLands_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "FarmLands",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Activities_Sites_SiteId",
+                        name: "FK_Documents_Sites_SiteId",
                         column: x => x.SiteId,
                         principalTable: "Sites",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "States",
+                name: "SubscriptonBills",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ComponentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ActivityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Data = table.Column<string>(type: "varchar(150)", nullable: false),
+                    SiteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SolutionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    StartIn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndIn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModify = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -142,67 +97,71 @@ namespace Infrastructure.Soil.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_States", x => x.Id);
+                    table.PrimaryKey("PK_SubscriptonBills", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_States_Activities_ActivityId",
-                        column: x => x.ActivityId,
-                        principalTable: "Activities",
+                        name: "FK_SubscriptonBills_Sites_SiteId",
+                        column: x => x.SiteId,
+                        principalTable: "Sites",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ComponentDocuments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ComponentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DocumentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModify = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ComponentDocuments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_States_BaseComponent_ComponentId",
-                        column: x => x.ComponentId,
-                        principalTable: "BaseComponent",
+                        name: "FK_ComponentDocuments_Documents_DocumentId",
+                        column: x => x.DocumentId,
+                        principalTable: "Documents",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Activities_LocationId",
-                table: "Activities",
-                column: "LocationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Activities_SiteId",
-                table: "Activities",
+                name: "IX_CapitalStates_SiteId",
+                table: "CapitalStates",
                 column: "SiteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BaseComponent_SiteId",
-                table: "BaseComponent",
+                name: "IX_ComponentDocuments_DocumentId",
+                table: "ComponentDocuments",
+                column: "DocumentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Documents_SiteId",
+                table: "Documents",
                 column: "SiteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Properties_ComponentId",
-                table: "Properties",
-                column: "ComponentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_States_ActivityId",
-                table: "States",
-                column: "ActivityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_States_ComponentId",
-                table: "States",
-                column: "ComponentId");
+                name: "IX_SubscriptonBills_SiteId",
+                table: "SubscriptonBills",
+                column: "SiteId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Properties");
+                name: "CapitalStates");
 
             migrationBuilder.DropTable(
-                name: "States");
+                name: "ComponentDocuments");
 
             migrationBuilder.DropTable(
-                name: "Activities");
+                name: "SubscriptonBills");
 
             migrationBuilder.DropTable(
-                name: "FarmLands");
-
-            migrationBuilder.DropTable(
-                name: "BaseComponent");
+                name: "Documents");
 
             migrationBuilder.DropTable(
                 name: "Sites");

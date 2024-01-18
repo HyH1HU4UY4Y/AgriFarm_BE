@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.FarmSite.Config
 {
-    public class SolutionConfig : IEntityTypeConfiguration<PackageSolution>
+    /*public class SolutionConfig : IEntityTypeConfiguration<PackageSolution>
     {
         public void Configure(EntityTypeBuilder<PackageSolution> builder)
         {
@@ -23,5 +23,5 @@ namespace Infrastructure.FarmSite.Config
                 .Ignore(e => e.Price)
                 ;
         }
-    }
+    }*/
 }

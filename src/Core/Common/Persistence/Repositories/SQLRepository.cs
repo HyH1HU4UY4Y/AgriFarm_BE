@@ -31,7 +31,7 @@ namespace SharedApplication.Persistence.Repositories
         public async Task<TEntity> AddAsync(TEntity entity)
         {
             await _context.Set<TEntity>().AddAsync(entity);
-            await _context.SaveChangesAsync();
+            
             return entity;
         }
 
@@ -39,7 +39,7 @@ namespace SharedApplication.Persistence.Repositories
         public async Task UpdateAsync(TEntity entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            
         }
 
 
@@ -47,7 +47,7 @@ namespace SharedApplication.Persistence.Repositories
         {
             entity.IsDeleted = true;
             _context.Set<TEntity>().Remove(entity);
-            await _context.SaveChangesAsync();
+            
         }
 
         public async Task<TEntity?> GetOne(

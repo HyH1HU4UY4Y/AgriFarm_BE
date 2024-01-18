@@ -21,7 +21,7 @@ builder.Services.AddInfras(builder.Configuration);
 builder.Services.AddSharedApplication<Program>();
 //builder.Services.AddAuthModule(builder.Configuration);
 builder.Services.AddGlobalErrorMiddleware();
-
+builder.Services.AddAuthModule(builder.Configuration);
 builder.Services.AddDefaultEventBusExtension<Program>(
     builder.Configuration,
     (config, context) =>
@@ -44,7 +44,7 @@ app.UseSwaggerUI();
 
 app.UseGlobalErrorMiddleware();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseCors(cors);
 

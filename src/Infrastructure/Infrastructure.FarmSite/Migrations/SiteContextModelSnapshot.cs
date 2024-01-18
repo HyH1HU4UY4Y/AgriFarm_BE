@@ -133,6 +133,9 @@ namespace Infrastructure.FarmSite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AvatarImg")
+                        .HasColumnType("varchar(150)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -151,6 +154,9 @@ namespace Infrastructure.FarmSite.Migrations
                     b.Property<DateTime>("LastModify")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("LogoImg")
+                        .HasColumnType("varchar(150)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(150)");
@@ -158,39 +164,13 @@ namespace Infrastructure.FarmSite.Migrations
                     b.Property<string>("PaymentDetail")
                         .HasColumnType("varchar(150)");
 
-                    b.Property<string>("SiteKey")
+                    b.Property<string>("SiteCode")
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Sites");
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.Subscribe.PackageSolution", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("varchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SolutionDetails", (string)null);
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.Subscribe.Subscripton", b =>
@@ -229,8 +209,6 @@ namespace Infrastructure.FarmSite.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("SiteId");
-
-                    b.HasIndex("SolutionId");
 
                     b.ToTable("SubscriptonBills");
                 });
@@ -272,15 +250,7 @@ namespace Infrastructure.FarmSite.Migrations
                         .HasForeignKey("SiteId")
                         .IsRequired();
 
-                    b.HasOne("SharedDomain.Entities.Subscribe.PackageSolution", "Solution")
-                        .WithMany()
-                        .HasForeignKey("SolutionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Site");
-
-                    b.Navigation("Solution");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Document", b =>

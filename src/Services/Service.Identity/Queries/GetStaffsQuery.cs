@@ -5,12 +5,12 @@ using SharedApplication.Authorize.Contracts;
 
 namespace Service.Identity.Queries
 {
-    public class GetStaffsQuery: IRequest<List<StaffResponse>>
+    public class GetStaffsQuery: IRequest<List<UserResponse>>
     {
         public Guid SiteId { get; set; }
     }
 
-    public class GetStaffsQueryHandler : IRequestHandler<GetStaffsQuery, List<StaffResponse>>
+    public class GetStaffsQueryHandler : IRequestHandler<GetStaffsQuery, List<UserResponse>>
     {
         private readonly IIdentityService _identity;
         private IMapper _mapper;
@@ -23,11 +23,11 @@ namespace Service.Identity.Queries
             _logger = logger;
         }
 
-        public async Task<List<StaffResponse>> Handle(GetStaffsQuery request, CancellationToken cancellationToken)
+        public async Task<List<UserResponse>> Handle(GetStaffsQuery request, CancellationToken cancellationToken)
         {
             var staffs = await _identity.FindAccounts(e => e.SiteId == request.SiteId);
 
-            return _mapper.Map<List<StaffResponse>>(staffs);
+            return _mapper.Map<List<UserResponse>>(staffs);
 
         }
     }

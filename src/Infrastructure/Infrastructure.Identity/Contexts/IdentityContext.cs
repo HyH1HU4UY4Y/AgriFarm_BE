@@ -45,7 +45,8 @@ namespace Infrastructure.Identity.Contexts
                 new()
                 {
                     Id = Guid.NewGuid(),
-                    FullName = "Super Admin 01",
+                    FirstName = "Super",
+                    LastName = "Admin 01",
                     Email = "admin01@system",
                     NormalizedEmail= "admin01@system".ToUpper(),
                     UserName = "admin01@system",

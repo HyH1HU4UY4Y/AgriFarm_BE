@@ -33,8 +33,9 @@ namespace Infrastructure.Identity.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SiteKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SiteCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    AvatarImg = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModify = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -72,12 +73,14 @@ namespace Infrastructure.Identity.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SiteId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdentificationCard = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gender = table.Column<int>(type: "int", nullable: true),
                     Education = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DOB = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    AvatarImg = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RefreshTokenExpiry = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -228,26 +231,26 @@ namespace Infrastructure.Identity.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("2a9f0123-6e81-4f34-bddb-de766ff23327"), "10ca067a-afa9-494e-bf15-535e6b530358", "Admin", "ADMIN" },
-                    { new Guid("2ce8cb90-eea7-4b41-a251-c4d2fa52e880"), "e05c4383-5e70-4ed7-a11b-0910cc59bf09", "Manager", "MANAGER" },
-                    { new Guid("614c54fe-7fa6-4b64-a722-2f0b5d140414"), "43f041e6-8892-4dbd-a006-2900b86e0ec2", "SuperAdmin", "SUPERADMIN" },
-                    { new Guid("7544afaf-b7d0-466f-b7bc-fbadadc67ed5"), "92dd92c2-9627-4433-a232-4be6baacd175", "Member", "MEMBER" }
+                    { new Guid("17d0a40b-3271-42c0-9057-ac1525b0d7be"), "99a93f1d-477d-4b35-80ea-3c80b6e48cc8", "Admin", "ADMIN" },
+                    { new Guid("61ae5e8e-c159-4e8a-b0a4-2c6bade22175"), "ff567243-b9f7-49ca-a480-3edc46b1f03f", "SuperAdmin", "SUPERADMIN" },
+                    { new Guid("694f04dd-2391-4be3-8c99-1f2e5e36db0a"), "d4535b91-6da3-4ff4-9b2a-6dea25bc667a", "Manager", "MANAGER" },
+                    { new Guid("6a2bc022-8c92-4efa-855b-824c5dc4dffa"), "49e730b8-b9dc-4c81-902c-f39b1842cb85", "Member", "MEMBER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "DOB", "Education", "Email", "EmailConfirmed", "FullName", "Gender", "IdentificationCard", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "RefreshTokenExpiry", "SecurityStamp", "SiteId", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("7232fa20-76cd-4fdd-8145-35a768f7bf3f"), 0, null, "18c46ee8-bf15-4315-899d-87c2f87691cf", null, null, "admin01@system", true, "Super Admin 01", null, null, false, null, "ADMIN01@SYSTEM", "ADMIN01@SYSTEM", "AQAAAAEAACcQAAAAEFq5hHv6Ma3TWpeIWIM9A46SfPUAEQxde8U6soMSN7DgefBZ7klbj0TnWQC7hnYF2Q==", "0122222222", true, null, null, "131469a4-ead2-4bd7-85a9-47c20899e915", null, false, "admin01@system" });
+                columns: new[] { "Id", "AccessFailedCount", "Address", "AvatarImg", "ConcurrencyStamp", "DOB", "Education", "Email", "EmailConfirmed", "FirstName", "Gender", "IdentificationCard", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "RefreshTokenExpiry", "SecurityStamp", "SiteId", "TwoFactorEnabled", "UserName" },
+                values: new object[] { new Guid("8b0d38fa-2282-4c60-bd55-1440a2ff4f45"), 0, null, null, "7b5bd736-7299-421b-aaa2-ba9820dd725b", null, null, "admin01@system", true, "Super", null, null, "Admin 01", false, null, "ADMIN01@SYSTEM", "ADMIN01@SYSTEM", "AQAAAAEAACcQAAAAED2g9dRWC3FZ51X4ZpcWpyxadiYRGclnqRigW8tfZkOsulwdb39F6X5kehtdfU3Btg==", "0122222222", true, null, null, "59a728cd-5c29-468b-a1bc-6cafca40d0b6", null, false, "admin01@system" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("2a9f0123-6e81-4f34-bddb-de766ff23327"), new Guid("7232fa20-76cd-4fdd-8145-35a768f7bf3f") },
-                    { new Guid("2ce8cb90-eea7-4b41-a251-c4d2fa52e880"), new Guid("7232fa20-76cd-4fdd-8145-35a768f7bf3f") },
-                    { new Guid("614c54fe-7fa6-4b64-a722-2f0b5d140414"), new Guid("7232fa20-76cd-4fdd-8145-35a768f7bf3f") },
-                    { new Guid("7544afaf-b7d0-466f-b7bc-fbadadc67ed5"), new Guid("7232fa20-76cd-4fdd-8145-35a768f7bf3f") }
+                    { new Guid("17d0a40b-3271-42c0-9057-ac1525b0d7be"), new Guid("8b0d38fa-2282-4c60-bd55-1440a2ff4f45") },
+                    { new Guid("61ae5e8e-c159-4e8a-b0a4-2c6bade22175"), new Guid("8b0d38fa-2282-4c60-bd55-1440a2ff4f45") },
+                    { new Guid("694f04dd-2391-4be3-8c99-1f2e5e36db0a"), new Guid("8b0d38fa-2282-4c60-bd55-1440a2ff4f45") },
+                    { new Guid("6a2bc022-8c92-4efa-855b-824c5dc4dffa"), new Guid("8b0d38fa-2282-4c60-bd55-1440a2ff4f45") }
                 });
 
             migrationBuilder.CreateIndex(

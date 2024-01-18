@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedApplication.Authorize;
+using SharedApplication.MultiTenant;
+using SharedApplication.Persistence;
+using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Entities.Users;
 
 namespace Infrastructure.Identity
@@ -13,15 +16,15 @@ namespace Infrastructure.Identity
         public static IServiceCollection AddInfras(this IServiceCollection services, IConfiguration configuration)
         {
             
-            services.AddDbContext<IdentityContext>(o =>
-            {
-                o.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName));
-            });
+            services.AddDefaultSQLDB<IdentityContext>(configuration);
 
             services.AddIdentity<Member, IdentityRole<Guid>>()
             .AddEntityFrameworkStores<IdentityContext>()
             .AddDefaultTokenProviders();
+
+            services.AddSQLRepo<IdentityContext, Site>()
+                    .AddMultiTenant(configuration);
+                    
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -43,7 +46,7 @@ namespace Infrastructure.Identity
             });
 
 
-            services.AddAuthModule(configuration);
+            //services.AddAuthModule(configuration);
 
             return services;
         }

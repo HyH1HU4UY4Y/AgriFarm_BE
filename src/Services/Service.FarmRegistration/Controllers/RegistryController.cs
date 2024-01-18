@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using Infrastructure.FarmRegistry.Contexts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.FarmRegistry.Commands;
 using Service.FarmRegistry.DTOs;
+using Service.Registration.DTOs;
 using Service.Registration.Queries;
+using SharedDomain.Defaults;
 using SharedDomain.Entities.Subscribe;
 using SharedDomain.Repositories.Base;
 
@@ -12,6 +15,7 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.FarmRegistry.Controllers
 {
+    
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class RegistryController : ControllerBase
@@ -26,7 +30,8 @@ namespace Service.FarmRegistry.Controllers
             _mediator = mediator;
         }
 
-        // GET: api/<RegistryController>
+
+        [Authorize(Roles = Roles.SuperAdmin)]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -35,14 +40,8 @@ namespace Service.FarmRegistry.Controllers
             return Ok(rs);
         }
 
-        // GET api/<RegistryController>/5
-        [HttpGet("by-id")]
-        public async Task<IActionResult> Get(Guid id)
-        {
-            return Ok();
-        }
 
-        // POST api/<RegistryController>
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] RegistFarmCommand request)
         {
@@ -51,12 +50,17 @@ namespace Service.FarmRegistry.Controllers
             return Accepted(rs);
         }
 
-        // PUT api/<RegistryController>/5
+        
         [HttpPut]
-        public async Task<IActionResult> Put([FromQuery]Guid id, [FromBody] ResolveFormCommand request)
+        public async Task<IActionResult> Put([FromQuery]Guid id, [FromBody] ResolveFormRequest request)
         {
-            request.Id = id;
-            var rs = await _mediator.Send(request);
+            
+            var rs = await _mediator.Send(new ResolveFormCommand
+            {
+                Id = id,
+                Decison = request.Decison,
+                Notes = request.Notes
+            });
 
             return Ok(rs);
         }

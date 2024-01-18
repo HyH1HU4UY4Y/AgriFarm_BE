@@ -2,6 +2,7 @@
 using Infrastructure.FarmSite.Contexts;
 using MediatR;
 using SharedDomain.Entities.FarmComponents;
+using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
 
 namespace Service.FarmSite.Commands
@@ -9,7 +10,8 @@ namespace Service.FarmSite.Commands
     public class CreateNewFarmCommand : IRequest<Guid>
     {
         public string Name { get; set; }
-        public string SiteKey { get; set; }
+        public string SiteCode { get; set; }
+        public bool IsActive { get; set; } = false;
     }
 
     public class CreateNewFarmCommandHandler : IRequestHandler<CreateNewFarmCommand, Guid>
@@ -39,7 +41,7 @@ namespace Service.FarmSite.Commands
             var rs = _context.SaveChangesAsync(cancellationToken).Result >0;
             if (!rs)
             {
-
+                throw new NotFoundException("Not Found!");
             }
 
             return site.Id;

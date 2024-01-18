@@ -34,8 +34,9 @@ namespace Infrastructure.FarmScheduling.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "varchar(150)", nullable: false),
-                    SiteKey = table.Column<string>(type: "varchar(150)", nullable: false),
+                    SiteCode = table.Column<string>(type: "varchar(150)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    AvatarImg = table.Column<string>(type: "varchar(150)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModify = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -94,6 +95,7 @@ namespace Infrastructure.FarmScheduling.Migrations
                     SiteId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     FullName = table.Column<string>(type: "varchar(150)", nullable: true),
                     UserName = table.Column<string>(type: "varchar(150)", nullable: true),
+                    AvatarImg = table.Column<string>(type: "varchar(150)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModify = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),

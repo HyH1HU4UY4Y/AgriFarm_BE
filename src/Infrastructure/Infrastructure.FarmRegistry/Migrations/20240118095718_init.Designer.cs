@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Registration.Migrations
 {
     [DbContext(typeof(RegistrationContext))]
-    [Migration("20240111225022_init")]
+    [Migration("20240118095718_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -35,10 +35,6 @@ namespace Infrastructure.Registration.Migrations
                         .HasMaxLength(5000)
                         .HasColumnType("varchar(150)");
 
-                    b.Property<string>("Content")
-                        .HasMaxLength(5000)
-                        .HasColumnType("varchar(150)");
-
                     b.Property<decimal>("Cost")
                         .HasColumnType("decimal(18,2)");
 
@@ -52,6 +48,10 @@ namespace Infrastructure.Registration.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("varchar(150)");
+
                     b.Property<int?>("IsApprove")
                         .HasColumnType("int");
 
@@ -61,7 +61,7 @@ namespace Infrastructure.Registration.Migrations
                     b.Property<DateTime>("LastModify")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
@@ -71,7 +71,7 @@ namespace Infrastructure.Registration.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("varchar(150)");
 
-                    b.Property<string>("SiteKey")
+                    b.Property<string>("SiteCode")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("varchar(150)");
@@ -106,7 +106,7 @@ namespace Infrastructure.Registration.Migrations
                         .HasMaxLength(5000)
                         .HasColumnType("varchar(150)");
 
-                    b.Property<long?>("DurationHour")
+                    b.Property<long?>("DurationInMonth")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("IsDeleted")
@@ -128,34 +128,34 @@ namespace Infrastructure.Registration.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e89cf903-ef59-4098-a0aa-17869be91538"),
-                            CreatedDate = new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5420),
+                            Id = new Guid("3c9cca4d-0899-45de-951e-8a3e8364758c"),
+                            CreatedDate = new DateTime(2024, 1, 18, 16, 57, 18, 871, DateTimeKind.Local).AddTicks(9281),
                             Description = "This is cheapest solution",
-                            DurationHour = 750L,
+                            DurationInMonth = 6L,
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5429),
+                            LastModify = new DateTime(2024, 1, 18, 16, 57, 18, 871, DateTimeKind.Local).AddTicks(9289),
                             Name = "Solution 1",
                             Price = 10m
                         },
                         new
                         {
-                            Id = new Guid("c5e6a8eb-ac87-453d-a8e5-098cd119ec04"),
-                            CreatedDate = new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5505),
+                            Id = new Guid("6b9af8b1-8658-4840-b062-3d772658b66b"),
+                            CreatedDate = new DateTime(2024, 1, 18, 16, 57, 18, 871, DateTimeKind.Local).AddTicks(9299),
                             Description = "This is medium solution",
-                            DurationHour = 7800L,
+                            DurationInMonth = 12L,
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5506),
+                            LastModify = new DateTime(2024, 1, 18, 16, 57, 18, 871, DateTimeKind.Local).AddTicks(9299),
                             Name = "Solution 2",
                             Price = 100m
                         },
                         new
                         {
-                            Id = new Guid("2feec9a3-1685-4220-80f3-435dcce6a99a"),
-                            CreatedDate = new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5508),
+                            Id = new Guid("a8fb146b-ea75-48de-9921-b171b946a82d"),
+                            CreatedDate = new DateTime(2024, 1, 18, 16, 57, 18, 871, DateTimeKind.Local).AddTicks(9300),
                             Description = "This is vip solution",
-                            DurationHour = 79000L,
+                            DurationInMonth = 24L,
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5509),
+                            LastModify = new DateTime(2024, 1, 18, 16, 57, 18, 871, DateTimeKind.Local).AddTicks(9301),
                             Name = "Solution 3",
                             Price = 1000m
                         });

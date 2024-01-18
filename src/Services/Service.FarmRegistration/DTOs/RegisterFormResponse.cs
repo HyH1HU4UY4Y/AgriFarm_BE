@@ -5,14 +5,15 @@ namespace Service.FarmRegistry.DTOs
 {
     public class RegisterFormResponse
     {
-        public string Name { get; set; }
-        public string Content { get; set; }
+        public Guid Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
 
 
-        public string SiteKey { get; set; }
+        public string SiteCode { get; set; }
         public string SiteName { get; set; }
 
         public DecisonOption? IsApprove { get; set; }

@@ -6,9 +6,9 @@ namespace SharedDomain.Entities.Subscribe
 {
     public class FarmRegistration : BaseEntity
     {
-        public string Name { get; set; }
-        [StringLength(5000)]
-        public string? Content { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        
         [Phone]
         public string? Phone { get; set; }
         [EmailAddress]
@@ -17,7 +17,7 @@ namespace SharedDomain.Entities.Subscribe
         public string? Address { get; set; }
 
         [StringLength(20)]
-        public string SiteKey { get; set; }
+        public string SiteCode { get; set; }
         public string SiteName { get; set; }
 
 

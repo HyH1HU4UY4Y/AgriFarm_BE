@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20240117094724_init")]
+    [Migration("20240118105218_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -55,29 +55,29 @@ namespace Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7544afaf-b7d0-466f-b7bc-fbadadc67ed5"),
-                            ConcurrencyStamp = "92dd92c2-9627-4433-a232-4be6baacd175",
+                            Id = new Guid("6a2bc022-8c92-4efa-855b-824c5dc4dffa"),
+                            ConcurrencyStamp = "49e730b8-b9dc-4c81-902c-f39b1842cb85",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = new Guid("2ce8cb90-eea7-4b41-a251-c4d2fa52e880"),
-                            ConcurrencyStamp = "e05c4383-5e70-4ed7-a11b-0910cc59bf09",
+                            Id = new Guid("694f04dd-2391-4be3-8c99-1f2e5e36db0a"),
+                            ConcurrencyStamp = "d4535b91-6da3-4ff4-9b2a-6dea25bc667a",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = new Guid("2a9f0123-6e81-4f34-bddb-de766ff23327"),
-                            ConcurrencyStamp = "10ca067a-afa9-494e-bf15-535e6b530358",
+                            Id = new Guid("17d0a40b-3271-42c0-9057-ac1525b0d7be"),
+                            ConcurrencyStamp = "99a93f1d-477d-4b35-80ea-3c80b6e48cc8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("614c54fe-7fa6-4b64-a722-2f0b5d140414"),
-                            ConcurrencyStamp = "43f041e6-8892-4dbd-a006-2900b86e0ec2",
+                            Id = new Guid("61ae5e8e-c159-4e8a-b0a4-2c6bade22175"),
+                            ConcurrencyStamp = "ff567243-b9f7-49ca-a480-3edc46b1f03f",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         });
@@ -169,23 +169,23 @@ namespace Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("7232fa20-76cd-4fdd-8145-35a768f7bf3f"),
-                            RoleId = new Guid("7544afaf-b7d0-466f-b7bc-fbadadc67ed5")
+                            UserId = new Guid("8b0d38fa-2282-4c60-bd55-1440a2ff4f45"),
+                            RoleId = new Guid("6a2bc022-8c92-4efa-855b-824c5dc4dffa")
                         },
                         new
                         {
-                            UserId = new Guid("7232fa20-76cd-4fdd-8145-35a768f7bf3f"),
-                            RoleId = new Guid("2ce8cb90-eea7-4b41-a251-c4d2fa52e880")
+                            UserId = new Guid("8b0d38fa-2282-4c60-bd55-1440a2ff4f45"),
+                            RoleId = new Guid("694f04dd-2391-4be3-8c99-1f2e5e36db0a")
                         },
                         new
                         {
-                            UserId = new Guid("7232fa20-76cd-4fdd-8145-35a768f7bf3f"),
-                            RoleId = new Guid("2a9f0123-6e81-4f34-bddb-de766ff23327")
+                            UserId = new Guid("8b0d38fa-2282-4c60-bd55-1440a2ff4f45"),
+                            RoleId = new Guid("17d0a40b-3271-42c0-9057-ac1525b0d7be")
                         },
                         new
                         {
-                            UserId = new Guid("7232fa20-76cd-4fdd-8145-35a768f7bf3f"),
-                            RoleId = new Guid("614c54fe-7fa6-4b64-a722-2f0b5d140414")
+                            UserId = new Guid("8b0d38fa-2282-4c60-bd55-1440a2ff4f45"),
+                            RoleId = new Guid("61ae5e8e-c159-4e8a-b0a4-2c6bade22175")
                         });
                 });
 
@@ -214,6 +214,9 @@ namespace Infrastructure.Identity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AvatarImg")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -233,7 +236,7 @@ namespace Infrastructure.Identity.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SiteKey")
+                    b.Property<string>("SiteCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -306,6 +309,9 @@ namespace Infrastructure.Identity.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("AvatarImg")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -323,13 +329,16 @@ namespace Infrastructure.Identity.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Gender")
                         .HasColumnType("int");
 
                     b.Property<string>("IdentificationCard")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -391,19 +400,20 @@ namespace Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7232fa20-76cd-4fdd-8145-35a768f7bf3f"),
+                            Id = new Guid("8b0d38fa-2282-4c60-bd55-1440a2ff4f45"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "18c46ee8-bf15-4315-899d-87c2f87691cf",
+                            ConcurrencyStamp = "7b5bd736-7299-421b-aaa2-ba9820dd725b",
                             Email = "admin01@system",
                             EmailConfirmed = true,
-                            FullName = "Super Admin 01",
+                            FirstName = "Super",
+                            LastName = "Admin 01",
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN01@SYSTEM",
                             NormalizedUserName = "ADMIN01@SYSTEM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFq5hHv6Ma3TWpeIWIM9A46SfPUAEQxde8U6soMSN7DgefBZ7klbj0TnWQC7hnYF2Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAED2g9dRWC3FZ51X4ZpcWpyxadiYRGclnqRigW8tfZkOsulwdb39F6X5kehtdfU3Btg==",
                             PhoneNumber = "0122222222",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "131469a4-ead2-4bd7-85a9-47c20899e915",
+                            SecurityStamp = "59a728cd-5c29-468b-a1bc-6cafca40d0b6",
                             TwoFactorEnabled = false,
                             UserName = "admin01@system"
                         });

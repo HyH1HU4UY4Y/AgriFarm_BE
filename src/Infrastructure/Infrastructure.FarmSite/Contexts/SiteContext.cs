@@ -23,7 +23,6 @@ namespace Infrastructure.FarmSite.Contexts
         public DbSet<Document> Documents { get; set; }
         public DbSet<ComponentDocument> ComponentDocuments { get; set; }
         public DbSet<Subscripton> SubscriptonBills { get; set; }
-        public DbSet<PackageSolution> SolutionDetails { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -35,7 +34,7 @@ namespace Infrastructure.FarmSite.Contexts
             base.OnModelCreating(modelBuilder);
             modelBuilder.Ignore<BaseComponent>();
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SolutionConfig).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(BillConfig).Assembly);
         }
     }
 }

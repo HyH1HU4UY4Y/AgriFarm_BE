@@ -100,6 +100,9 @@ namespace Infrastructure.FarmScheduling.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AvatarImg")
+                        .HasColumnType("varchar(150)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -119,7 +122,7 @@ namespace Infrastructure.FarmScheduling.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
-                    b.Property<string>("SiteKey")
+                    b.Property<string>("SiteCode")
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
@@ -380,6 +383,9 @@ namespace Infrastructure.FarmScheduling.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AvatarImg")
+                        .HasColumnType("varchar(150)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");

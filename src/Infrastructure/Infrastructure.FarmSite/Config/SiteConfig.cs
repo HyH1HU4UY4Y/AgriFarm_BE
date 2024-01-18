@@ -19,14 +19,14 @@ namespace Infrastructure.FarmSite.Config
             builder.HasData(new List<Site>{
                 new()
                 {
-                    SiteKey = "xyz.abc.vn",
+                    SiteCode = "xyz.abc.vn",
                     Name = "Farm 01",
                     IsActive = false,
                     Intro = "A very  long   intro"
                 },
                 new()
                 {
-                    SiteKey = "asd.fgh.vn",
+                    SiteCode = "asd.fgh.vn",
                     Name = "Farm 02",
                     IsActive = false,
                     Intro = "A very  long   intro"

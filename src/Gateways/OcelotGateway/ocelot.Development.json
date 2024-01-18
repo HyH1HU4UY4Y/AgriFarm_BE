@@ -1,0 +1,46 @@
+{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/api/user/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5292
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/register/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5185
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/farm/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5060
+        }
+      ]
+    }
+    
+
+  ]
+
+}

@@ -9,7 +9,7 @@ namespace Service.Identity.Mapper
     {
         public MapperProfile()
         {
-            CreateMap<Member, StaffResponse>().ReverseMap();
+            CreateMap<Member, UserResponse>().ReverseMap();
             CreateMap<Member, CreateMemberCommand>().ReverseMap();
         }
     }

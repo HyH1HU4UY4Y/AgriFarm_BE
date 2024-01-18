@@ -1,11 +1,15 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.FarmSite.Commands;
+using Service.FarmSite.Queries;
+using SharedDomain.Defaults;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Service.FarmSite.Controllers
 {
+    [Authorize(Roles = Roles.SuperAdmin)]
     [Route("api/[controller]")]
     [ApiController]
     public class SitesController : ControllerBase
@@ -17,19 +21,17 @@ namespace Service.FarmSite.Controllers
             _mediator = mediator;
         }
 
+        [Authorize(Roles = Roles.Admin)]
         // GET: api/<SitesController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("get")]
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            var rs = await _mediator.Send(new GetAllSiteQuery());
+
+            return Ok(rs);
         }
 
-        // GET api/<SitesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        
 
         // POST api/<SitesController>
         [HttpPost]

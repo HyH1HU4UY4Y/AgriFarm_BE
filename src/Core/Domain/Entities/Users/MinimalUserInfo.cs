@@ -14,6 +14,7 @@ namespace SharedDomain.Entities.Users
         public Site? Site { get; set; }
         public string? FullName { get; set; }
         public string? UserName { get; set; }
+        public string? AvatarImg { get; set; }
 
     }
 }

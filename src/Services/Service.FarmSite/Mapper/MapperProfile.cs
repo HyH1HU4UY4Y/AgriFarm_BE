@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Service.FarmSite.Commands;
+using Service.FarmSite.DTOs;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Entities.Subscribe;
 
@@ -12,6 +13,8 @@ namespace Service.FarmSite.Mapper
             CreateMap<CreateNewFarmCommand, Site>().ReverseMap();
             CreateMap<CreateSubscriptBillCommand, Subscripton>().ReverseMap();
             CreateMap<AddCapitalStateCommand, CapitalState>().ReverseMap();
+
+            CreateMap<Site, SiteResponse>().ReverseMap();
         }
     }
 }

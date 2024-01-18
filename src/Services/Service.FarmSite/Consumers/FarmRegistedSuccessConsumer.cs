@@ -12,7 +12,7 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.FarmSite.Consumers
 {
-    public class FarmRegistedSuccessConsumer : IConsumer<IntegrationEventMessage<FarmRegistration>>
+    public class FarmRegistedSuccessConsumer : IConsumer<IntegrationEventMessage<AcceptFarmRegistEvent>>
     {
         
         
@@ -30,13 +30,14 @@ namespace Service.FarmSite.Consumers
             _bus = bus;
         }
 
-        public async Task Consume(ConsumeContext<IntegrationEventMessage<FarmRegistration>> context)
+        public async Task Consume(ConsumeContext<IntegrationEventMessage<AcceptFarmRegistEvent>> context)
         {
             var form = context.Message.Data;
             var siteCmd = new CreateNewFarmCommand
             {
                 Name = form.SiteName,
-                SiteKey = form.SiteKey,
+                SiteCode = form.SiteCode,
+                IsActive = true
             };
 
             var siteId = await _mediator.Send(siteCmd);
@@ -45,16 +46,16 @@ namespace Service.FarmSite.Consumers
             {
                 SolutionId = form.SolutionId,
                 SiteId = siteId,
-                Price = form.Solution.Price,
+                Price = form.Cost,
                 StartIn = DateTime.Now,
-                EndIn = DateTime.Now.AddMonths((int)(form.Solution!.DurationInMonth ?? 1)),
+                EndIn = DateTime.Now.AddMonths((int)(form.DurationInMonth ?? 1)),
             };
 
             await _mediator.Send(billCmd);
 
             var capCmd = new AddCapitalStateCommand
             {
-                Amount = (double)-(form.Solution.Price),
+                Amount = (double)-(form.Cost),
                 Description = $"Start new farm service cost at {DateTime.Now.ToShortDateString()}",
                 SiteId = siteId
             };
@@ -64,10 +65,14 @@ namespace Service.FarmSite.Consumers
             await _bus.SendToEndpoint(new IntegrationEventMessage<InitFarmOwnerEvent>(
                 new InitFarmOwnerEvent(
                     siteId: siteId,
-                    fullName: form.Name,
+                    siteName: form.SiteName,
+                    siteCode: form.SiteCode,
+                    firstName: form.FirstName,
+                    lastName: form.LastName,
                     userName: form.Email,
                     email: form.Email,
-                    address: form.Address
+                    address: form.Address??"",
+                    phoneNumber: form.Phone??""
                 ), EventState.Add), EventQueue.InitFarmOwner);
         }
     }

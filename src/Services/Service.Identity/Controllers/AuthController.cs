@@ -19,6 +19,7 @@ namespace Service.Identity.Controllers
         [HttpPost("token")]
         public async Task<IActionResult> Token([FromBody] TokenCommand command)
         {
+            
             var rs = await _mediator.Send(command);
             if(rs == null || !rs.IsSuccess) return Unauthorized();
             return Ok(rs);

@@ -10,6 +10,7 @@ namespace SharedDomain.Defaults
     {
         public const string SiteId = "site_id";
         public const string Scope = "scope";
-        public const string FullName = "full_name";
+        public const string FirstName = "first_name";
+        public const string LastName = "last_name";
     }
 }

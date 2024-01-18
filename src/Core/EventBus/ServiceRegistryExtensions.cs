@@ -23,7 +23,10 @@ namespace EventBus
                 x.UsingRabbitMq((context, configurator) =>
                 {
                     var setting = configuration.GetRequiredSection(nameof(EventBusSetting)).Get<EventBusSetting>();
-                    
+
+                    configurator.ClearSerialization();
+                    configurator.AddNewtonsoftRawJsonSerializer();
+
                     configurator.Host(setting!.Host, hostConfigurator =>
                     {
                         hostConfigurator.Username(setting.UserName);

@@ -9,12 +9,15 @@ namespace SharedDomain.Entities.Users
     {
         public Guid? SiteId { get; set; }
         public Site? Site { get; set; }
-        public string? FullName { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
         public string? IdentificationCard { get; set; }
         public string? Address { get; set; }
         public Gender? Gender { get; set; }
         public string? Education { get; set; }
         public DateTime? DOB { get; set; }
+
+        public string? AvatarImg { get; set; }
 
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiry { get; set; }

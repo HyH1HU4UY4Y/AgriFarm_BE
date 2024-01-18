@@ -20,6 +20,7 @@ namespace Infrastructure.Identity.Config
                 .Ignore(e => e.Components)
                 .Ignore(e => e.Intro)
                 .Ignore(e => e.Subscripts)
+                .Ignore(e => e.LogoImg)
                 ;
         }
     }

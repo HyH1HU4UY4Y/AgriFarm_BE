@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.FarmScheduling.Migrations
 {
     [DbContext(typeof(ScheduleContext))]
-    [Migration("20240114151946_init")]
+    [Migration("20240118105723_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -103,6 +103,9 @@ namespace Infrastructure.FarmScheduling.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AvatarImg")
+                        .HasColumnType("varchar(150)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -122,7 +125,7 @@ namespace Infrastructure.FarmScheduling.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
-                    b.Property<string>("SiteKey")
+                    b.Property<string>("SiteCode")
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
@@ -383,6 +386,9 @@ namespace Infrastructure.FarmScheduling.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AvatarImg")
+                        .HasColumnType("varchar(150)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");

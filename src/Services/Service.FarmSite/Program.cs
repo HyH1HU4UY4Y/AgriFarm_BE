@@ -7,6 +7,8 @@ using SharedApplication.Authorize;
 using EventBus;
 using Service.FarmSite.Consumers;
 using EventBus.Defaults;
+using SharedApplication.Persistence;
+using Infrastructure.FarmSite.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +36,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.EnsureDataInit<SiteContext>().Wait();
 
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -156,6 +156,9 @@ namespace Infrastructure.Soil.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AvatarImg")
+                        .HasColumnType("varchar(150)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -171,11 +174,14 @@ namespace Infrastructure.Soil.Migrations
                     b.Property<DateTime>("LastModify")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("LogoImg")
+                        .HasColumnType("varchar(150)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
-                    b.Property<string>("SiteKey")
+                    b.Property<string>("SiteCode")
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 

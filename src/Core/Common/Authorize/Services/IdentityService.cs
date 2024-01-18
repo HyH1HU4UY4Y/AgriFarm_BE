@@ -94,12 +94,12 @@ namespace SharedApplication.Authorize.Services
 
         }
 
-        public async Task<Member?> CreateUserInTypes(Member member, AccountType type = AccountType.Member)
+        public async Task<Member?> CreateUserInType(Member member, string password, AccountType type = AccountType.Member)
         {
 
-            var rs = await _userManager.CreateAsync(member);
+            var rs = await _userManager.CreateAsync(member, password);
             if (!rs.Succeeded) return null;
-            var roles = await _roleManager.Roles.ToListAsync();
+            //var roles = await _roleManager.Roles.ToListAsync();
 
             switch (type)
             {

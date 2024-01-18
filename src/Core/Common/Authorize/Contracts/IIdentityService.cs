@@ -8,7 +8,7 @@ namespace SharedApplication.Authorize.Contracts
     {
         Task<bool> SigninUserAsync(string userName, string password);
         Task AddScopes(Member member, string[] scope);
-        Task<Member?> CreateUserInTypes(Member member, AccountType type = AccountType.Member);
+        Task<Member?> CreateUserInType(Member member, string password, AccountType type = AccountType.Member);
         Member? FindAccount(Func<Member, bool> filter);
         Task<List<Member>> FindAccounts(Func<Member, bool> filter = null);
         Task<FullUserResult?> GetFullMember(Func<Member, bool> filter);

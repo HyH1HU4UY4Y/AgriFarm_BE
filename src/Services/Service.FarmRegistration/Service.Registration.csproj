@@ -21,7 +21,12 @@
     
     <ProjectReference Include="..\..\Core\Common\SharedApplication.csproj" />
     <ProjectReference Include="..\..\Core\Domain\SharedDomain.csproj" />
+    <ProjectReference Include="..\..\Core\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.FarmRegistry\Infrastructure.Registration.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Config\" />
   </ItemGroup>
 
 </Project>
