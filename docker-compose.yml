@@ -48,7 +48,7 @@ services:
           agri.network:
             ipv4_address: 10.38.0.2
         depends_on:
-          - sqldb
+            - sqldb
 
           
     service.registration:
@@ -62,7 +62,7 @@ services:
           agri.network:
             ipv4_address: 10.38.0.3
         depends_on:
-          - sqldb
+            - sqldb
 
           
     service.farmsite:
@@ -76,7 +76,7 @@ services:
           agri.network:
             ipv4_address: 10.38.0.4
         depends_on:
-          - sqldb
+            - sqldb
 
           
     service.identity:
@@ -90,7 +90,7 @@ services:
           agri.network:
             ipv4_address: 10.38.0.5
         depends_on:
-          - sqldb
+            - sqldb
 
 networks:
   agri.network:
