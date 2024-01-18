@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.8"
 
 services:
 
@@ -6,7 +6,7 @@ services:
         image: "mcr.microsoft.com/mssql/server:2019-latest"
         container_name: 'Agri-Sql'
         ports:
-          - "1440:1433"
+          - 1440:1433
         networks:
           agri.network:
             ipv4_address: 10.38.0.11
@@ -43,7 +43,7 @@ services:
             - ASPNETCORE_ENVIRONMENT=Staging
             - ASPNETCORE_URLS=http://+:80
         ports:
-            - "80:80"
+            - 80:80
         networks:
           agri.network:
             ipv4_address: 10.38.0.2
