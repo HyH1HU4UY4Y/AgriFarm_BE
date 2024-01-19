@@ -143,8 +143,6 @@ namespace Infrastructure.Soil.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActivityId");
-
                     b.HasIndex("ComponentId");
 
                     b.ToTable("States");
@@ -190,43 +188,6 @@ namespace Infrastructure.Soil.Migrations
                     b.ToTable("Sites");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.Activity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("LocationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SiteId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LocationId");
-
-                    b.HasIndex("SiteId");
-
-                    b.ToTable("Activities");
-                });
-
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmSoil", b =>
                 {
                     b.HasBaseType("SharedDomain.Entities.FarmComponents.BaseComponent");
@@ -263,35 +224,12 @@ namespace Infrastructure.Soil.Migrations
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.ComponentState", b =>
                 {
-                    b.HasOne("SharedDomain.Entities.Schedules.Activity", "Activity")
-                        .WithMany()
-                        .HasForeignKey("ActivityId");
-
                     b.HasOne("SharedDomain.Entities.FarmComponents.BaseComponent", "Component")
                         .WithMany("States")
                         .HasForeignKey("ComponentId")
                         .IsRequired();
 
-                    b.Navigation("Activity");
-
                     b.Navigation("Component");
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.Activity", b =>
-                {
-                    b.HasOne("SharedDomain.Entities.FarmComponents.FarmSoil", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
-                        .IsRequired();
-
-                    b.HasOne("SharedDomain.Entities.FarmComponents.Site", "Site")
-                        .WithMany()
-                        .HasForeignKey("SiteId")
-                        .IsRequired();
-
-                    b.Navigation("Location");
-
-                    b.Navigation("Site");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmSoil", b =>

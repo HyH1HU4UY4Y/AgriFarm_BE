@@ -21,7 +21,7 @@ namespace Infrastructure.Soil.Contexts
 
         public DbSet<FarmSoil> FarmLands { get; set; }
         public DbSet<Site> Sites { get; set; }
-        public DbSet<Activity> Activities { get; set; }
+        //public DbSet<Activity> Activities { get; set; }
         public DbSet<ComponentProperty> Properties { get; set; }
         public DbSet<ComponentState> States { get; set; }
 
@@ -37,9 +37,10 @@ namespace Infrastructure.Soil.Contexts
             
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(FarmSoilConfig).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ComponentConfig).Assembly);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ActivityConfig).Assembly);
+            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ActivityConfig).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);
             modelBuilder.Ignore<ComponentDocument>();
+            modelBuilder.Ignore<Activity>();
         }
     }
 }

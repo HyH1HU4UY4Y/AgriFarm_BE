@@ -16,8 +16,8 @@ namespace Infrastructure.Soil
                 .AddDefaultSQLDB<FarmSoilContext>(configuration);
 
             services.AddSQLRepo<FarmSoilContext, Site>()
-                    .AddSQLRepo<FarmSoilContext, CapitalState>()
-                    .AddSQLRepo<FarmSoilContext, Document>()
+                    .AddSQLRepo<FarmSoilContext, FarmSoil>()
+                    .AddSQLRepo<FarmSoilContext, ComponentState>()
                     ;
 
 

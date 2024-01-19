@@ -102,34 +102,6 @@ namespace Infrastructure.Soil.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Activities",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SiteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "varchar(150)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModify = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Activities", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Activities_FarmLands_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "FarmLands",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Activities_Sites_SiteId",
-                        column: x => x.SiteId,
-                        principalTable: "Sites",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "States",
                 columns: table => new
                 {
@@ -146,26 +118,11 @@ namespace Infrastructure.Soil.Migrations
                 {
                     table.PrimaryKey("PK_States", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_States_Activities_ActivityId",
-                        column: x => x.ActivityId,
-                        principalTable: "Activities",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_States_BaseComponent_ComponentId",
                         column: x => x.ComponentId,
                         principalTable: "BaseComponent",
                         principalColumn: "Id");
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Activities_LocationId",
-                table: "Activities",
-                column: "LocationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Activities_SiteId",
-                table: "Activities",
-                column: "SiteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BaseComponent_SiteId",
@@ -178,11 +135,6 @@ namespace Infrastructure.Soil.Migrations
                 column: "ComponentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_States_ActivityId",
-                table: "States",
-                column: "ActivityId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_States_ComponentId",
                 table: "States",
                 column: "ComponentId");
@@ -192,16 +144,13 @@ namespace Infrastructure.Soil.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "FarmLands");
+
+            migrationBuilder.DropTable(
                 name: "Properties");
 
             migrationBuilder.DropTable(
                 name: "States");
-
-            migrationBuilder.DropTable(
-                name: "Activities");
-
-            migrationBuilder.DropTable(
-                name: "FarmLands");
 
             migrationBuilder.DropTable(
                 name: "BaseComponent");

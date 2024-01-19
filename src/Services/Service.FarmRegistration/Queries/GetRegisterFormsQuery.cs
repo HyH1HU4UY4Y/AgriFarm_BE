@@ -27,7 +27,9 @@ namespace Service.Registration.Queries
 
         public Task<List<RegisterFormResponse>> Handle(GetRegisterFormsQuery request, CancellationToken cancellationToken)
         {
-            var rs = _repo.GetMany(null, e=>e.Include(r=>r.Solution)).Result!
+            var rs = _repo
+                .GetMany(null
+                , e=>e.Include(r=>r.Solution)).Result!
                 .OrderBy(x => x.FirstName)
                 .ToList();
 

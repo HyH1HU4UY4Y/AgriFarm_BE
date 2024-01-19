@@ -7,6 +7,7 @@ namespace SharedDomain.Repositories.Base
 {
     public interface ISQLRepository<TDbContext, TEntity> where TDbContext : DbContext where TEntity : IBaseEntity<Guid>
     {
+
         Task<TEntity?> GetOne(
             Expression<Func<TEntity, bool>> selector,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);

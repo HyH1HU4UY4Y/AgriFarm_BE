@@ -9,7 +9,7 @@ using SharedDomain.Exceptions;
 namespace Service.FarmRegistry.Commands
 {
     public record RegistFarmCommand
-        (string Name, string? FirstName
+        (string? FirstName
         , string? LastName, string Phone
         , string Email, string Address, string SiteCode
         , string SiteName, Guid SolutionId
@@ -43,6 +43,7 @@ namespace Service.FarmRegistry.Commands
             var entity = _mapper.Map<FarmRegistration>(request);
             entity.Cost = solution.Price;
             _resRepo.AddAsync(entity);
+            
 
             _unitOfWork.SaveChangesAsync(cancellationToken);
 
