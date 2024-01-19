@@ -53,6 +53,8 @@ services:
         build:
           context: .
           dockerfile: src/Gateways/OcelotGateway/Dockerfile
+        ports:
+          - '80:80'
         environment:
             - ASPNETCORE_ENVIRONMENT=Staging
             - ASPNETCORE_URLS=http://+:80
