@@ -13,8 +13,10 @@ namespace SharedApplication.Persistence
         public static IServiceCollection AddDefaultSQLDB<TDbContext>(this IServiceCollection services, IConfiguration configuration)
             where TDbContext : DbContext
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
             services.AddDbContext<TDbContext>(o
-                => o.UseSqlServer(configuration.GetConnectionString("DefaultConnection")
+                => o.UseNpgsql(configuration.GetConnectionString("NSql")
                  , b => b.MigrationsAssembly(typeof(TDbContext).Assembly.FullName)));
 
             services.AddScoped<IUnitOfWork<TDbContext>, UnitOfWork<TDbContext>>();
