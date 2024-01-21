@@ -3,8 +3,8 @@ using System;
 using Infrastructure.FarmRegistry.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -18,28 +18,28 @@ namespace Infrastructure.Registration.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.11")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("SharedDomain.Entities.Subscribe.FarmRegistration", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Address")
                         .HasMaxLength(5000)
                         .HasColumnType("varchar(150)");
 
                     b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -50,13 +50,13 @@ namespace Infrastructure.Registration.Migrations
                         .HasColumnType("varchar(150)");
 
                     b.Property<int?>("IsApprove")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastModify")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -78,7 +78,7 @@ namespace Infrastructure.Registration.Migrations
                         .HasColumnType("varchar(150)");
 
                     b.Property<Guid>("SolutionId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -89,15 +89,15 @@ namespace Infrastructure.Registration.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6bdb6df1-e30a-4572-9308-13bf8be8715d"),
+                            Id = new Guid("02f16f00-4d51-45c6-adea-f53638bad2ba"),
                             Address = "USA",
                             Cost = 10m,
-                            CreatedDate = new DateTime(2024, 1, 18, 17, 5, 6, 809, DateTimeKind.Local).AddTicks(4062),
-                            Email = "owner01@farmer.test",
+                            CreatedDate = new DateTime(2024, 1, 20, 15, 4, 25, 886, DateTimeKind.Local).AddTicks(2719),
+                            Email = "owner01@test.com",
                             FirstName = "User",
                             IsApprove = 0,
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 18, 17, 5, 6, 809, DateTimeKind.Local).AddTicks(4071),
+                            LastModify = new DateTime(2024, 1, 20, 15, 4, 25, 886, DateTimeKind.Local).AddTicks(2727),
                             LastName = "Owner 01",
                             PaymentDetail = "test detail",
                             Phone = "0132302225",
@@ -111,13 +111,13 @@ namespace Infrastructure.Registration.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
                         .HasMaxLength(5000)
@@ -127,16 +127,16 @@ namespace Infrastructure.Registration.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastModify")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
                         .HasColumnType("varchar(150)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -145,34 +145,34 @@ namespace Infrastructure.Registration.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4d3cf28e-b1c4-479c-8ccb-3b5539075507"),
-                            CreatedDate = new DateTime(2024, 1, 18, 17, 5, 6, 810, DateTimeKind.Local).AddTicks(3850),
+                            Id = new Guid("45aa6629-5e67-4c70-aa9c-eed4e82e7da6"),
+                            CreatedDate = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1405),
                             Description = "This is cheapest solution",
                             DurationInMonth = 6L,
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 18, 17, 5, 6, 810, DateTimeKind.Local).AddTicks(3853),
+                            LastModify = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1410),
                             Name = "Solution 1",
                             Price = 10m
                         },
                         new
                         {
-                            Id = new Guid("91502f31-d06d-46d9-8dc1-5a657510ad90"),
-                            CreatedDate = new DateTime(2024, 1, 18, 17, 5, 6, 810, DateTimeKind.Local).AddTicks(3861),
+                            Id = new Guid("af09cd31-97fd-466b-bb4d-7666d953724a"),
+                            CreatedDate = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1430),
                             Description = "This is medium solution",
                             DurationInMonth = 12L,
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 18, 17, 5, 6, 810, DateTimeKind.Local).AddTicks(3862),
+                            LastModify = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1430),
                             Name = "Solution 2",
                             Price = 100m
                         },
                         new
                         {
-                            Id = new Guid("76929f49-e67b-4037-93ee-6a5f9618bbd3"),
-                            CreatedDate = new DateTime(2024, 1, 18, 17, 5, 6, 810, DateTimeKind.Local).AddTicks(3863),
+                            Id = new Guid("28eb1cab-70d3-4282-917d-feafb145a5e9"),
+                            CreatedDate = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1432),
                             Description = "This is vip solution",
                             DurationInMonth = 24L,
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 18, 17, 5, 6, 810, DateTimeKind.Local).AddTicks(3864),
+                            LastModify = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1433),
                             Name = "Solution 3",
                             Price = 1000m
                         });

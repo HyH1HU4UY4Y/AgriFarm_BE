@@ -2,23 +2,32 @@ version: "3.8"
 
 services:
 
-    sqldb:
-        image: "mcr.microsoft.com/mssql/server:2019-latest"
-        container_name: 'Agri-Sql'
+    Nsqldb:
+        image: postgres:latest
+        container_name: "Npgsql_Db"
         ports:
-          - 1440:1433
+          - '5432:5432'
+        restart: always
         networks:
           agri.network:
-            ipv4_address: 10.38.0.11
+            ipv4_address: 10.38.0.13
         environment:
-          - MSSQL_SA_PASSWORD=@o123456
-          - ACCEPT_EULA=Y
-          - MSSQL_PID=Developer
+          - POSTGRES_USER=farmer
+          - POSTGRES_PASSWORD=@o123456
+        
 
-        volumes: 
-          - ./sqldb/data:/var/opt/mssql/data
-          - ./sqldb/log:/var/opt/mssql/log
-          - ./sqldb/secrets:/var/opt/mssql/secrets
+    pgadmin: 
+        image: dpage/pgadmin4
+        container_name: pgadmin
+        environment:
+          - PGADMIN_DEFAULT_EMAIL=admin@system.vn
+          - PGADMIN_DEFAULT_PASSWORD=admin1234
+        restart: always
+        ports:
+          - '5050:80'
+        networks:
+          agri.network:
+            ipv4_address: 10.38.0.14
 
     rabbitmq:
         image: rabbitmq:3-management
@@ -38,6 +47,8 @@ services:
         build:
           context: .
           dockerfile: src/Gateways/OcelotGateway/Dockerfile
+        ports:
+          - '80:80'
         environment:
             - ASPNETCORE_ENVIRONMENT=Staging
             - ASPNETCORE_URLS=http://+:80
