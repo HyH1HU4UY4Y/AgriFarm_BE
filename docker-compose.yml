@@ -52,8 +52,6 @@ services:
         environment:
             - ASPNETCORE_ENVIRONMENT=Staging
             - ASPNETCORE_URLS=http://+:80
-        ports:
-            - 80:80
         networks:
           agri.network:
             ipv4_address: 10.38.0.2
