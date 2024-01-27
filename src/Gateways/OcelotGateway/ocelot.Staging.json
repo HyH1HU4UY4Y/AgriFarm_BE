@@ -1,11 +1,11 @@
 {
   "Routes": [
     {
-      "UpstreamPathTemplate": "/api/user/{controller}/{action}",
+      "UpstreamPathTemplate": "/api/{version}/user/{controller}/{action}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
 
       "DownstreamScheme": "http",
-      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
       "DownstreamHostAndPorts": [
         {
           "Host": "10.38.0.5",
@@ -14,11 +14,11 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/api/register/{controller}/{action}",
+      "UpstreamPathTemplate": "/api/{version}/register/{controller}/{action}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
 
       "DownstreamScheme": "http",
-      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
       "DownstreamHostAndPorts": [
         {
           "Host": "10.38.0.3",
@@ -27,11 +27,11 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/api/farm/{controller}/{action}",
+      "UpstreamPathTemplate": "/api/{version}/farm/{controller}/{action}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
 
       "DownstreamScheme": "http",
-      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
       "DownstreamHostAndPorts": [
         {
           "Host": "10.38.0.4",

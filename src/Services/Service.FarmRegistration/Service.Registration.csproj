@@ -11,6 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Config\**" />
+    <Content Remove="Config\**" />
+    <EmbeddedResource Remove="Config\**" />
+    <None Remove="Config\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     
     
     
@@ -23,10 +30,6 @@
     <ProjectReference Include="..\..\Core\Domain\SharedDomain.csproj" />
     <ProjectReference Include="..\..\Core\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.FarmRegistry\Infrastructure.Registration.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Config\" />
   </ItemGroup>
 
 </Project>

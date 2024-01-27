@@ -36,10 +36,10 @@ namespace SharedApplication.Persistence.Repositories
         }
 
 
-        public async Task UpdateAsync(TEntity entity)
+        public async Task<bool> UpdateAsync(TEntity entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
-            
+            return true;
         }
 
 
@@ -60,23 +60,46 @@ namespace SharedApplication.Persistence.Repositories
 
         }
 
-        public Task<IQueryable<TEntity>?> GetMany(
+        public Task<List<TEntity>?> GetMany(
                 Expression<Func<TEntity, bool>> filter = null,
                 Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
             var items = _all;
-            if (filter != null)
-            {
-                items = items.Where(filter);
-            }
 
             if (include != null)
             {
                 items = include(items);
             }
 
-            return Task.FromResult(items)!;
+            if (filter != null)
+            {
+                items = items.Where(filter);
+            }
 
+            
+
+            return Task.FromResult(items.ToList())!;
+
+        }
+
+        public Task RawDeleteAsync(TEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TEntity> AddOrUpdateAsync(TEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AddBatchAsync(IEnumerable<TEntity> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateBatchAsync(IEnumerable<TEntity> entities)
+        {
+            throw new NotImplementedException();
         }
     }
 }

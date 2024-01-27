@@ -1,4 +1,6 @@
 ﻿using Infrastructure.Identity.Contexts;
+using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +25,7 @@ namespace Infrastructure.Identity
             .AddDefaultTokenProviders();
 
             services.AddSQLRepo<IdentityContext, Site>()
+                    .AddSQLRepo<IdentityContext, Certificate>()
                     .AddMultiTenant(configuration);
                     
 
@@ -49,6 +52,14 @@ namespace Infrastructure.Identity
             //services.AddAuthModule(configuration);
 
             return services;
+        }
+
+
+        public static IApplicationBuilder SeedData(this IApplicationBuilder app)
+        {
+            
+
+            return app;
         }
     }
 }

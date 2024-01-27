@@ -51,29 +51,29 @@ namespace Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f49950d8-0c50-4cdc-9a6d-070104329a0a"),
-                            ConcurrencyStamp = "6cc5a45f-c0b3-48ba-b6ed-31fef4cfd53a",
+                            Id = new Guid("825c2da1-8e1e-481a-b6d0-0bc851be1696"),
+                            ConcurrencyStamp = "8b971115-3cfe-4625-8243-f0da08dce328",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = new Guid("9a3c49d3-ac30-485a-bf99-6b3f57a3db4a"),
-                            ConcurrencyStamp = "04f980f4-1071-480b-8e62-0e21a1fdb2c1",
+                            Id = new Guid("69804932-88d8-4467-971f-f5bc3df2373c"),
+                            ConcurrencyStamp = "ef98ea49-dcd6-4f62-b6c6-08d6c3cc5b8b",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = new Guid("7cd33321-9157-4a57-a127-1bad34094f76"),
-                            ConcurrencyStamp = "702bc7b9-8f1f-41df-901d-ff38a728f20a",
+                            Id = new Guid("58353fc9-f5e4-44e5-b202-4b434c88bb96"),
+                            ConcurrencyStamp = "f7480a83-6b98-4aa8-89d6-60de52016e65",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("c38d47e6-e828-453e-9155-aa27aca11254"),
-                            ConcurrencyStamp = "aea851f8-e22c-4270-9df7-d5cbc7ba330d",
+                            Id = new Guid("a2b3b43e-9add-4947-aa71-9cca26cb17db"),
+                            ConcurrencyStamp = "8407be8a-70ac-4cba-9581-ad8127f37532",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         });
@@ -165,23 +165,23 @@ namespace Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("c166714f-be92-46c1-b5c6-991f601538a3"),
-                            RoleId = new Guid("f49950d8-0c50-4cdc-9a6d-070104329a0a")
+                            UserId = new Guid("09372bfb-b338-4b8b-9818-bb3686f2bc51"),
+                            RoleId = new Guid("825c2da1-8e1e-481a-b6d0-0bc851be1696")
                         },
                         new
                         {
-                            UserId = new Guid("c166714f-be92-46c1-b5c6-991f601538a3"),
-                            RoleId = new Guid("9a3c49d3-ac30-485a-bf99-6b3f57a3db4a")
+                            UserId = new Guid("09372bfb-b338-4b8b-9818-bb3686f2bc51"),
+                            RoleId = new Guid("69804932-88d8-4467-971f-f5bc3df2373c")
                         },
                         new
                         {
-                            UserId = new Guid("c166714f-be92-46c1-b5c6-991f601538a3"),
-                            RoleId = new Guid("7cd33321-9157-4a57-a127-1bad34094f76")
+                            UserId = new Guid("09372bfb-b338-4b8b-9818-bb3686f2bc51"),
+                            RoleId = new Guid("58353fc9-f5e4-44e5-b202-4b434c88bb96")
                         },
                         new
                         {
-                            UserId = new Guid("c166714f-be92-46c1-b5c6-991f601538a3"),
-                            RoleId = new Guid("c38d47e6-e828-453e-9155-aa27aca11254")
+                            UserId = new Guid("09372bfb-b338-4b8b-9818-bb3686f2bc51"),
+                            RoleId = new Guid("a2b3b43e-9add-4947-aa71-9cca26cb17db")
                         });
                 });
 
@@ -210,12 +210,6 @@ namespace Infrastructure.Identity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("AvatarImg")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -224,9 +218,6 @@ namespace Infrastructure.Identity.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -257,7 +248,6 @@ namespace Infrastructure.Identity.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<Guid?>("InspectorId")
@@ -277,11 +267,9 @@ namespace Infrastructure.Identity.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Provider")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Resource")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -312,7 +300,13 @@ namespace Infrastructure.Identity.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTime?>("DOB")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Education")
@@ -333,6 +327,12 @@ namespace Infrastructure.Identity.Migrations
 
                     b.Property<string>("IdentificationCard")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastModify")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");
@@ -395,20 +395,23 @@ namespace Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c166714f-be92-46c1-b5c6-991f601538a3"),
+                            Id = new Guid("09372bfb-b338-4b8b-9818-bb3686f2bc51"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "965e9e77-8c7a-43ce-83d0-1fa8169cdb6e",
+                            ConcurrencyStamp = "b403a9f2-9983-4a7f-9b85-94adca49e164",
+                            CreatedDate = new DateTime(2024, 1, 27, 17, 25, 16, 395, DateTimeKind.Local).AddTicks(8101),
                             Email = "admin01@system",
                             EmailConfirmed = true,
                             FirstName = "Super",
+                            IsDeleted = false,
+                            LastModify = new DateTime(2024, 1, 27, 17, 25, 16, 395, DateTimeKind.Local).AddTicks(8109),
                             LastName = "Admin 01",
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN01@SYSTEM",
                             NormalizedUserName = "ADMIN01@SYSTEM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGKX2A82LA3j3VwSCXxzjNAncSkDhPLQ8yrS0NLryf9hI5xjV4aFqPvlOtKGW5X8uA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFJyppLEd4g+5rGsaPmZQQczojScKl4OlfLWzC1Arx2d3tiyy+6EZkxLUbcLDqU8rg==",
                             PhoneNumber = "0122222222",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "252e7410-978b-40ce-931a-0e2c21760593",
+                            SecurityStamp = "2ac3efdd-3697-4182-b345-0b6a35582f2f",
                             TwoFactorEnabled = false,
                             UserName = "admin01@system"
                         });
@@ -472,7 +475,7 @@ namespace Infrastructure.Identity.Migrations
                         .HasForeignKey("InspectorId");
 
                     b.HasOne("SharedDomain.Entities.Users.Member", "Member")
-                        .WithMany()
+                        .WithMany("Certificates")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -489,6 +492,11 @@ namespace Infrastructure.Identity.Migrations
                         .HasForeignKey("SiteId");
 
                     b.Navigation("Site");
+                });
+
+            modelBuilder.Entity("SharedDomain.Entities.Users.Member", b =>
+                {
+                    b.Navigation("Certificates");
                 });
 #pragma warning restore 612, 618
         }

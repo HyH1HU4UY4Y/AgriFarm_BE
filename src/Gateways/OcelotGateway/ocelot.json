@@ -1,11 +1,11 @@
 {
   "Routes": [
     {
-      "UpstreamPathTemplate": "api/user/{controller}/{action}",
+      "UpstreamPathTemplate": "api/{version}/user/{controller}/{action}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
 
       "DownstreamScheme": "http",
-      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",

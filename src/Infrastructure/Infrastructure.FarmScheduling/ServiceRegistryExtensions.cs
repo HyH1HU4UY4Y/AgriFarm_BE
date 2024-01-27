@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedApplication.MultiTenant;
 using SharedApplication.Persistence;
-using SharedDomain.Entities.Base;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Entities.Schedules;
 using SharedDomain.Entities.Schedules.Cultivations;
@@ -20,7 +19,7 @@ namespace Infrastructure.FarmScheduling
 
             services
                     .AddSQLRepo<ScheduleContext, CultivationSeason>()
-                    .AddSQLRepo<ScheduleContext, CultivationRecord>()
+                    .AddSQLRepo<ScheduleContext, ConsumeCultivation>()
                     .AddSQLRepo<ScheduleContext, Activity>()
                     .AddSQLRepo<ScheduleContext, Tag>()
                     .AddSQLRepo<ScheduleContext, AdditionOfActivity>()

@@ -3,7 +3,7 @@ using EventBus.Messages;
 using Infrastructure.Identity.Contexts;
 using MassTransit;
 using MediatR;
-using Service.Identity.Commands;
+using Service.Identity.Commands.Users;
 using SharedDomain.Defaults;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Repositories.Base;

@@ -3,8 +3,8 @@ using System;
 using Infrastructure.Soil.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -18,97 +18,51 @@ namespace Infrastructure.Soil.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.11")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.BaseComponent", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<bool>("IsConsumable")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<Guid>("SiteId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SiteId");
-
-                    b.ToTable("BaseComponent");
-
-                    b.UseTptMappingStrategy();
-                });
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.ComponentProperty", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("ComponentId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid?>("FarmSoilId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastModify")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
                     b.Property<double>("Require")
-                        .HasColumnType("float");
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Unit")
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
                     b.Property<double>("Value")
-                        .HasColumnType("float");
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ComponentId");
+                    b.HasIndex("FarmSoilId");
 
                     b.ToTable("Properties");
                 });
@@ -117,63 +71,106 @@ namespace Infrastructure.Soil.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("ActivityId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("ComponentId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Data")
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid?>("FarmSoilId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastModify")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ComponentId");
+                    b.HasIndex("FarmSoilId");
 
                     b.ToTable("States");
+                });
+
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmSoil", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("Acreage")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsConsumable")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastModify")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<Guid>("SiteId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Unit")
+                        .HasColumnType("text")
+                        .HasColumnName("Measure Unit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SiteId");
+
+                    b.ToTable("Lands", (string)null);
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Site", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AvatarImg")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LogoImg")
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -188,69 +185,36 @@ namespace Infrastructure.Soil.Migrations
                     b.ToTable("Sites");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmSoil", b =>
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.ComponentProperty", b =>
                 {
-                    b.HasBaseType("SharedDomain.Entities.FarmComponents.BaseComponent");
-
-                    b.Property<double>("Acreage")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.ToTable("FarmLands");
+                    b.HasOne("SharedDomain.Entities.FarmComponents.FarmSoil", null)
+                        .WithMany("Properties")
+                        .HasForeignKey("FarmSoilId");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.BaseComponent", b =>
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.ComponentState", b =>
+                {
+                    b.HasOne("SharedDomain.Entities.FarmComponents.FarmSoil", null)
+                        .WithMany("States")
+                        .HasForeignKey("FarmSoilId");
+                });
+
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmSoil", b =>
                 {
                     b.HasOne("SharedDomain.Entities.FarmComponents.Site", "Site")
-                        .WithMany("Components")
+                        .WithMany()
                         .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.ComponentProperty", b =>
-                {
-                    b.HasOne("SharedDomain.Entities.FarmComponents.BaseComponent", "Component")
-                        .WithMany("Properties")
-                        .HasForeignKey("ComponentId")
-                        .IsRequired();
-
-                    b.Navigation("Component");
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.ComponentState", b =>
-                {
-                    b.HasOne("SharedDomain.Entities.FarmComponents.BaseComponent", "Component")
-                        .WithMany("States")
-                        .HasForeignKey("ComponentId")
-                        .IsRequired();
-
-                    b.Navigation("Component");
-                });
-
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmSoil", b =>
-                {
-                    b.HasOne("SharedDomain.Entities.FarmComponents.BaseComponent", null)
-                        .WithOne()
-                        .HasForeignKey("SharedDomain.Entities.FarmComponents.FarmSoil", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.BaseComponent", b =>
                 {
                     b.Navigation("Properties");
 
                     b.Navigation("States");
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Site", b =>
-                {
-                    b.Navigation("Components");
                 });
 #pragma warning restore 612, 618
         }

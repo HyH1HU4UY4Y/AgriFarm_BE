@@ -16,6 +16,11 @@ namespace Infrastructure.Identity.Config
             builder.ToTable("Users");
 
             builder
+                .HasMany(e => e.Certificates)
+                .WithOne(e => e.Member)
+                .HasForeignKey(e => e.MemberId);
+
+            builder
                 .Ignore(e=>e.Activities)
                 ;
 

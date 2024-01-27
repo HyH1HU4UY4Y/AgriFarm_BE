@@ -4,6 +4,9 @@ using SharedDomain.Entities.FarmComponents;
 using SharedApplication.Persistence;
 using Infrastructure.Soil.Contexts;
 using SharedApplication.MultiTenant;
+using Microsoft.AspNetCore.Builder;
+using SharedDomain.Defaults;
+using Newtonsoft.Json;
 
 namespace Infrastructure.Soil
 {
@@ -22,6 +25,78 @@ namespace Infrastructure.Soil
 
 
             return services;
+        }
+
+        public static IApplicationBuilder SeedData(this IApplicationBuilder app)
+        {
+            using var scope = app.ApplicationServices.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<FarmSoilContext>();
+
+            db.Database.EnsureCreated();
+            if (!db.Sites.Any(e => e.Id.ToString() == TempData.FarmId))
+            {
+
+                db.Sites.Add(new()
+                {
+                    Id = new Guid(TempData.FarmId),
+                    Name = "site01",
+                    IsActive = true,
+                    SiteCode = "site021.abc",
+
+                });
+
+                db.FarmLands.AddRange(new FarmSoil[]
+                {
+                    new(){
+
+                        Name = "Land 01",
+                        Position = JsonConvert.SerializeObject(new Dictionary<double, double>
+                        {
+                            {89.21 , 22.13 },
+                            {29.21 , 63.13 },
+                            {56.21 , 22.13 },
+                            {113.21 , 78.13 }
+                        }),
+                        Acreage = 100,
+                        Unit = "m2",
+                        SiteId = new Guid(TempData.FarmId),
+
+                    },new(){
+
+                        Name = "Land 02",
+                        Position = JsonConvert.SerializeObject(new Dictionary<double, double>
+                        {
+                            {89.21 , 22.13 },
+                            {29.21 , 63.13 },
+                            {56.21 , 22.13 },
+                            {113.21 , 78.13 }
+                        }),
+                        Acreage = 100,
+                        Unit = "m2",
+                        SiteId = new Guid(TempData.FarmId),
+
+                    },new(){
+
+                        Name = "Land 03",
+                        Position = JsonConvert.SerializeObject(new Dictionary<double, double>
+                        {
+                            {89.21 , 22.13 },
+                            {29.21 , 63.13 },
+                            {56.21 , 22.13 },
+                            {113.21 , 78.13 }
+                        }),
+                        Acreage = 100,
+                        Unit = "m2",
+                        SiteId = new Guid(TempData.FarmId),
+
+                    },
+                });
+
+                db.SaveChanges();
+            }
+
+
+            return app;
         }
     }
 }

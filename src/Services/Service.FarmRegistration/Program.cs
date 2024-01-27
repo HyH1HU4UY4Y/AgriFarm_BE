@@ -8,6 +8,8 @@ using EventBus;
 using Infrastructure.FarmRegistry;
 using SharedApplication.Persistence;
 using Infrastructure.FarmRegistry.Contexts;
+using SharedApplication.Versioning;
+using SharedApplication.Serializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,7 @@ builder.Services.AddInfras(builder.Configuration);
 builder.Services.AddSharedApplication<Program>();
 builder.Services.AddJWTAuthorization();
 builder.Services.AddGlobalErrorMiddleware();
+builder.Services.AddDefaultVersioning();
 
 builder.Services.AddDefaultEventBusExtension<Program>(
     builder.Configuration,
@@ -27,7 +30,8 @@ builder.Services.AddDefaultEventBusExtension<Program>(
    
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddDefaultJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

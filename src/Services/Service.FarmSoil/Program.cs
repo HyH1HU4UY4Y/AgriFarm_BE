@@ -6,6 +6,8 @@ using SharedApplication.Authorize;
 
 using Infrastructure.Soil;
 using Infrastructure.Soil.Contexts;
+using SharedApplication.Serializer;
+using SharedApplication.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +19,11 @@ builder.Services.AddInfras(builder.Configuration);
 builder.Services.AddSharedApplication<Program>();
 builder.Services.AddJWTAuthorization();
 builder.Services.AddGlobalErrorMiddleware();
+builder.Services.AddDefaultVersioning();
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddDefaultJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,6 +31,7 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.EnsureDataInit<FarmSoilContext>().Wait();
+app.SeedData();
 
 app.UseSwagger();
 app.UseSwaggerUI();

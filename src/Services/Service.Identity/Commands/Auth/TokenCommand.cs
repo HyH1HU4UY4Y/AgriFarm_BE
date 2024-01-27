@@ -1,4 +1,6 @@
 ﻿using Infrastructure.Identity.Contexts;
+using MediatR;
+using Service.Identity.DTOs;
 using SharedApplication.Authorize.Contracts;
 using SharedApplication.CQRS;
 using SharedDomain.Defaults;
@@ -8,13 +10,12 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Identity.Commands.Auth
 {
-    public record AuthorizeResponse(string Token, UserInforResponse UserInfo, bool IsSuccess = true);
-    public record UserInforResponse(string UserName, string SiteId, string SiteCode, List<string> Roles);
+    
 
-    public record TokenCommand(string UserName, string Password, string? SiteCode = null): ICommand<AuthorizeResponse>;
+    public record TokenCommand(string UserName, string Password, string? SiteCode = null): IRequest<AuthorizeResponse>;
 
 
-    public class TokenCommandHandler : ICommandHandler<TokenCommand, AuthorizeResponse>
+    public class TokenCommandHandler : IRequestHandler<TokenCommand, AuthorizeResponse>
     {
         private readonly ITokenGenerator _tokenGenerator;
         private readonly IIdentityService _identityService;
@@ -33,7 +34,12 @@ namespace Service.Identity.Commands.Auth
 
             var result = await _identityService.SigninUserAsync(request.UserName, request.Password);
 
-            if (!result)
+            if (result.IsLockedOut)
+            {
+                throw new BadRequestException("This accout was locked.");
+            }
+
+            if (!result.Succeeded)
             {
                 throw new BadRequestException("Invalid username or password");
             }
@@ -52,13 +58,15 @@ namespace Service.Identity.Commands.Auth
             (
 
                 token,
-                new(
-                    user.Info.UserName,
-                    user.Roles.Any(e=>e == Roles.SuperAdmin) ? "root": user.Info.SiteId.ToString()!,
-                    user.Roles.Any(e=>e == Roles.SuperAdmin) ? "root": site.SiteCode,
-                    user.Roles
-                    
-                )
+                new() {
+                    UserName = user.Info.UserName,
+                    Email = user.Info.Email,
+                    FullName = $"{user.Info.FirstName} {user.Info.LastName}",
+                    SiteId =  user.Roles.Any(e=>e == Roles.SuperAdmin) ? "root": user.Info.SiteId.ToString()!,
+                    SiteCode = user.Roles.Any(e=>e == Roles.SuperAdmin) ? "root": site.SiteCode,
+                    Role = user.Roles.Any(r => r == Roles.SuperAdmin)?Roles.SuperAdmin: user.Roles.First()
+
+                }
             );
             //throw new NotImplementedException();
         }

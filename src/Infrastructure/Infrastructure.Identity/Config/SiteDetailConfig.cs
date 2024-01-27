@@ -21,6 +21,9 @@ namespace Infrastructure.Identity.Config
                 .Ignore(e => e.Intro)
                 .Ignore(e => e.Subscripts)
                 .Ignore(e => e.LogoImg)
+                .Ignore(e => e.AvatarImg)
+                .Ignore(e => e.CreatedDate)
+                .Ignore(e => e.LastModify)
                 ;
         }
     }

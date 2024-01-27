@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Asp.Versioning;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.FarmSite.Commands;
@@ -10,7 +11,8 @@ using SharedDomain.Defaults;
 namespace Service.FarmSite.Controllers
 {
     [Authorize(Roles = Roles.SuperAdmin)]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class SitesController : ControllerBase
     {

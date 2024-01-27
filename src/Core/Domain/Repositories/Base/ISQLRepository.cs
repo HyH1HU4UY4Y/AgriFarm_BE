@@ -12,12 +12,16 @@ namespace SharedDomain.Repositories.Base
             Expression<Func<TEntity, bool>> selector,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
 
-        Task<IQueryable<TEntity>?> GetMany(
+        Task<List<TEntity>?> GetMany(
                 Expression<Func<TEntity, bool>> filter = null,
                 Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
 
         Task<TEntity> AddAsync(TEntity entity);
         Task SoftDeleteAsync(TEntity entity);
-        Task UpdateAsync(TEntity entity);
+        Task RawDeleteAsync(TEntity entity);
+        Task<bool> UpdateAsync(TEntity entity);
+        Task<TEntity> AddOrUpdateAsync(TEntity entity);
+        Task AddBatchAsync(IEnumerable<TEntity> entities);
+        Task UpdateBatchAsync(IEnumerable<TEntity> entities);
     }
 }

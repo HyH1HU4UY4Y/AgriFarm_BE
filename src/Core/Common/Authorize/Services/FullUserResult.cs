@@ -12,5 +12,6 @@ namespace SharedApplication.Authorize.Services
         public Member Info { get; set; }
         public List<string> Roles { get; set; }
         public Dictionary<string, string> Claims { get; set; }
+        
     }
 }
