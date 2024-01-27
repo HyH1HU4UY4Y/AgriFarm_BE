@@ -33,6 +33,7 @@ namespace SharedApplication.Persistence
                     case EntityState.Deleted:
                         history.Entity.IsDeleted = true;
                         history.Entity.DeletedDate = DateTime.Now;
+                        history.State = EntityState.Modified;
                         break;
                     case EntityState.Modified:
                         history.Entity.LastModify = DateTime.Now;
@@ -52,7 +53,10 @@ namespace SharedApplication.Persistence
                 {
                     case EntityState.Deleted:
                         if(history.Entity.IsDeleted == true)
+                        {
                             history.Entity.DeletedDate = DateTime.Now;
+                            history.State = EntityState.Modified;
+                        }
                         break;
                     case EntityState.Modified:
                         history.Entity.LastModify = DateTime.Now;
