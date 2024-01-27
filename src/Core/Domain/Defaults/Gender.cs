@@ -8,6 +8,7 @@ namespace SharedDomain.Defaults
 {
     public enum Gender
     {
+        NotSet,
         Female,
         Male
     }

@@ -2,15 +2,19 @@
 using MediatR;
 using Service.Identity.DTOs;
 using SharedApplication.Authorize.Contracts;
+using SharedApplication.Pagination;
+using SharedDomain.Defaults;
+using SharedDomain.Entities.Users;
 
 namespace Service.Identity.Queries
 {
-    public class GetStaffsQuery: IRequest<List<UserResponse>>
+    public class GetStaffsQuery: IRequest<PagedList<UserResponse>>
     {
+        public PaginationRequest Pagination { get; set; } = new();
         public Guid SiteId { get; set; }
     }
 
-    public class GetStaffsQueryHandler : IRequestHandler<GetStaffsQuery, List<UserResponse>>
+    public class GetStaffsQueryHandler : IRequestHandler<GetStaffsQuery, PagedList<UserResponse>>
     {
         private readonly IIdentityService _identity;
         private IMapper _mapper;
@@ -23,11 +27,23 @@ namespace Service.Identity.Queries
             _logger = logger;
         }
 
-        public async Task<List<UserResponse>> Handle(GetStaffsQuery request, CancellationToken cancellationToken)
+        public async Task<PagedList<UserResponse>> Handle(GetStaffsQuery request, CancellationToken cancellationToken)
         {
-            var staffs = await _identity.FindAccounts(e => e.SiteId == request.SiteId);
+            var staffs = _identity.GetMembersWithRoles(e => e.SiteId == request.SiteId);
 
-            return _mapper.Map<List<UserResponse>>(staffs);
+            var rs = new List<UserResponse>();
+
+            foreach (var staff in staffs)
+            {
+                var u  = _mapper.Map<UserResponse>(staff.member);
+                u.Role = staff.roles.Any(r => r == Roles.SuperAdmin) ? Roles.SuperAdmin : staff.roles.First();
+                rs.Add(u);
+            };
+
+            return PagedList<UserResponse>
+                .ToPagedList(rs, 
+                request.Pagination!.PageNumber, 
+                request.Pagination.PageSize);
 
         }
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharedDomain.Entities.Base;
+using SharedDomain.Entities.FarmComponents.Others;
 using SharedDomain.Entities.Subscribe;
 
 namespace SharedDomain.Entities.FarmComponents

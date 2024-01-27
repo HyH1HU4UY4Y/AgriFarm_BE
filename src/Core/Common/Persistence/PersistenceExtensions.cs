@@ -28,7 +28,7 @@ namespace SharedApplication.Persistence
         public static IServiceCollection AddSQLRepo<TDbContext, TEntity>(this IServiceCollection services)
             where TDbContext : DbContext where TEntity : BaseEntity
         {
-            services.AddScoped<ISQLRepository<TDbContext, TEntity>, SQLRepository<TDbContext, TEntity>>();
+            services.AddScoped<ISQLRepository<TDbContext, TEntity>, SQLRepositoryV2<TDbContext, TEntity>>();
 
             return services;
         }

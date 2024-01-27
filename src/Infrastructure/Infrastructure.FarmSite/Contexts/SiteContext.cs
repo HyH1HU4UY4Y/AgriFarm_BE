@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SharedApplication.MultiTenant.Implement;
 using SharedApplication.Persistence;
 using SharedDomain.Entities.FarmComponents;
+using SharedDomain.Entities.FarmComponents.Others;
 using SharedDomain.Entities.Subscribe;
 using System;
 using System.Collections.Generic;

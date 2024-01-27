@@ -1,7 +1,7 @@
 {
   "Routes": [
     {
-      "UpstreamPathTemplate": "/api/user/{controller}/{action}",
+      "UpstreamPathTemplate": "/api/{version}/user/{controller}/{action}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
 
       "DownstreamScheme": "http",
@@ -14,7 +14,7 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/api/register/{controller}/{action}",
+      "UpstreamPathTemplate": "/api/{version}/register/{controller}/{action}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
 
       "DownstreamScheme": "http",
@@ -27,7 +27,7 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/api/farm/{controller}/{action}",
+      "UpstreamPathTemplate": "/api/{version}/farm/{controller}/{action}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
 
       "DownstreamScheme": "http",

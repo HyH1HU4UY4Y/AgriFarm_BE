@@ -13,7 +13,7 @@ namespace Infrastructure.Soil.Config
     {
         public void Configure(EntityTypeBuilder<FarmSoil> builder)
         {
-            //builder.ToTable("Lands");
+            builder.ToTable("Lands");
 
 
         }

@@ -5,6 +5,9 @@ using SharedDomain.Entities.Subscribe;
 using SharedApplication.Persistence;
 using SharedDomain.Entities.FarmComponents;
 using SharedApplication.MultiTenant;
+using SharedDomain.Entities.FarmComponents.Others;
+using Microsoft.AspNetCore.Builder;
+using SharedDomain.Defaults;
 
 namespace Infrastructure.FarmSite
 {
@@ -22,6 +25,29 @@ namespace Infrastructure.FarmSite
                     
             
             return services;
+        }
+
+        public static IApplicationBuilder SeedData(this IApplicationBuilder app)
+        {
+            using var scope = app.ApplicationServices.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<SiteContext>(); 
+
+            db.Database.EnsureCreated();
+            if(!db.Sites.Any(e=>e.Id.ToString() == TempData.FarmId)) {
+                db.Sites.Add(new()
+                {
+                    Id = new Guid(TempData.FarmId),
+                    Name = "site01",
+                    IsActive = true,
+                    SiteCode = "site021.abc",
+                    
+                });
+
+                db.SaveChanges();
+            }
+            
+
+            return app;
         }
     }
 

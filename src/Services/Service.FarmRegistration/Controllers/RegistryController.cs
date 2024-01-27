@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using Infrastructure.FarmRegistry.Contexts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +17,8 @@ using SharedDomain.Repositories.Base;
 namespace Service.FarmRegistry.Controllers
 {
     
-    [Route("api/[controller]/[action]")]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class RegistryController : ControllerBase
     {

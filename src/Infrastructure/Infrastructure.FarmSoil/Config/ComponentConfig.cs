@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Soil.Config
 {
-    public class ComponentConfig : IEntityTypeConfiguration<BaseComponent>
+    /*public class ComponentConfig : IEntityTypeConfiguration<BaseComponent>
     {
         public void Configure(EntityTypeBuilder<BaseComponent> builder)
         {
@@ -18,5 +18,5 @@ namespace Infrastructure.Soil.Config
 
 
         }
-    }
+    }*/
 }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SharedApplication.MultiTenant.Implement;
 using SharedApplication.Persistence;
 using SharedDomain.Entities.FarmComponents;
+using SharedDomain.Entities.FarmComponents.Others;
 using SharedDomain.Entities.Schedules;
 using SharedDomain.Entities.Schedules.Cultivations;
 using System;
@@ -34,13 +35,17 @@ namespace Infrastructure.Soil.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(FarmSoilConfig).Assembly);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ComponentConfig).Assembly);
+            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ComponentConfig).Assembly);
             //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ActivityConfig).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);
             modelBuilder.Ignore<ComponentDocument>();
             modelBuilder.Ignore<Activity>();
+
+
+            modelBuilder.Entity<BaseComponent>().UseTpcMappingStrategy();
+            modelBuilder.Ignore<BaseComponent>();
         }
     }
 }

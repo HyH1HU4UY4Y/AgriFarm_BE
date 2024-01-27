@@ -7,6 +7,7 @@ using ValidationException = SharedDomain.Exceptions.ValidationException;
 using SharedDomain.Defaults;
 using System.Security.Claims;
 using System.Linq.Expressions;
+using Microsoft.Extensions.Logging;
 
 namespace SharedApplication.Authorize.Services
 {
@@ -15,34 +16,47 @@ namespace SharedApplication.Authorize.Services
         private readonly UserManager<Member> _userManager;
         private readonly SignInManager<Member> _signInManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+        public ILogger<IdentityService> _logger;
 
-        public IdentityService(RoleManager<IdentityRole<Guid>> roleManager, SignInManager<Member> signInManager, UserManager<Member> userManager)
+        public IdentityService(RoleManager<IdentityRole<Guid>> roleManager,
+            SignInManager<Member> signInManager,
+            UserManager<Member> userManager,
+            ILogger<IdentityService> logger)
         {
             _roleManager = roleManager;
             _signInManager = signInManager;
             _userManager = userManager;
+            _logger = logger;
         }
 
 
 
-        public async Task<bool> SigninUserAsync(string userName, string password)
+        public async Task<SignInResult> SigninUserAsync(string userName, string password)
         {
             var result = await _signInManager.PasswordSignInAsync(userName, password, true, false);
-            return result.Succeeded;
+
+            if (result.IsLockedOut)
+            {
+                _logger.LogInformation($"User account {userName} is in lock. Cannot login!");
+            }
+
+            return result;
 
 
         }
 
         public Member? FindAccount(Func<Member, bool> filter)
         {
-            return _userManager.Users.FirstOrDefault(filter);
+            return _userManager.Users.Where(e => !e.IsDeleted).FirstOrDefault(filter);
 
         }
 
         public async Task<List<Member>> FindAccounts(Func<Member, bool> filter = null)
         {
-            var users = await _userManager.Users.ToListAsync();
-            if(filter != null)
+            var users = await _userManager.Users
+                .Where(e => !e.IsDeleted)
+                .ToListAsync();
+            if (filter != null)
             {
                 users = users.Where(filter).ToList();
             }
@@ -66,7 +80,9 @@ namespace SharedApplication.Authorize.Services
 
         public async Task<FullUserResult?> GetFullMember(Func<Member, bool> filter)
         {
-            var account = _userManager.Users.FirstOrDefault(filter);
+            var account = _userManager.Users
+                .Include(e => e.Certificates)
+                .FirstOrDefault(filter);
             if (account == null) return null;
             var roles = _roleManager.Roles.ToList();
 
@@ -86,7 +102,8 @@ namespace SharedApplication.Authorize.Services
                 .ForEach(e => claims.Add(e.Type, e.Value));
             });
 
-            return new() { 
+            return new()
+            {
                 Info = account,
                 Roles = urs,
                 Claims = claims
@@ -113,7 +130,7 @@ namespace SharedApplication.Authorize.Services
                     await _userManager.AddToRoleAsync(member, Roles.Admin);
                     break;
                 case AccountType.SuperAdmin:
-                    await _userManager.AddToRoleAsync(member, Roles.SuperAdmin);
+                    await _userManager.AddToRolesAsync(member, Enum.GetNames<AccountType>());
                     break;
             }
 
@@ -145,14 +162,61 @@ namespace SharedApplication.Authorize.Services
             return await _userManager.FindByNameAsync(userName) == null;
         }
 
-        public async Task<bool> UpdateUserProfile(Member member, IList<string> roles)
+        public async Task<IdentityResult> UpdateUserProfile(Member member, IList<string> roles = null)
         {
             var user = await _userManager.FindByIdAsync(member.Id.ToString());
 
-            var result = await _userManager.UpdateAsync(user);
+            user.LastModify = DateTime.Now;
 
-            return result.Succeeded;
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded) return result;
+
+            if(roles != null)
+            {
+                var uroles = await _userManager.GetRolesAsync(user);
+
+                await _userManager.RemoveFromRolesAsync(user, uroles);
+                result = await _userManager.AddToRolesAsync(user, roles);
+            }
+
+            return result;
         }
 
+        /*public async Task<IdentityResult> SoftDeleteAsync(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if(user == null)
+            {
+                throw new NotFoundException("User not exist!");
+            }
+
+            user.IsDeleted = true;
+            user.DeletedDate = DateTime.Now;
+
+            var result = await _userManager.UpdateAsync(user) ;
+
+            return result;
+        }*/
+
+
+        public async Task<IdentityResult> SetLock(Guid id, bool isLock)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+            {
+                throw new NotFoundException("User not exist!");
+            }
+
+            var result = await _userManager.SetLockoutEnabledAsync(user, isLock);
+
+            return result;
+        }
+
+        public async Task<IdentityResult> RawDeleteAsync(Member user)
+        {
+            var result = await _userManager.DeleteAsync(user);
+
+            return result;
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Infrastructure.FarmSite.Contexts;
 using MediatR;
-using SharedDomain.Entities.FarmComponents;
+using SharedDomain.Entities.FarmComponents.Others;
 using SharedDomain.Repositories.Base;
 
 namespace Service.FarmSite.Commands

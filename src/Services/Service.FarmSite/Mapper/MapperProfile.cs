@@ -2,6 +2,7 @@
 using Service.FarmSite.Commands;
 using Service.FarmSite.DTOs;
 using SharedDomain.Entities.FarmComponents;
+using SharedDomain.Entities.FarmComponents.Others;
 using SharedDomain.Entities.Subscribe;
 
 namespace Service.FarmSite.Mapper

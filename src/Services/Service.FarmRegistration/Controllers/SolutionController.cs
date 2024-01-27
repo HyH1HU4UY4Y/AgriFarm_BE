@@ -1,11 +1,13 @@
-﻿using MediatR;
+﻿using Asp.Versioning;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Registration.Queries;
 
 namespace Service.FarmRegistry.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class SolutionController : ControllerBase
     {

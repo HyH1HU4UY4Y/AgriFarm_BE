@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using SharedApplication.MultiTenant.Implement;
 using SharedApplication.Persistence;
-using SharedDomain.Entities.Base;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Entities.Schedules;
 using SharedDomain.Entities.Schedules.Assessment;
@@ -33,7 +32,7 @@ namespace Infrastructure.FarmScheduling.Contexts
         public DbSet<TrainingDetail> TrainingDetails { get; set; }
         public DbSet<TrainingContent> TrainingContents { get; set; }
         public DbSet<ExpertInfo> Experts { get; set; }
-        public DbSet<CultivationRecord> Cultivations { get; set; }
+        public DbSet<ConsumeCultivation> ConsumeDetails { get; set; }
         public DbSet<BaseComponent> Components { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -44,8 +43,9 @@ namespace Infrastructure.FarmScheduling.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<AdditionOfActivity>().UseTpcMappingStrategy();
             modelBuilder.Entity<TrainingDetail>().ToTable(nameof(TrainingDetails));
-            modelBuilder.Entity<CultivationRecord>().ToTable(nameof(Cultivations));
+            modelBuilder.Entity<ConsumeCultivation>().ToTable(nameof(ConsumeDetails));
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ComponentConfig).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ParticipantConfig).Assembly);
