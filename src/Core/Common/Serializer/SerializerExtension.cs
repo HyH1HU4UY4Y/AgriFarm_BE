@@ -14,14 +14,9 @@ namespace SharedApplication.Serializer
             builder.AddNewtonsoftJson(o =>
             {
                 o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                o.SerializerSettings.ContractResolver = null;
+                //o.SerializerSettings.ContractResolver = null;
                 
             });
-/*
-            builder.AddJsonOptions(o =>
-            {
-                o.JsonSerializerOptions.PropertyNamingPolicy = null;
-            });*/
             
 
             return builder;

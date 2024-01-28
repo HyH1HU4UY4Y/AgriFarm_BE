@@ -8,6 +8,8 @@ using Service.FarmRegistry.Commands;
 using Service.FarmRegistry.DTOs;
 using Service.Registration.DTOs;
 using Service.Registration.Queries;
+using SharedApplication.Pagination;
+using SharedDomain.Common;
 using SharedDomain.Defaults;
 using SharedDomain.Entities.Subscribe;
 using SharedDomain.Repositories.Base;
@@ -39,7 +41,10 @@ namespace Service.FarmRegistry.Controllers
         {
             var rs = await _mediator.Send(new GetRegisterFormsQuery()); 
 
-            return Ok(rs);
+            return Ok(new DefaultResponse<PagedList<RegisterFormResponse>>{
+                Data = rs,
+                Status = 200
+            });
         }
 
 
@@ -49,7 +54,11 @@ namespace Service.FarmRegistry.Controllers
         {
             var rs = await _mediator.Send(request);
 
-            return Accepted(rs);
+            return Accepted(new DefaultResponse<RegisterFormResponse>
+            {
+                Data = rs,
+                Status = 202
+            });
         }
 
         
@@ -64,7 +73,12 @@ namespace Service.FarmRegistry.Controllers
                 Notes = request.Notes
             });
 
-            return Ok(rs);
+            /*return Ok(new DefaultResponse<Guid>
+            {
+                Data = rs,
+                Status = 200
+            });*/
+            return NoContent();
         }
 
         // DELETE api/<RegistryController>/5
