@@ -2,7 +2,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Service.FarmRegistry.DTOs;
 using Service.Registration.Queries;
+using SharedApplication.Pagination;
+using SharedDomain.Common;
 
 namespace Service.FarmRegistry.Controllers
 {
@@ -23,7 +26,11 @@ namespace Service.FarmRegistry.Controllers
         {
             var rs = await _mediator.Send(new GetSolutionsQuery());
 
-            return Ok(rs);
+            return Ok(new DefaultResponse<PagedList<SolutionResponse>>
+            {
+                Data = rs,
+                Status = 200
+            });
         }
     }
 }

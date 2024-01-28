@@ -36,30 +36,30 @@ namespace Service.Disease.Queries
             var rs = (await _repo.GetMany(include: e => e.Include(r => r.PlantDisease!)));
             if (rs  != null)
             {
-                rs = rs.Where(k => k.IsDeleted == false);
+                rs = rs.Where(k => k.IsDeleted == false).ToList();
                 // Search by keyword
                 if (request.keyword != null)
                 {
                     rs = rs.Where(k => (k.Description!.Contains(request.keyword) ||
                                 k.Feedback!.Contains(request.keyword) ||
                                 k.PlantDisease!.DiseaseName!.Contains(request.keyword))
-                        );
+                        ).ToList();
                 }
                 // Search by date
                 DateTime dateFrom;
                 DateTime dateTo;
                 if (DateTime.TryParse(request.searchDateFrom, out dateFrom))
                 {
-                    rs = rs.Where(k => k.CreatedDate >= dateFrom);
+                    rs = rs.Where(k => k.CreatedDate >= dateFrom).ToList();
                 }
                 if (DateTime.TryParse(request.searchDateTo, out dateTo))
                 {
-                    rs = rs.Where(k => k.CreatedDate <= dateTo);
+                    rs = rs.Where(k => k.CreatedDate <= dateTo).ToList();
                 }
                 // Pagination
                 if (!request.getAllDataFlag)
                 {
-                    rs = rs.Skip(request.perPage * (request.pageId - 1)).Take(request.perPage);
+                    rs = rs.Skip(request.perPage * (request.pageId - 1)).Take(request.perPage).ToList();
                 }
             }
             return _mapper.Map<List<DiseaseDiagnosesDTO>>(rs);

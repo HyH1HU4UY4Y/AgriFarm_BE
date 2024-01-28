@@ -43,23 +43,23 @@ namespace Service.Disease.Queries
                     rs = rs.Where(k => (k.DiseaseName!.Contains(request.keyword) ||
                                 k.Symptoms!.Contains(request.keyword) ||
                                 k.Cause!.Contains(request.keyword))
-                        );
+                        ).ToList();
                 }
                 // Search by date
                 DateTime dateFrom;
                 DateTime dateTo;
                 if (DateTime.TryParse(request.searchDateFrom, out dateFrom))
                 {
-                    rs = rs.Where(k => k.CreatedDate >= dateFrom);
+                    rs = rs.Where(k => k.CreatedDate >= dateFrom).ToList();
                 }
                 if (DateTime.TryParse(request.searchDateTo, out dateTo))
                 {
-                    rs = rs.Where(k => k.CreatedDate <= dateTo);
+                    rs = rs.Where(k => k.CreatedDate <= dateTo).ToList();
                 }
                 // Pagination
                 if (!request.getAllDataFlag)
                 {
-                    rs = rs.Skip(request.perPage * (request.pageId - 1)).Take(request.perPage);
+                    rs = rs.Skip(request.perPage * (request.pageId - 1)).Take(request.perPage).ToList();
                 }
             }
             return _mapper.Map<List<DiseaseInfoDTO>>(rs);

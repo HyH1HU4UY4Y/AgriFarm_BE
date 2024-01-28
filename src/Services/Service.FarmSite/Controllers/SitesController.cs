@@ -3,7 +3,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.FarmSite.Commands;
+using Service.FarmSite.DTOs;
 using Service.FarmSite.Queries;
+using SharedApplication.Pagination;
+using SharedDomain.Common;
 using SharedDomain.Defaults;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -24,18 +27,20 @@ namespace Service.FarmSite.Controllers
         }
 
         [Authorize(Roles = Roles.Admin)]
-        // GET: api/<SitesController>
         [HttpGet("get")]
         public async Task<IActionResult> Get()
         {
             var rs = await _mediator.Send(new GetAllSiteQuery());
 
-            return Ok(rs);
+
+            return Ok(new DefaultResponse<PagedList<SiteResponse>>
+            {
+                Data = rs,
+                Status = 200
+            });
         }
 
         
-
-        // POST api/<SitesController>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateNewFarmCommand request)
         {
@@ -44,13 +49,13 @@ namespace Service.FarmSite.Controllers
             return StatusCode(201);
         }
 
-        // PUT api/<SitesController>/5
+
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<SitesController>/5
+
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

@@ -6,13 +6,13 @@ namespace Service.Identity.DTOs
     public class UserDetailResponse
     {
         public Guid Id { get; set; }
-        [JsonProperty("first_name")]
+        //[JsonProperty("first_name")]
         public string FirstName { get; set; }
-        [JsonProperty("last_name")]
+       // [JsonProperty("last_name")]
         public string LastName { get; set; }
-        [JsonProperty("email")]
+        //[JsonProperty("email")]
         public string Email { get; set; }
-        [JsonProperty("Avatar")]
+        //[JsonProperty("Avatar")]
         public string? AvatarImg { get; set; }
         public string? IdentificationCard { get; set; }
         public string? PhoneNumber { get; set; }
