@@ -23,7 +23,7 @@ namespace SharedDomain.Entities.FarmComponents
         public Dictionary<double, double> Positions 
         {
             get => JsonConvert.DeserializeObject<Dictionary<double, double>>(_positionStr)??new();
-            set { }
+            set => _positionStr = JsonConvert.SerializeObject(value);
         }
 
         public double Acreage { get; set; }

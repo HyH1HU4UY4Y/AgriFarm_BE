@@ -21,5 +21,7 @@ namespace SharedDomain.Entities.PreHarvest
         public decimal UnitPrice { get; set; }
         public int Quantity { get; set; }
         public string Unit {  get; set; }
+        public bool IsLimitTime { get; set; } = false;
+        public DateTime? ExpiredIn { get; set; }
     }
 }
