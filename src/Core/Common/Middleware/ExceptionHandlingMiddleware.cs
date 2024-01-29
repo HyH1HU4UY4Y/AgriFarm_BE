@@ -27,19 +27,20 @@ namespace SharedApplication.Middleware
         {
             var statusCode = GetStatusCode(exception);
 
-            var response = new DefaultResponse<string>
+            var response = new DefaultResponse<List<string>>
             {
-                Data = exception.Message,
-                Message = $"{GetTitle(exception)}",
+                Data = new()
+                {
+                    $"{GetTitle(exception)}",
+                },
+                Message = exception.Message ,
                 Status = statusCode
             };
-                /*new
+            if (GetErrors(exception).Any())
             {
-                title = GetTitle(exception),
-                status = statusCode,
-                detail = exception.Message,
-                errors = GetErrors(exception)
-            };*/
+                response.Data.AddRange(GetErrors(exception));
+            }
+                
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = statusCode;
             await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
@@ -60,7 +61,7 @@ namespace SharedApplication.Middleware
             };
         private static List<string> GetErrors(Exception exception)
         {
-            List<string> errors = null;
+            List<string> errors = new();
             if (exception is ValidationException validationException)
             {
                 errors = validationException.Errors

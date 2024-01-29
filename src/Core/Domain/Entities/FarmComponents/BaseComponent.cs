@@ -16,7 +16,7 @@ namespace SharedDomain.Entities.FarmComponents
 
         public string Name { get; set; }
         public string? Description { get; set; } = "not set";
-        public bool IsConsumable { get; set; }
+        public bool IsConsumable { get; set; } = false;
         [Column("Measure Unit")]
         public string? Unit { get; set; }
         public string? Notes { get; set; }

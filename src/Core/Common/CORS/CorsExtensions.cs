@@ -18,7 +18,8 @@ namespace SharedApplication.CORS
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials()
-                    .WithExposedHeaders(AdditionHeader.Pagination));
+                    .WithExposedHeaders(AdditionHeader.Pagination)
+                    .SetIsOriginAllowed(origin => true));
             });
             return services;
         }
