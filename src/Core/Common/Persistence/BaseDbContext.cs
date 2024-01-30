@@ -4,6 +4,7 @@ using SharedApplication.MultiTenant;
 using SharedDomain.Entities.Base;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,6 +77,10 @@ namespace SharedApplication.Persistence
                 .SelectMany(e => e.GetProperties()
                     .Where(p => p.ClrType == typeof(string))))
             {
+                /*if(int.TryParse(property.GetAnnotation("StringLength").Value == 150)
+                {
+                    Console.WriteLine("yes");
+                }*/
                 property.SetColumnType("varchar(150)");
             }
 

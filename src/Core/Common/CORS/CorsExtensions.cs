@@ -15,6 +15,7 @@ namespace SharedApplication.CORS
             services.AddCors(options =>
             {
                 options.AddPolicy(corsName, builder => builder
+                    //.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials()
