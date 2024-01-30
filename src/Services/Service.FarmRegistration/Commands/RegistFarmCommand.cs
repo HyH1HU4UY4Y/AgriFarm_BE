@@ -40,6 +40,8 @@ namespace Service.FarmRegistry.Commands
             var solution = _solRepo.GetOne(e => e.Id == request.SolutionId).Result;
             if (solution == null) throw new Exception("Solution not exist!");
 
+            var emailFarm = _resRepo.GetOne(e => e.Email == request.Email).Result;
+            if (emailFarm != null) throw new Exception("Email exist");
             var entity = _mapper.Map<FarmRegistration>(request);
             entity.Cost = solution.Price;
             _resRepo.AddAsync(entity);
