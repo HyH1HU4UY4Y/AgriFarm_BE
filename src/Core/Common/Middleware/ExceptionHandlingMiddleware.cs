@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using SharedDomain.Common;
 using SharedDomain.Exceptions;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace SharedApplication.Middleware
                 
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = statusCode;
-            await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
+            await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(response));
         }
         private static int GetStatusCode(Exception exception) =>
             exception switch
