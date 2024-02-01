@@ -5,7 +5,7 @@
         public string? keyword { get; set; }
         public int perPage { get; set; }
         public int pageId { get; set; }
-        public string? searchDateFrom { get; set; }
-        public string? searchDateTo { get; set; }
+
+        public bool? isDraft { get; set; }
     }
 }

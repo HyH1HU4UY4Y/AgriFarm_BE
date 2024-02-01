@@ -7,7 +7,7 @@ using PaginationDefault = SharedDomain.Defaults.Pagination;
 
 namespace Service.RiskAssessment.Controllers
 {
-    [Route("api/assessment/risk-master/")]
+    [Route("api/assessment/risk/")]
     [ApiController]
     public class RiskMastersController : ControllerBase
     {
@@ -28,8 +28,7 @@ namespace Service.RiskAssessment.Controllers
             var rsAll = await _mediator.Send(new GetRiskMasterQuery
             {
                 keyword = request.keyword,
-                searchDateFrom = request.searchDateFrom,
-                searchDateTo = request.searchDateTo
+                isDraft = request.isDraft,
             });
             // Search, pagination
             if (rsAll.Count() > 0)
@@ -45,8 +44,7 @@ namespace Service.RiskAssessment.Controllers
                 var rsSearch = await _mediator.Send(new GetRiskMasterQuery
                 {
                     keyword = request.keyword,
-                    searchDateFrom = request.searchDateFrom,
-                    searchDateTo = request.searchDateTo,
+                    isDraft = request.isDraft,
                     perPage = request.perPage,
                     pageId = request.pageId,
                     getAllDataFlag = false
@@ -61,6 +59,30 @@ namespace Service.RiskAssessment.Controllers
                 response.statusCode = Ok().StatusCode;
             }
             if (response.Pagination.totalRecord == 0)
+            {
+                response.statusCode = NoContent().StatusCode;
+                response.message = new List<string> {
+                    "Data not found!"
+                };
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("get-by-id")]
+        public async Task<IActionResult> GetById([FromQuery] Guid id)
+        {
+            // Get by id
+            RiskDetailResponse response = new RiskDetailResponse();
+            var rs = await _mediator.Send(new GetRiskByIdQuery
+            {
+                RiskMasterId = id
+            });
+            if (rs != null)
+            {
+                response.data = rs;
+                response.statusCode = Ok().StatusCode;
+            }
+            else
             {
                 response.statusCode = NoContent().StatusCode;
                 response.message = new List<string> {

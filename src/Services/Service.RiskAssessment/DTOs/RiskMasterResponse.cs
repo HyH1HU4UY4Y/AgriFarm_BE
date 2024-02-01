@@ -16,4 +16,8 @@
         public List<RiskMasterDTO> data { get; set; } = new List<RiskMasterDTO>();
         public Pagination Pagination { get; set; } = new Pagination();
     }
+    public class RiskDetailResponse : ResponseStatus
+    {
+        public RiskMasterDTO? data { get; set; }
+    }
 }

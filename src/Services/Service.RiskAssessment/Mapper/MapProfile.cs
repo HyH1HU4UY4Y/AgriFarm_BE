@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Service.RiskAssessment.DTOs;
-using SharedDomain.Entities.Diagnosis;
+using SharedDomain.Entities.Risk;
 
 namespace Service.Disease.Mapper
 {
@@ -8,7 +8,8 @@ namespace Service.Disease.Mapper
     {
         public MapProfile()
         {
-            CreateMap<DiseaseInfo, RiskMasterDTO>().ReverseMap();
+            CreateMap<RiskMaster, RiskMasterDTO>().ReverseMap();
+            CreateMap<RiskMaster, RiskItem>().ReverseMap();
         }
     }
 }

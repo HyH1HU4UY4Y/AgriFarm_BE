@@ -1,16 +1,16 @@
 ﻿using SharedDomain.Entities.Base;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace SharedDomain.Entities.Risk
 {
     public class RiskItemContent: BaseEntity
     {
+        [JsonIgnore]
         public Guid RiskItemId { get; set; }
+        [JsonIgnore]
         public RiskItem? RiskItem { get; set; }
 
         public string? RiskItemContentTitle { get; set; }

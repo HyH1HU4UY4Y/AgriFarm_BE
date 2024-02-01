@@ -10,8 +10,7 @@ namespace Service.RiskAssessment.Queries
     public class GetRiskMasterQuery : IRequest<List<RiskMasterDTO>>
     {
         public string? keyword { get; set; }
-        public string? searchDateFrom { get; set; }
-        public string? searchDateTo { get; set; }
+        public bool? isDraft { get; set; }
         public int perPage { get; set; }
         public int pageId { get; set; }
         public bool getAllDataFlag { get; set; } = true;
@@ -42,17 +41,13 @@ namespace Service.RiskAssessment.Queries
                                 k.RiskDescription!.Contains(request.keyword))
                         ).ToList();
                 }
-                // Search by date
-                DateTime dateFrom;
-                DateTime dateTo;
-                /*if (DateTime.TryParse(request.searchDateFrom, out dateFrom))
+
+                //Filter by isDraft
+                if (request.isDraft != null)
                 {
-                    rs = rs.Where(k => k.CreatedDate >= dateFrom).ToList();
+                    rs = rs.Where(k => k.IsDraft ==  request.isDraft).ToList();
                 }
-                if (DateTime.TryParse(request.searchDateTo, out dateTo))
-                {
-                    rs = rs.Where(k => k.CreatedDate <= dateTo).ToList();
-                }*/
+
                 // Pagination
                 if (!request.getAllDataFlag)
                 {
