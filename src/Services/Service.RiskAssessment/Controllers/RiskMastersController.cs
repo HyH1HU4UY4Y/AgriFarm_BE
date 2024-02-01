@@ -135,5 +135,49 @@ namespace Service.RiskAssessment.Controllers
             }
             return Ok(response);
         }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateRiskAssessment([FromBody] RiskAssessmentUpdateRequest request)
+        {
+            RiskAssessmentUpdateResponse response = new RiskAssessmentUpdateResponse();
+            try
+            {
+                RiskMasterDTO riskMaster = new RiskMasterDTO()
+                {
+                    Id = request.Id,
+                    RiskName = request.RiskName,
+                    RiskDescription = request.RiskDescription,
+                    CreateBy = request.CreateBy,
+                    RiskItems = request.RiskItems,
+                };
+
+                var rs = await _mediator.Send(new UpdateRiskMasterCommand
+                {
+                    riskMaster = riskMaster,
+                });
+
+                if (rs == null)
+                {
+                    response.statusCode = NoContent().StatusCode;
+                    response.message = new List<string>
+                    {
+                        "Update fail!"
+                    };
+                }
+                else
+                {
+                    response.statusCode = Ok().StatusCode;
+                }
+            }
+            catch (Exception)
+            {
+                response.statusCode = NoContent().StatusCode;
+                response.message = new List<string>
+                {
+                    "Update fail!"
+                };
+            }
+            return Ok(response);
+        }
     }
 }

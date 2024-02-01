@@ -24,4 +24,8 @@
     public class RiskAssessmentInsertResponse : ResponseStatus
     {
     }
+
+    public class RiskAssessmentUpdateResponse : ResponseStatus
+    {
+    }
 }
