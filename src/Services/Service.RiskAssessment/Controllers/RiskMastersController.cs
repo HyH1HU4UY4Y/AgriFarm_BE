@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Service.RiskAssessment.Commands;
 using Service.RiskAssessment.DTOs;
 using Service.RiskAssessment.Queries;
 using Pagination = Service.RiskAssessment.DTOs.Pagination;
@@ -7,7 +8,7 @@ using PaginationDefault = SharedDomain.Defaults.Pagination;
 
 namespace Service.RiskAssessment.Controllers
 {
-    [Route("api/assessment/risk/")]
+    [Route("api/risk-assessment/")]
     [ApiController]
     public class RiskMastersController : ControllerBase
     {
@@ -87,6 +88,49 @@ namespace Service.RiskAssessment.Controllers
                 response.statusCode = NoContent().StatusCode;
                 response.message = new List<string> {
                     "Data not found!"
+                };
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("add")]
+        public async Task<IActionResult> InsertRiskAssessment([FromBody] RiskAssessmentInsertRequest request)
+        {
+            RiskAssessmentInsertResponse response = new RiskAssessmentInsertResponse();
+            try
+            {
+                RiskMasterDTO riskMaster = new RiskMasterDTO()
+                {
+                    RiskName = request.RiskName,
+                    RiskDescription = request.RiskDescription,
+                    CreateBy = request.CreateBy,
+                    RiskItems = request.RiskItems,
+                };
+
+                var rs = await _mediator.Send(new CreateRiskMasterCommand
+                {
+                    riskMaster = riskMaster,
+                });
+
+                if (rs == null)
+                {
+                    response.statusCode = NoContent().StatusCode;
+                    response.message = new List<string>
+                    {
+                        "Insert fail!"
+                    };
+                }
+                else
+                {
+                    response.statusCode = Ok().StatusCode;
+                }
+            }
+            catch (Exception)
+            {
+                response.statusCode = NoContent().StatusCode;
+                response.message = new List<string>
+                {
+                    "Insert fail!"
                 };
             }
             return Ok(response);

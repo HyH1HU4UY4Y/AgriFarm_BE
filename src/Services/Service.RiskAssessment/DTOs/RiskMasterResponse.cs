@@ -20,4 +20,8 @@
     {
         public RiskMasterDTO? data { get; set; }
     }
+
+    public class RiskAssessmentInsertResponse : ResponseStatus
+    {
+    }
 }
