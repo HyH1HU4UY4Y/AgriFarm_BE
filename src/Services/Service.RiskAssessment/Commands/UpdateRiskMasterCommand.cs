@@ -41,23 +41,9 @@ namespace Service.RiskAssessment.Commands
 
                 if (item != null)
                 {
-                    item.RiskName = request.riskMaster!.RiskName;
-                    item.RiskDescription = request.riskMaster.RiskDescription;
-                    item.IsDraft = request.riskMaster.IsDraft;
-                    item.UpdateBy = request.riskMaster.UpdateBy;
-
-                    //item.RiskItems = new List<RiskItem> { };
-
-                    //item.RiskItems.Take(1).ris
-
-                    foreach (var riskItem in request.riskMaster.RiskItems!)
-                    {
-                        new UpdateRiskItemCommand { riskItem = riskItem };
-                    }
-
-                    //item.RiskItems = request.riskMaster.RiskItems!;
-
-                    await _repo.UpdateAsync(item!);
+                    await _repo.RawDeleteAsync(item);
+                    await _context.SaveChangesAsync();
+                    await _repo.AddAsync(request.riskMaster!);
                     await _context.SaveChangesAsync();
                     _logger.LogInformation("End update...");
       
