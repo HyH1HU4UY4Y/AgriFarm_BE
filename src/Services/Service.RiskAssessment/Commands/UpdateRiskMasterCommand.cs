@@ -23,7 +23,7 @@ namespace Service.RiskAssessment.Commands
         private ILogger<UpdateRiskMasterCommandHandler> _logger;
 
         public UpdateRiskMasterCommandHandler(IUnitOfWork<RiskAssessmentContext> context, ISQLRepository<RiskAssessmentContext, RiskMaster> repo,
-        IMapper mapper, ILogger<UpdateRiskMasterCommandHandler> logger)
+         IMapper mapper, ILogger<UpdateRiskMasterCommandHandler> logger)
         {
             _context = context;
             _repo = repo;
@@ -31,42 +31,36 @@ namespace Service.RiskAssessment.Commands
             _logger = logger;
         }
 
-        /*public async Task<RiskMasterDTO> Handle(UpdateRiskMasterCommand request, CancellationToken cancellationToken)
-        {
-            _logger.LogInformation("Starting insert...");
-            try
-            {                
-                await _repo.UpdateAsync(request.riskMaster!);
-                var rs = _context.SaveChangesAsync(cancellationToken).Result > 0;
-               
-                _logger.LogInformation("End insert...");
-                if (!rs)
-                {
-                    return _mapper.Map<RiskMasterDTO>(null);
-                }
-                return _mapper.Map<RiskMasterDTO>(request.riskMaster!);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation(ex.Message);
-                _logger.LogInformation("End insert...");
-                throw new NotFoundException("Insert fail!");
-            }
-        }*/
-
         public async Task<RiskMasterDTO> Handle(UpdateRiskMasterCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Starting update...");
             try
             {
-                var item = await _repo.GetOne(e => (e.Id == request.riskMaster!.Id && e.IsDeleted == false), 
+                var item = await _repo.GetOne(e => (e.Id == request.riskMaster!.Id && e.IsDeleted == false),
                     r => r.Include(e => e.RiskItems!).ThenInclude(ri => ri.RiskItemContents!));
+
                 if (item != null)
                 {
-                    item = request.riskMaster;
+                    item.RiskName = request.riskMaster!.RiskName;
+                    item.RiskDescription = request.riskMaster.RiskDescription;
+                    item.IsDraft = request.riskMaster.IsDraft;
+                    item.UpdateBy = request.riskMaster.UpdateBy;
+
+                    //item.RiskItems = new List<RiskItem> { };
+
+                    //item.RiskItems.Take(1).ris
+
+                    foreach (var riskItem in request.riskMaster.RiskItems!)
+                    {
+                        new UpdateRiskItemCommand { riskItem = riskItem };
+                    }
+
+                    //item.RiskItems = request.riskMaster.RiskItems!;
+
                     await _repo.UpdateAsync(item!);
                     await _context.SaveChangesAsync();
                     _logger.LogInformation("End update...");
+      
                 }
                 return _mapper.Map<RiskMasterDTO>(item);
             }

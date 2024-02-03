@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Infrastructure.RiskAssessment.Context;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Service.RiskAssessment.DTOs;
 using SharedDomain.Entities.Risk;
 using SharedDomain.Repositories.Base;
@@ -30,7 +31,8 @@ namespace Service.RiskAssessment.Queries
 
         public async Task<List<RiskMasterDTO>> Handle(GetRiskMasterQuery request, CancellationToken cancellationToken)
         {
-            var rs = await _repo.GetMany();
+            var rs = await _repo.GetMany(e => (e.IsDeleted == false),
+                r => r.Include(e => e.RiskItems!).ThenInclude(ri => ri.RiskItemContents!));
 
             if (rs != null)
             {

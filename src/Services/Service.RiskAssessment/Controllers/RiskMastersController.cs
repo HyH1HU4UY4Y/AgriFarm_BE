@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Service.Disease.Commands;
 using Service.RiskAssessment.Commands;
 using Service.RiskAssessment.DTOs;
 using Service.RiskAssessment.Queries;
@@ -147,7 +148,8 @@ namespace Service.RiskAssessment.Controllers
                     Id = request.Id,
                     RiskName = request.RiskName,
                     RiskDescription = request.RiskDescription,
-                    CreateBy = request.CreateBy,
+                    IsDraft = request.IsDraft,
+                    UpdateBy = request.UpdateBy,
                     RiskItems = request.RiskItems,
                 };
 
@@ -175,6 +177,41 @@ namespace Service.RiskAssessment.Controllers
                 response.message = new List<string>
                 {
                     "Update fail!"
+                };
+            }
+            return Ok(response);
+        }
+
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteRiskAssessment([FromQuery] Guid id)
+        {
+
+            RiskAssessmentDeleteResponse response = new RiskAssessmentDeleteResponse();
+            try
+            {
+                var rs = await _mediator.Send(new DeleteRiskAssessmentCommand
+                {
+                    Id = id,
+                });
+                if (rs == null)
+                {
+                    response.statusCode = NoContent().StatusCode;
+                    response.message = new List<string>
+                    {
+                        "Invalid id!"
+                    };
+                }
+                else
+                {
+                    response.statusCode = Ok().StatusCode;
+                }
+            }
+            catch (Exception)
+            {
+                response.statusCode = NoContent().StatusCode;
+                response.message = new List<string>
+                {
+                    "Delete fail!"
                 };
             }
             return Ok(response);

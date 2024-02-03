@@ -8,7 +8,6 @@ namespace SharedDomain.Entities.Risk
 {
     public class RiskItemContent: BaseEntity
     {
-        [JsonIgnore]
         public Guid RiskItemId { get; set; }
         [JsonIgnore]
         public RiskItem? RiskItem { get; set; }

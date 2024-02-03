@@ -11,7 +11,6 @@ namespace SharedDomain.Entities.Risk
 {
     public class RiskItem: BaseEntity
     {
-        [JsonIgnore]
         public Guid RiskMasterId { get; set; }
         [JsonIgnore]
         public RiskMaster? RiskMaster { get; set; }

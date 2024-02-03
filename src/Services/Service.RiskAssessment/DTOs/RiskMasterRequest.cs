@@ -24,7 +24,8 @@ namespace Service.RiskAssessment.DTOs
         public Guid Id { get; set; }
         public string? RiskName { get; set; }
         public string? RiskDescription { get; set; }
-        public Guid? CreateBy { get; set; }
+        public bool IsDraft { get; set; }
+        public Guid? UpdateBy { get; set; }
         public List<RiskItem>? RiskItems { get; set; }
     }
 }

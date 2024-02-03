@@ -28,4 +28,8 @@
     public class RiskAssessmentUpdateResponse : ResponseStatus
     {
     }
+
+    public class RiskAssessmentDeleteResponse : ResponseStatus
+    {
+    }
 }
