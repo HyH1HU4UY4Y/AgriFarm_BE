@@ -11,17 +11,17 @@ namespace Service.RiskAssessment.Controllers
 {
     [Route("api/risk-assessment/")]
     [ApiController]
-    public class RiskMastersController : ControllerBase
+    public class RiskAssessmentsController : ControllerBase
     {
         private IMediator _mediator;
 
-        public RiskMastersController(IMediator mediator)
+        public RiskAssessmentsController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         // GET: api/<DiseaseInfosController>
-        //[Authorize(Roles = Roles.SuperAdmin)]
+        //[Authorize(Roles = Roles.Admin)]
         [HttpGet("get")]
         public async Task<IActionResult> Get([FromQuery] RiskMasterRequest request)
         {
@@ -137,7 +137,7 @@ namespace Service.RiskAssessment.Controllers
             return Ok(response);
         }
 
-        [HttpPut("update")]
+        [HttpPut("edit")]
         public async Task<IActionResult> UpdateRiskAssessment([FromBody] RiskAssessmentUpdateRequest request)
         {
             RiskAssessmentUpdateResponse response = new RiskAssessmentUpdateResponse();
