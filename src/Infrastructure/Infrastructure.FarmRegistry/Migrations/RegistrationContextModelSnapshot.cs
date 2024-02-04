@@ -3,8 +3,8 @@ using System;
 using Infrastructure.FarmRegistry.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -18,47 +18,47 @@ namespace Infrastructure.Registration.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.11")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("SharedDomain.Entities.Subscribe.FarmRegistration", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Address")
                         .HasMaxLength(5000)
                         .HasColumnType("varchar(150)");
 
-                    b.Property<string>("Content")
-                        .HasMaxLength(5000)
-                        .HasColumnType("varchar(150)");
-
                     b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("varchar(150)");
+
                     b.Property<int?>("IsApprove")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastModify")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
@@ -68,7 +68,7 @@ namespace Infrastructure.Registration.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("varchar(150)");
 
-                    b.Property<string>("SiteKey")
+                    b.Property<string>("SiteCode")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("varchar(150)");
@@ -78,45 +78,65 @@ namespace Infrastructure.Registration.Migrations
                         .HasColumnType("varchar(150)");
 
                     b.Property<Guid>("SolutionId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("SolutionId");
 
                     b.ToTable("FarmRegistrations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("02f16f00-4d51-45c6-adea-f53638bad2ba"),
+                            Address = "USA",
+                            Cost = 10m,
+                            CreatedDate = new DateTime(2024, 1, 20, 15, 4, 25, 886, DateTimeKind.Local).AddTicks(2719),
+                            Email = "owner01@test.com",
+                            FirstName = "User",
+                            IsApprove = 0,
+                            IsDeleted = false,
+                            LastModify = new DateTime(2024, 1, 20, 15, 4, 25, 886, DateTimeKind.Local).AddTicks(2727),
+                            LastName = "Owner 01",
+                            PaymentDetail = "test detail",
+                            Phone = "0132302225",
+                            SiteCode = "test.agri.01",
+                            SiteName = "Farm 01 test",
+                            SolutionId = new Guid("3c9cca4d-0899-45de-951e-8a3e8364758c")
+                        });
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.Subscribe.PackageSolution", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
                         .HasMaxLength(5000)
                         .HasColumnType("varchar(150)");
 
-                    b.Property<long?>("DurationHour")
+                    b.Property<long?>("DurationInMonth")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastModify")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
                         .HasColumnType("varchar(150)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -125,34 +145,34 @@ namespace Infrastructure.Registration.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e89cf903-ef59-4098-a0aa-17869be91538"),
-                            CreatedDate = new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5420),
+                            Id = new Guid("45aa6629-5e67-4c70-aa9c-eed4e82e7da6"),
+                            CreatedDate = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1405),
                             Description = "This is cheapest solution",
-                            DurationHour = 750L,
+                            DurationInMonth = 6L,
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5429),
+                            LastModify = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1410),
                             Name = "Solution 1",
                             Price = 10m
                         },
                         new
                         {
-                            Id = new Guid("c5e6a8eb-ac87-453d-a8e5-098cd119ec04"),
-                            CreatedDate = new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5505),
+                            Id = new Guid("af09cd31-97fd-466b-bb4d-7666d953724a"),
+                            CreatedDate = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1430),
                             Description = "This is medium solution",
-                            DurationHour = 7800L,
+                            DurationInMonth = 12L,
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5506),
+                            LastModify = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1430),
                             Name = "Solution 2",
                             Price = 100m
                         },
                         new
                         {
-                            Id = new Guid("2feec9a3-1685-4220-80f3-435dcce6a99a"),
-                            CreatedDate = new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5508),
+                            Id = new Guid("28eb1cab-70d3-4282-917d-feafb145a5e9"),
+                            CreatedDate = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1432),
                             Description = "This is vip solution",
-                            DurationHour = 79000L,
+                            DurationInMonth = 24L,
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 12, 5, 50, 22, 591, DateTimeKind.Local).AddTicks(5509),
+                            LastModify = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1433),
                             Name = "Solution 3",
                             Price = 1000m
                         });

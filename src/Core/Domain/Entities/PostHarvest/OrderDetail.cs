@@ -1,4 +1,5 @@
 ﻿using SharedDomain.Entities.Base;
+using SharedDomain.Entities.Schedules.Cultivations;
 
 namespace SharedDomain.Entities.PostHarvest
 {
@@ -9,7 +10,7 @@ namespace SharedDomain.Entities.PostHarvest
         public Order Order { get; set; }
 
         public Guid ProductId { get; set; }
-        public Product Product { get; set; }
+        public HarvestProduct Product { get; set; }
 
         public decimal Price { get; set; }
         public int Quantity { get; set; }

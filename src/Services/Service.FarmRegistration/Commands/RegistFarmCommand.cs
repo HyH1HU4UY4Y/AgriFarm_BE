@@ -1,32 +1,32 @@
-﻿using SharedApplication.CQRS;
-using AutoMapper;
+﻿using AutoMapper;
 using Infrastructure.FarmRegistry.Contexts;
 using MediatR;
 using Service.FarmRegistry.DTOs;
 using SharedDomain.Entities.Subscribe;
 using SharedDomain.Repositories.Base;
-using Infrastructure.Registration.Repositories;
 using SharedDomain.Exceptions;
 
 namespace Service.FarmRegistry.Commands
 {
     public record RegistFarmCommand
-        (string Name, string Content, string Phone
-        , string Email, string Address, string SiteKey
+        (string? FirstName
+        , string? LastName, string Phone
+        , string Email, string Address, string SiteCode
         , string SiteName, Guid SolutionId
         , string PaymentDetail) :IRequest<RegisterFormResponse>;
         
     public class RegistFarmCommandhandler: IRequestHandler<RegistFarmCommand, RegisterFormResponse>
     {
-        private readonly ICommandRepository<RegistrationContext, FarmRegistration> _resRepo;
-        private readonly ISolutionQueryRepo _solRepo;
+        private readonly ISQLRepository<RegistrationContext, FarmRegistration> _resRepo;
+        private readonly ISQLRepository<RegistrationContext, PackageSolution> _solRepo;
         private readonly IUnitOfWork<RegistrationContext> _unitOfWork;
         private readonly IMapper _mapper;
 
         public RegistFarmCommandhandler(IMapper mapper,
             IUnitOfWork<RegistrationContext> unitOfWork,
-            ICommandRepository<RegistrationContext, FarmRegistration> resRepo,
-            ISolutionQueryRepo solRepo)
+            ISQLRepository<RegistrationContext, FarmRegistration> resRepo
+,
+            ISQLRepository<RegistrationContext, PackageSolution> solRepo)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -36,12 +36,16 @@ namespace Service.FarmRegistry.Commands
 
         public Task<RegisterFormResponse> Handle(RegistFarmCommand request, CancellationToken cancellationToken)
         {
-            var solution = _solRepo.All.FirstOrDefault(e => e.Id == request.SolutionId);
-            if (solution == null) throw new NotFoundException("Solution not exist!");
+            
+            var solution = _solRepo.GetOne(e => e.Id == request.SolutionId).Result;
+            if (solution == null) throw new Exception("Solution not exist!");
 
+            var emailFarm = _resRepo.GetOne(e => e.Email == request.Email).Result;
+            if (emailFarm != null) throw new Exception("Email exist");
             var entity = _mapper.Map<FarmRegistration>(request);
             entity.Cost = solution.Price;
             _resRepo.AddAsync(entity);
+            
 
             _unitOfWork.SaveChangesAsync(cancellationToken);
 

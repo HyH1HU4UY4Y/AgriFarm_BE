@@ -1,10 +1,16 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using Infrastructure.FarmRegistry.Contexts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.FarmRegistry.Commands;
 using Service.FarmRegistry.DTOs;
+using Service.Registration.DTOs;
 using Service.Registration.Queries;
+using SharedApplication.Pagination;
+using SharedDomain.Common;
+using SharedDomain.Defaults;
 using SharedDomain.Entities.Subscribe;
 using SharedDomain.Repositories.Base;
 
@@ -12,7 +18,9 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.FarmRegistry.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class RegistryController : ControllerBase
     {
@@ -26,39 +34,51 @@ namespace Service.FarmRegistry.Controllers
             _mediator = mediator;
         }
 
-        // GET: api/<RegistryController>
+
+        [Authorize(Roles = Roles.SuperAdmin)]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             var rs = await _mediator.Send(new GetRegisterFormsQuery()); 
 
-            return Ok(rs);
+            return Ok(new DefaultResponse<PagedList<RegisterFormResponse>>{
+                Data = rs,
+                Status = 200
+            });
         }
 
-        // GET api/<RegistryController>/5
-        [HttpGet("by-id")]
-        public async Task<IActionResult> Get(Guid id)
-        {
-            return Ok();
-        }
 
-        // POST api/<RegistryController>
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] RegistFarmCommand request)
         {
             var rs = await _mediator.Send(request);
 
-            return Accepted(rs);
+            return Accepted(new DefaultResponse<RegisterFormResponse>
+            {
+                Data = rs,
+                Status = 202
+            });
         }
 
-        // PUT api/<RegistryController>/5
+        
         [HttpPut]
-        public async Task<IActionResult> Put([FromQuery]Guid id, [FromBody] ResolveFormCommand request)
+        public async Task<IActionResult> Put([FromQuery]Guid id, [FromBody] ResolveFormRequest request)
         {
-            request.Id = id;
-            var rs = await _mediator.Send(request);
+            
+            var rs = await _mediator.Send(new ResolveFormCommand
+            {
+                Id = id,
+                Decison = request.Decison,
+                Notes = request.Notes
+            });
 
-            return Ok(rs);
+            /*return Ok(new DefaultResponse<Guid>
+            {
+                Data = rs,
+                Status = 200
+            });*/
+            return NoContent();
         }
 
         // DELETE api/<RegistryController>/5

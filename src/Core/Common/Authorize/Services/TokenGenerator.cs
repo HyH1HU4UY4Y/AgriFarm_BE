@@ -26,17 +26,41 @@ namespace SharedApplication.Authorize.Services
 
 
 
-        public string GenerateJwt(Member user) =>
-            GenerateEncryptedToken(GetSigningCredentials(), GetClaims(user));
+        public string GenerateJwt(Member user, List<string> roles = null
+            , Dictionary<string, string> scopes = null) =>
+            GenerateEncryptedToken(GetSigningCredentials(), GetClaims(user, roles, scopes));
 
-        private IEnumerable<Claim> GetClaims(Member user) =>
-        new List<Claim>
+        private IEnumerable<Claim> GetClaims(Member user, List<string> roles = null, Dictionary<string, string> scopes = null)
         {
-            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new(ClaimTypes.Email, user.Email!),
-            new("fullName", $"{user.FullName}"),
-            new(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty)
-        };
+
+            var result = new List<Claim>
+            {
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Email, user.Email!),
+                new(FarmClaimType.FirstName, $"{user.FirstName}"),
+                new(FarmClaimType.LastName, $"{user.LastName}"),
+                new(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty),
+                new(FarmClaimType.SiteId, user.SiteId?.ToString() ?? "root"),
+
+            };
+            if (roles != null)
+            {
+                foreach (var r in roles)
+                {
+                    result.Add(new(ClaimTypes.Role, r));
+                }
+            }
+            if (scopes != null)
+            {
+                foreach (var s in scopes)
+                {
+                    result.Add(new(s.Key, s.Value));
+                }
+            }
+
+            return result;
+        }
+
 
         private SigningCredentials GetSigningCredentials()
         {
@@ -55,5 +79,6 @@ namespace SharedApplication.Authorize.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             return tokenHandler.WriteToken(token);
         }
+
     }
 }

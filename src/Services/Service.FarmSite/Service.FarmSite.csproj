@@ -14,14 +14,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Queries\" />
+    <ProjectReference Include="..\..\Core\Common\SharedApplication.csproj" />
+    <ProjectReference Include="..\..\Core\Domain\SharedDomain.csproj" />
+    <ProjectReference Include="..\..\Core\EventBus\EventBus.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure.FarmSite\Infrastructure.FarmSite.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Common\SharedApplication.csproj" />
-    <ProjectReference Include="..\..\Core\Domain\SharedDomain.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Infrastructure.FarmSite\Infrastructure.FarmSite.csproj" />
+    <Content Update="appsettings.Staging.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,10 @@
 ﻿using Application.CommonExtensions;
 using Microsoft.EntityFrameworkCore;
+using SharedApplication.MultiTenant;
 using SharedDomain.Entities.Base;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,13 +13,17 @@ namespace SharedApplication.Persistence
 {
     public abstract class BaseDbContext : DbContext
     {
+        
+
         protected BaseDbContext()
         {
         }
 
         protected BaseDbContext(DbContextOptions options) : base(options)
         {
+            
         }
+
 
 
         public override int SaveChanges()
@@ -28,6 +34,7 @@ namespace SharedApplication.Persistence
                     case EntityState.Deleted:
                         history.Entity.IsDeleted = true;
                         history.Entity.DeletedDate = DateTime.Now;
+                        history.State = EntityState.Modified;
                         break;
                     case EntityState.Modified:
                         history.Entity.LastModify = DateTime.Now;
@@ -46,8 +53,11 @@ namespace SharedApplication.Persistence
                 switch (history.State)
                 {
                     case EntityState.Deleted:
-                        history.Entity.IsDeleted = true;
-                        history.Entity.DeletedDate = DateTime.Now;
+                        if(history.Entity.IsDeleted == true)
+                        {
+                            history.Entity.DeletedDate = DateTime.Now;
+                            history.State = EntityState.Modified;
+                        }
                         break;
                     case EntityState.Modified:
                         history.Entity.LastModify = DateTime.Now;
@@ -67,6 +77,10 @@ namespace SharedApplication.Persistence
                 .SelectMany(e => e.GetProperties()
                     .Where(p => p.ClrType == typeof(string))))
             {
+                /*if(int.TryParse(property.GetAnnotation("StringLength").Value == 150)
+                {
+                    Console.WriteLine("yes");
+                }*/
                 property.SetColumnType("varchar(150)");
             }
 

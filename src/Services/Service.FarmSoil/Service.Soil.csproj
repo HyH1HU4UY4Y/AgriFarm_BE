@@ -6,15 +6,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>cff61aed-9bfa-48a9-b203-ec81830704e8</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..\..</DockerfileContext>
+    
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+    
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Common\SharedApplication.csproj" />
+    <ProjectReference Include="..\..\Core\Domain\SharedDomain.csproj" />
+    <ProjectReference Include="..\..\Core\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.FarmSoil\Infrastructure.Soil.csproj" />
   </ItemGroup>
 

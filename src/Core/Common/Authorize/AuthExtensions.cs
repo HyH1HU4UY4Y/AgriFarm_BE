@@ -4,9 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using SharedDomain.Defaults;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using SharedApplication.Authorize.Services;
-using SharedApplication.Authorize;
 
-namespace Infrastructure.CommonShared.Authorize
+namespace SharedApplication.Authorize
 {
     public static class AuthExtensions
     {
@@ -29,16 +28,12 @@ namespace Infrastructure.CommonShared.Authorize
         public static IServiceCollection AddJWTAuthorization(this IServiceCollection services)
         {
             
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(x =>
             {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
-                x.TokenValidationParameters = TokenHelperExtension.GetValidateParameter();
+                x.TokenValidationParameters = TokenHelperExtensions.GetValidateParameter();
             });
 
             return services;
