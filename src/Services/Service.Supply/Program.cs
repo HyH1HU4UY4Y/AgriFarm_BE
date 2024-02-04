@@ -8,6 +8,8 @@ using EventBus;
 
 using Infrastructure.Supply;
 using Infrastructure.Supply.Contexts;
+using Service.Supply.Consumers;
+using EventBus.Defaults;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +27,7 @@ builder.Services.AddDefaultEventBusExtension<Program>(
     builder.Configuration,
     (config, context) =>
     {
-
+        config.AddReceiveEndpoint<NewSupplyContractConsumer>(EventQueue.SupplyContractQueue, context);
     });
 
 builder.Services.AddControllers();

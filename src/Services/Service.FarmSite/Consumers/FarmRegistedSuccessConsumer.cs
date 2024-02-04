@@ -73,7 +73,7 @@ namespace Service.FarmSite.Consumers
                     email: form.Email,
                     address: form.Address??"",
                     phoneNumber: form.Phone??""
-                ), EventState.Add), EventQueue.InitFarmOwner);
+                ), EventState.Add), EventQueue.InitFarmOwnerQueue);
         }
     }
 }

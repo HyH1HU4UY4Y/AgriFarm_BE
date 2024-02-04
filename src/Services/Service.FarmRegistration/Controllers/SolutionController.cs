@@ -21,7 +21,7 @@ namespace Service.FarmRegistry.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet()]
         public async Task<IActionResult> Get()
         {
             var rs = await _mediator.Send(new GetSolutionsQuery());

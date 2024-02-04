@@ -92,7 +92,8 @@ services:
         networks:
           agri.network:
             ipv4_address: 10.38.0.5
-        
+     
+    
 
 networks:
   agri.network:

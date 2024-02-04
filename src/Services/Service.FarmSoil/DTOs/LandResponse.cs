@@ -8,6 +8,6 @@ namespace Service.Soil.DTOs
         public string SiteName { get; set; }
 
         public string Name { get; set; }
-        public IDictionary<double,double> Positions { get; set; }
+        public List<PositionPoint> Positions { get; set; }
     }
 }

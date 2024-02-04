@@ -33,7 +33,7 @@ builder.Services.AddDefaultEventBusExtension<Program>(
     builder.Configuration,
     (config, context) =>
     {
-        config.AddReceiveEndpoint<InitFarmOwnerConsumer>(EventQueue.InitFarmOwner, context);
+        config.AddReceiveEndpoint<InitFarmOwnerConsumer>(EventQueue.InitFarmOwnerQueue, context);
     });
 
 
