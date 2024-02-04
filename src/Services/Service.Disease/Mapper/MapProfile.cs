@@ -11,7 +11,6 @@ namespace Service.Disease.Mapper
         {
             CreateMap<DiseaseInfo, DiseaseInfoDTO>().ReverseMap();
 
-            CreateMap<DiseaseInfo, DiseaseInfoDTO>().ReverseMap();
             CreateMap<DiseaseInfo, CreateDiseaseInfoCommand>().ReverseMap();
             CreateMap<DiseaseInfo, UpdateDiseaseInfoCommand>().ReverseMap();
             CreateMap<DiseaseInfo, DeleteDiseaseInfoCommand>().ReverseMap();
