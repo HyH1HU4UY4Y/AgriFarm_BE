@@ -23,7 +23,7 @@ namespace Infrastructure.Supply
             services.AddSQLRepo<SupplyContext, Site>()
                     .AddSQLRepo<SupplyContext, Supplier>()
                     .AddSQLRepo<SupplyContext, SupplyDetail>()
-                    .AddSQLRepo<SupplyContext, MinimalUserInfo>()
+                    .AddSQLRepo<SupplyContext, BaseComponent>()
                     ;
 
 

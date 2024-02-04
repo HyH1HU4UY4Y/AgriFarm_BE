@@ -10,7 +10,7 @@ namespace SharedDomain.Entities.Schedules
     public class Tag : BaseEntity
     {
         public string Title { get; set; }
-        public string Description { get; set; }
-        public ICollection<Activity> activities { get; set; }
+        //public string Description { get; set; } = "";
+        public ICollection<Activity> Activities { get; set; }
     }
 }

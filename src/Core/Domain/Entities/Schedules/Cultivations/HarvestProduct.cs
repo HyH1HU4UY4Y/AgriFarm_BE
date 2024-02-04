@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace SharedDomain.Entities.Schedules.Cultivations
 {
-    public class HarvestProduct : BaseEntity
+    public class HarvestProduct : BaseEntity, IMultiSite
     {
         public string Name { get; set; }
         public DateTime? HarvestTime { get; set; }
+        public double? TotalQuantity { get; set; } = 0;
         public double? Quantity { get; set; } = 0;
         public string Unit { get; set; }
         public string Traceability { get; private set; }
@@ -27,8 +28,8 @@ namespace SharedDomain.Entities.Schedules.Cultivations
         public Guid SeasonId { get; set; }
         public CultivationSeason Season { get; set; }
 
-        public Guid FarmId { get; set; }
-        public Site Farm { get; set; }
+        public Guid SiteId { get; set; }
+        public Site Site { get; set; }
 
         public void SetTraceability((string provider, string type, string data) traceability)
             => JsonConvert.SerializeObject(traceability);

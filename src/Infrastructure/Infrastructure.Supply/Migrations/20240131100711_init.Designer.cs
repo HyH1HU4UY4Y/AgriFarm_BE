@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Supply.Migrations
 {
     [DbContext(typeof(SupplyContext))]
-    [Migration("20240126141243_init")]
+    [Migration("20240131100711_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -31,15 +31,8 @@ namespace Infrastructure.Supply.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
 
                     b.Property<bool>("IsConsumable")
                         .HasColumnType("boolean");
@@ -47,28 +40,19 @@ namespace Infrastructure.Supply.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<Guid>("SiteId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)")
-                        .HasColumnName("Measure Unit");
-
                     b.HasKey("Id");
 
                     b.ToTable("Components");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.PreHarvest.Supplier", b =>
@@ -78,7 +62,11 @@ namespace Infrastructure.Supply.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Address")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<Guid?>("CreatedByFarmId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone");
@@ -87,13 +75,12 @@ namespace Infrastructure.Supply.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<Guid?>("FarmAdded")
-                        .HasColumnType("uuid");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -103,13 +90,16 @@ namespace Infrastructure.Supply.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("Notes")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.HasKey("Id");
 
@@ -125,20 +115,34 @@ namespace Infrastructure.Supply.Migrations
                     b.Property<Guid>("ComponentId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Content")
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<DateTime?>("ExpiredIn")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsLimitTime")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastModify")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
+                    b.Property<double>("Quantity")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Resource")
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
 
                     b.Property<Guid>("SiteId")
                         .HasColumnType("uuid");
@@ -148,7 +152,8 @@ namespace Infrastructure.Supply.Migrations
 
                     b.Property<string>("Unit")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("numeric");
@@ -160,41 +165,6 @@ namespace Infrastructure.Supply.Migrations
                     b.HasIndex("SupplierId");
 
                     b.ToTable("SupplyDetails");
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.Users.MinimalUserInfo", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("AvatarImg")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("FullName")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid?>("SiteId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("varchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.PreHarvest.SupplyDetail", b =>

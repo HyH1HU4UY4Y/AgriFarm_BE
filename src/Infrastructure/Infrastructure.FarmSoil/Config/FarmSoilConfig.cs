@@ -13,7 +13,17 @@ namespace Infrastructure.Soil.Config
     {
         public void Configure(EntityTypeBuilder<FarmSoil> builder)
         {
+
             builder.ToTable("Lands");
+            builder
+                .HasMany(x => x.States)
+                .WithOne(x => x.Component as FarmSoil)
+                .HasForeignKey(x => x.ComponentId);
+            
+            builder
+                .HasMany(x => x.Properties)
+                .WithOne(x => x.Component as FarmSoil)
+                .HasForeignKey(x => x.ComponentId);
 
 
         }

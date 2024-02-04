@@ -17,6 +17,7 @@ namespace SharedApplication.MultiTenant
         public static IServiceCollection AddMultiTenant(this IServiceCollection services, IConfiguration configuration)
         {
 
+            services.AddHttpContextAccessor();
             services.AddScoped<IMultiTenantResolver, MultiTenantResolver>();
             
             return services;

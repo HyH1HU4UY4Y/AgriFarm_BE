@@ -16,8 +16,8 @@ namespace Infrastructure.Soil.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "varchar(150)", nullable: false),
-                    SiteCode = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    SiteCode = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
@@ -32,7 +32,7 @@ namespace Infrastructure.Soil.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Position = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Position = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     Acreage = table.Column<double>(type: "double precision", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -62,10 +62,10 @@ namespace Infrastructure.Soil.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ComponentId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     Value = table.Column<double>(type: "double precision", nullable: false),
                     Require = table.Column<double>(type: "double precision", nullable: false),
-                    Unit = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Unit = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     FarmSoilId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -89,7 +89,7 @@ namespace Infrastructure.Soil.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ComponentId = table.Column<Guid>(type: "uuid", nullable: false),
                     ActivityId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Data = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Data = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: false),
                     FarmSoilId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),

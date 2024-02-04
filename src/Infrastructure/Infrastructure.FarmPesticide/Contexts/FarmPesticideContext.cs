@@ -16,7 +16,7 @@ namespace Infrastructure.Pesticide.Contexts
         }
 
         public DbSet<FarmPesticide> FarmPesticides { get; set; }
-        public DbSet<PesticideInfo> PesticideInfos { get; set; }
+        public DbSet<ReferencedPesticide> PesticideInfos { get; set; }
         public DbSet<Site> Sites { get; set; }
         //public DbSet<Activity> Activities { get; set; }
         public DbSet<ComponentProperty> Properties { get; set; }
@@ -32,7 +32,7 @@ namespace Infrastructure.Pesticide.Contexts
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<PesticideInfo>().ToTable(nameof(PesticideInfos));
+            modelBuilder.Entity<ReferencedPesticide>().ToTable(nameof(PesticideInfos));
             modelBuilder.Entity<FarmPesticide>().ToTable(nameof(FarmPesticides));
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);

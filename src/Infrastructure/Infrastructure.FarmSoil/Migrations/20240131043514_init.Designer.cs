@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Soil.Migrations
 {
     [DbContext(typeof(FarmSoilContext))]
-    [Migration("20240127021213_init")]
+    [Migration("20240131043514_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -51,14 +51,16 @@ namespace Infrastructure.Soil.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<double>("Require")
                         .HasColumnType("double precision");
 
                     b.Property<string>("Unit")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<double>("Value")
                         .HasColumnType("double precision");
@@ -87,7 +89,8 @@ namespace Infrastructure.Soil.Migrations
 
                     b.Property<string>("Data")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
@@ -144,7 +147,8 @@ namespace Infrastructure.Soil.Migrations
 
                     b.Property<string>("Position")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<Guid>("SiteId")
                         .HasColumnType("uuid");
@@ -177,11 +181,13 @@ namespace Infrastructure.Soil.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("SiteCode")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.HasKey("Id");
 

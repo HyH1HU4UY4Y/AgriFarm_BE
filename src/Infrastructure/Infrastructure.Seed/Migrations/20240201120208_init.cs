@@ -12,15 +12,17 @@ namespace Infrastructure.Seed.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "SeedInfos",
+                name: "RefSeedInfos",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "varchar(150)", nullable: false),
-                    Description = table.Column<string>(type: "varchar(150)", nullable: true),
-                    Details = table.Column<string>(type: "varchar(150)", nullable: true),
-                    Notes = table.Column<string>(type: "varchar(150)", nullable: true),
-                    Resources = table.Column<string>(type: "varchar(150)", nullable: true),
+                    Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    Description = table.Column<string>(type: "text", maxLength: 2147483647, nullable: true),
+                    Manufactory = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
+                    ManufactureDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Property = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
+                    Notes = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
+                    Resources = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -28,7 +30,7 @@ namespace Infrastructure.Seed.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SeedInfos", x => x.Id);
+                    table.PrimaryKey("PK_RefSeedInfos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -36,13 +38,9 @@ namespace Infrastructure.Seed.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "varchar(150)", nullable: false),
-                    SiteCode = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    SiteCode = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    AvatarImg = table.Column<string>(type: "varchar(150)", nullable: true),
-                    LogoImg = table.Column<string>(type: "varchar(150)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
@@ -57,11 +55,11 @@ namespace Infrastructure.Seed.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SiteId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "varchar(150)", nullable: false),
-                    Description = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    Description = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
                     IsConsumable = table.Column<bool>(type: "boolean", nullable: false),
-                    MeasureUnit = table.Column<string>(name: "Measure Unit", type: "varchar(150)", nullable: false),
-                    Notes = table.Column<string>(type: "varchar(150)", nullable: false),
+                    MeasureUnit = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
+                    Notes = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -84,7 +82,7 @@ namespace Infrastructure.Seed.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Stock = table.Column<int>(type: "integer", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "numeric", nullable: true),
-                    SeedInfoId = table.Column<Guid>(type: "uuid", nullable: true)
+                    ReferenceId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,9 +94,9 @@ namespace Infrastructure.Seed.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FarmSeeds_SeedInfos_SeedInfoId",
-                        column: x => x.SeedInfoId,
-                        principalTable: "SeedInfos",
+                        name: "FK_FarmSeeds_RefSeedInfos_ReferenceId",
+                        column: x => x.ReferenceId,
+                        principalTable: "RefSeedInfos",
                         principalColumn: "Id");
                 });
 
@@ -108,10 +106,10 @@ namespace Infrastructure.Seed.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ComponentId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     Value = table.Column<double>(type: "double precision", nullable: false),
                     Require = table.Column<double>(type: "double precision", nullable: false),
-                    Unit = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Unit = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -135,11 +133,11 @@ namespace Infrastructure.Seed.Migrations
                     ActivityId = table.Column<Guid>(type: "uuid", nullable: false),
                     AdditionType = table.Column<int>(type: "integer", nullable: false),
                     ComponentId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Instructions = table.Column<string>(type: "varchar(150)", nullable: false),
-                    Resources = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Instructions = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    Resources = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     UseValue = table.Column<double>(type: "double precision", nullable: false),
-                    Unit = table.Column<string>(type: "varchar(150)", nullable: false),
-                    Notes = table.Column<string>(type: "varchar(150)", nullable: true),
+                    Unit = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    Notes = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -161,9 +159,9 @@ namespace Infrastructure.Seed.Migrations
                 column: "SiteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FarmSeeds_SeedInfoId",
+                name: "IX_FarmSeeds_ReferenceId",
                 table: "FarmSeeds",
-                column: "SeedInfoId");
+                column: "ReferenceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Properties_ComponentId",
@@ -189,7 +187,7 @@ namespace Infrastructure.Seed.Migrations
                 name: "UsedRecords");
 
             migrationBuilder.DropTable(
-                name: "SeedInfos");
+                name: "RefSeedInfos");
 
             migrationBuilder.DropTable(
                 name: "BaseComponent");

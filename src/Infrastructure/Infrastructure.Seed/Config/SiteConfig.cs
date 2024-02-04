@@ -17,7 +17,12 @@ namespace Infrastructure.Seed.Config
                 .Ignore(e => e.PaymentDetail)
                 .Ignore(e => e.Intro)
                 .Ignore(e => e.Capitals)
-                .Ignore(e => e.Subscripts);
+                .Ignore(e => e.Subscripts)
+                .Ignore(e => e.AvatarImg)
+                .Ignore(e => e.LogoImg)
+                .Ignore(e => e.CreatedDate)
+                .Ignore(e => e.LastModify)
+                ;
         }
     }
 }

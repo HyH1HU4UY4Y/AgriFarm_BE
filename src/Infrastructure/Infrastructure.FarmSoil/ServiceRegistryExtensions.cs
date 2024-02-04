@@ -50,44 +50,89 @@ namespace Infrastructure.Soil
                     new(){
 
                         Name = "Land 01",
-                        Position = JsonConvert.SerializeObject(new Dictionary<double, double>
+                        Position = JsonConvert.SerializeObject(new List<PositionPoint>
                         {
-                            {89.21 , 22.13 },
-                            {29.21 , 63.13 },
-                            {56.21 , 22.13 },
-                            {113.21 , 78.13 }
+                            new(89.21 , 22.13 ),
+                            new(29.21 , 63.13 ),
+                            new(56.21, 22.13),
+                            new(113.21 , 78.13)
                         }),
                         Acreage = 100,
                         Unit = "m2",
                         SiteId = new Guid(TempData.FarmId),
+                        Properties = new ComponentProperty[]
+                        {
+                            new()
+                            {
+                                Name = "Heavy metal",
+                                Value = 10,
+                                Unit = "%"
+                            },
+                            new()
+                            {
+                                Name = "pH degree",
+                                Value = 10,
+                                Unit = "pH"
+                            }
+                        }
 
                     },new(){
 
                         Name = "Land 02",
-                        Position = JsonConvert.SerializeObject(new Dictionary<double, double>
+                        Position = JsonConvert.SerializeObject(new List<PositionPoint>
                         {
-                            {89.21 , 22.13 },
-                            {29.21 , 63.13 },
-                            {56.21 , 22.13 },
-                            {113.21 , 78.13 }
+                            new(89.21 , 22.13 ),
+                            new(29.21 , 63.13 ),
+                            new(56.21, 22.13),
+                            new(113.21 , 78.13)
                         }),
                         Acreage = 100,
                         Unit = "m2",
                         SiteId = new Guid(TempData.FarmId),
+                        Properties = new ComponentProperty[]
+                        {
+                            new()
+                            {
+                                Name = "Heavy metal",
+                                Value = 10,
+                                Unit = "%"
+                            },
+                            new()
+                            {
+                                Name = "pH degree",
+                                Value = 10,
+                                Unit = "pH"
+                            }
+                        }
 
                     },new(){
 
                         Name = "Land 03",
-                        Position = JsonConvert.SerializeObject(new Dictionary<double, double>
+                        Position = JsonConvert.SerializeObject(new List<PositionPoint>
                         {
-                            {89.21 , 22.13 },
-                            {29.21 , 63.13 },
-                            {56.21 , 22.13 },
-                            {113.21 , 78.13 }
+                            new(89.21 , 22.13 ),
+                            new(29.21 , 63.13 ),
+                            new(56.21, 22.13),
+                            new(113.21 , 78.13)
                         }),
                         Acreage = 100,
                         Unit = "m2",
                         SiteId = new Guid(TempData.FarmId),
+                        Properties = new ComponentProperty[]
+                        {
+                            new()
+                            {
+                                Name = "Heavy metal",
+                                Value = 10,
+                                Unit = "%"
+                            },
+                            new()
+                            {
+                                Name = "pH degree",
+                                Value = 10,
+                                Unit = "pH"
+                            }
+                        }
 
                     },
                 });

@@ -21,7 +21,7 @@ namespace Infrastructure.Seed.Contexts
         }
 
         public DbSet<FarmSeed> FarmSeeds { get; set; }
-        public DbSet<SeedInfo> SeedInfos { get; set; }
+        public DbSet<ReferencedSeed> RefSeedInfos { get; set; }
         public DbSet<Site> Sites { get; set; }
         //public DbSet<Activity> Activities { get; set; }
         public DbSet<ComponentProperty> Properties { get; set; }
@@ -38,15 +38,15 @@ namespace Infrastructure.Seed.Contexts
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<FarmSeed>().ToTable(nameof(FarmSeeds));
-            modelBuilder.Entity<SeedInfo>().ToTable(nameof(SeedInfos));
+            modelBuilder.Entity<ReferencedSeed>().ToTable(nameof(RefSeedInfos));
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);
             modelBuilder.Ignore<Activity>();
             modelBuilder.Ignore<ComponentDocument>();
             modelBuilder.Ignore<ComponentState>();
 
-            //modelBuilder.Entity<BaseComponent>().UseTpcMappingStrategy();
             modelBuilder.Entity<AdditionOfActivity>().UseTpcMappingStrategy();
+            //modelBuilder.Entity<BaseComponent>().UseTpcMappingStrategy();
             //modelBuilder.Ignore<BaseComponent>();
         }
     }

@@ -22,7 +22,7 @@ namespace Infrastructure.Fertilize.Contexts
 
 
         public DbSet<FarmFertilize> FarmFertilizes { get; set; }
-        public DbSet<FertilizeInfo> FertilizeInfos { get; set; }
+        public DbSet<ReferencedFertilize> FertilizeInfos { get; set; }
         public DbSet<Site> Sites { get; set; }
         //public DbSet<Activity> Activities { get; set; }
         public DbSet<ComponentProperty> Properties { get; set; }
@@ -38,7 +38,7 @@ namespace Infrastructure.Fertilize.Contexts
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<FertilizeInfo>().ToTable(nameof(FertilizeInfos));
+            modelBuilder.Entity<ReferencedFertilize>().ToTable(nameof(FertilizeInfos));
             modelBuilder.Entity<FarmFertilize>().ToTable(nameof(FarmFertilizes));
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);

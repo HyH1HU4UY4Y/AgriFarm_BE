@@ -11,6 +11,7 @@ namespace EventBus.Defaults
         None,
         Add,
         Modify,
-        Delete
+        RawDelete,
+        SoftDelete
     }
 }

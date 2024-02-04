@@ -3,7 +3,7 @@ using SharedDomain.Entities.FarmComponents;
 
 namespace SharedDomain.Entities.Subscribe
 {
-    public class Subscripton : BaseEntity
+    public class Subscripton : BaseEntity, IMultiSite
     {
         public Guid SiteId { get; set; }
         public Site Site { get; set; }
