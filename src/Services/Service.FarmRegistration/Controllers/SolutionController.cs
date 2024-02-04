@@ -1,16 +1,11 @@
-﻿using Asp.Versioning;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Service.FarmRegistry.DTOs;
 using Service.Registration.Queries;
-using SharedApplication.Pagination;
-using SharedDomain.Common;
 
 namespace Service.FarmRegistry.Controllers
 {
-    [Route("api/v{version:apiVersion}/[controller]/[action]")]
-    [ApiVersion("1.0")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class SolutionController : ControllerBase
     {
@@ -26,11 +21,7 @@ namespace Service.FarmRegistry.Controllers
         {
             var rs = await _mediator.Send(new GetSolutionsQuery());
 
-            return Ok(new DefaultResponse<PagedList<SolutionResponse>>
-            {
-                Data = rs,
-                Status = 200
-            });
+            return Ok(rs);
         }
     }
 }

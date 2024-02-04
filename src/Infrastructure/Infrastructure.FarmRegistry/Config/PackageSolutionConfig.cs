@@ -23,7 +23,7 @@ namespace Infrastructure.Registration.Config
                     Description = "This is cheapest solution",
                     Name = "Solution 1",
                     Price = 10,
-                    DurationInMonth = 6,
+                    DurationHour = 750,
 
                 },
                 new()
@@ -31,7 +31,7 @@ namespace Infrastructure.Registration.Config
                     Description = "This is medium solution",
                     Name = "Solution 2",
                     Price = 100,
-                    DurationInMonth = 12,
+                    DurationHour = 7800,
 
                 },
                 new()
@@ -39,7 +39,7 @@ namespace Infrastructure.Registration.Config
                     Description = "This is vip solution",
                     Name = "Solution 3",
                     Price = 1000,
-                    DurationInMonth = 24,
+                    DurationHour = 79000,
 
                 }
             });

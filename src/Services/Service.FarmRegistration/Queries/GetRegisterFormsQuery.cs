@@ -1,46 +1,33 @@
 ﻿using AutoMapper;
-using Infrastructure.FarmRegistry.Contexts;
+using Infrastructure.Registration.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Service.FarmRegistry.DTOs;
-using SharedApplication.Pagination;
-using SharedDomain.Entities.Subscribe;
-using SharedDomain.Repositories.Base;
 
 namespace Service.Registration.Queries
 {
-    public class GetRegisterFormsQuery: IRequest<PagedList<RegisterFormResponse>>
+    public class GetRegisterFormsQuery: IRequest<List<RegisterFormResponse>>
     {
-        public PaginationRequest Pagination { get; set; } = new();
     }
 
-    public class GetRegisterFormsQueryHandler : IRequestHandler<GetRegisterFormsQuery, PagedList<RegisterFormResponse>>
+    public class GetRegisterFormsQueryHandler : IRequestHandler<GetRegisterFormsQuery, List<RegisterFormResponse>>
     {
-        private readonly ISQLRepository<RegistrationContext, FarmRegistration> _repo;
+        private IRegistryQueryRepo _repo;
         private IMapper _mapper;
 
-        public GetRegisterFormsQueryHandler(IMapper mapper, 
-            ISQLRepository<RegistrationContext, FarmRegistration> repo)
+        public GetRegisterFormsQueryHandler(IMapper mapper, IRegistryQueryRepo repo)
         {
             _mapper = mapper;
             _repo = repo;
         }
 
 
-        public Task<PagedList<RegisterFormResponse>> Handle(GetRegisterFormsQuery request, CancellationToken cancellationToken)
+        Task<List<RegisterFormResponse>> IRequestHandler<GetRegisterFormsQuery, List<RegisterFormResponse>>.Handle(GetRegisterFormsQuery request, CancellationToken cancellationToken)
         {
-            var rs = _repo
-                .GetMany(null
-                , e=>e.Include(r=>r.Solution)).Result!
-                .OrderBy(x => x.FirstName)
+            var rs = _repo.All
+                .OrderBy(x => x.Name)
                 .ToList();
 
-            return Task.FromResult(
-                PagedList<RegisterFormResponse>.ToPagedList(
-                    _mapper.Map<List<RegisterFormResponse>>(rs),
-                    request.Pagination.PageNumber,
-                    request.Pagination.PageSize
-                ));
+            return Task.FromResult(_mapper.Map<List<RegisterFormResponse>>(rs));
         }
     }
 }

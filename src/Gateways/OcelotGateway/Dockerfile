@@ -14,7 +14,7 @@ WORKDIR "/src/src/Gateways/OcelotGateway"
 RUN dotnet build "OcelotGateway.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "OcelotGateway.csproj" -c Release -o /app/publish
+RUN dotnet publish "OcelotGateway.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

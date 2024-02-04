@@ -14,24 +14,25 @@ namespace Infrastructure.FarmSite.Config
         public void Configure(EntityTypeBuilder<Site> builder)
         {
             builder
-                .Ignore(e => e.Components);
-/*
+                .Ignore(e => e.Components)
+                .Ignore(e => e.Subscripts);
+
             builder.HasData(new List<Site>{
                 new()
                 {
-                    SiteCode = "xyz.abc.vn",
+                    SiteKey = "xyz.abc.vn",
                     Name = "Farm 01",
                     IsActive = false,
                     Intro = "A very  long   intro"
                 },
                 new()
                 {
-                    SiteCode = "asd.fgh.vn",
+                    SiteKey = "asd.fgh.vn",
                     Name = "Farm 02",
                     IsActive = false,
                     Intro = "A very  long   intro"
                 }
-            });*/
+            });
         }
     }
 }

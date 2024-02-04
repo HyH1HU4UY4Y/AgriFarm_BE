@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace SharedDomain.Defaults
 {
-    public class AppToken
+    public static class AppToken
     {
-        public const string Key = "@Super-Secret//Ke.Y369012";
-        public const string Issuer = "GAgri";
-        public const string Audience = "Everyone";
-        public const long ExpiredIn = 60;
+        public static readonly string Key = "@Super-Secret//Ke.Y369012";
+        public static readonly string Issuer = "GAgri";
+        public static readonly string Audience = "Everyone";
+        public static readonly long ExpiredIn = 60;
     }
 }

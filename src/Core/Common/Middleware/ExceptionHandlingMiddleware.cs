@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using SharedDomain.Common;
+
 using SharedDomain.Exceptions;
 using System.Linq;
 using System.Text.Json;
@@ -27,24 +26,16 @@ namespace SharedApplication.Middleware
         private static async Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
         {
             var statusCode = GetStatusCode(exception);
-
-            var response = new DefaultResponse<List<string>>
+            var response = new
             {
-                Data = new()
-                {
-                    $"{GetTitle(exception)}",
-                },
-                Message = exception.Message ,
-                Status = statusCode
+                title = GetTitle(exception),
+                status = statusCode,
+                detail = exception.Message,
+                errors = GetErrors(exception)
             };
-            if (GetErrors(exception).Any())
-            {
-                response.Data.AddRange(GetErrors(exception));
-            }
-                
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = statusCode;
-            await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(response));
+            await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
         private static int GetStatusCode(Exception exception) =>
             exception switch
@@ -60,15 +51,12 @@ namespace SharedApplication.Middleware
                 ApplicationException applicationException => applicationException.InnerException!.Message,
                 _ => "Server Error"
             };
-        private static List<string> GetErrors(Exception exception)
+        private static IReadOnlyDictionary<string, string[]> GetErrors(Exception exception)
         {
-            List<string> errors = new();
+            IReadOnlyDictionary<string, string[]> errors = null;
             if (exception is ValidationException validationException)
             {
-                errors = validationException.Errors
-                    //.ToDictionary(x=>x.Key, x => x.Value)
-                    .Select(x => $"{x.Key}: {string.Join(", ", x.Value)}")
-                    .ToList();
+                errors = validationException.Errors.ToDictionary(x=>x.Key, y=>y.Value);
             }
             return errors;
         }
