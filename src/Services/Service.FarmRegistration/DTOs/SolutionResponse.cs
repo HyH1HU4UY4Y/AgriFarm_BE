@@ -8,7 +8,7 @@ namespace Service.FarmRegistry.DTOs
         public string? Name { get; set; }
         public string? Description { get; set; }
         public decimal Price { get; set; }
-        public long? DurationInMonth { get; set; }
+        public long? DurationHour { get; set; }
 
     }
 }

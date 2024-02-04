@@ -15,7 +15,7 @@ namespace SharedDomain.Entities.Subscribe
         [StringLength(5000)]
         public string? Description { get; set; }
         public decimal Price { get; set; }
-        public long? DurationInMonth { get; set; }
+        public long? DurationHour { get; set; }
 
         public ICollection<Subscripton>? Subscripts { get; set; }
 

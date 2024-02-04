@@ -3,7 +3,7 @@ using Infrastructure.FarmRegistry.Contexts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedDomain.Entities.Subscribe;
-using SharedApplication.MultiTenant;
+using Infrastructure.Registration.Repositories;
 
 namespace Infrastructure.FarmRegistry
 {
@@ -13,11 +13,11 @@ namespace Infrastructure.FarmRegistry
         {
             services.AddDefaultSQLDB<RegistrationContext>(configuration);
 
-            services
-                .AddSQLRepo<RegistrationContext, FarmRegistration>()
-                .AddSQLRepo<RegistrationContext, PackageSolution>()
-                .AddMultiTenant(configuration);
-                
+            services.AddScoped<IRegistryQueryRepo, RegistryQueryRepo>()
+                .AddSQLCommandRepo<RegistrationContext, FarmRegistration>();
+
+            services.AddScoped<ISolutionQueryRepo, SolutionQueryRepo>()
+                .AddSQLCommandRepo<RegistrationContext, PackageSolution>();
 
             return services;
         }

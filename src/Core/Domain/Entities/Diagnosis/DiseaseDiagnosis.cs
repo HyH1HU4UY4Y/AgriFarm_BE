@@ -1,21 +1,18 @@
-﻿using SharedDomain.Defaults;
-using SharedDomain.Entities.Base;
+﻿using SharedDomain.Entities.Base;
 
 namespace SharedDomain.Entities.Diagnosis
 {
-    public class DiseaseDiagnosis : BaseEntity
+    public class DiseaseDiagnosis : BaseEntity, ITraceableItem
     {
-        public Guid PlantDiseaseId { get; set; }
-        public DiseaseInfo? PlantDisease { get; set; }
-        public string? Description { get; set; }
-        public string? Feedback { get; set; }
-        public FeedbackStatus FeedbackStatus { get; set; } = FeedbackStatus.Pending;
-        public string? Location { get; set; }
-        public Guid? CreateBy { get; set; }
-        
-        public Guid? LandId { get; set; }
+        public Guid ReportId { get; set; }
+        public DiseaseReport Report { get; set; }
+        public string Content { get; set; }
 
-        
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public DateTime LastModify { get; set; } = DateTime.Now;
+        public bool IsDeleted { get; set; } = false;
+        public DateTime? DeletedDate { get; set; }
 
+        public ICollection<DiseaseFeedBack> Diagnoses { get; set; }
     }
 }

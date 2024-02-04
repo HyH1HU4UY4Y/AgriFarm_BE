@@ -1,15 +1,9 @@
 using SharedApplication;
 using SharedApplication.Middleware;
+using Infrastructure.CommonShared.Authorize;
+using Infrastructure.FarmRegistry;
 
 using SharedApplication.CORS;
-using SharedApplication.Authorize;
-using EventBus;
-
-using Infrastructure.FarmRegistry;
-using SharedApplication.Persistence;
-using Infrastructure.FarmRegistry.Contexts;
-using SharedApplication.Versioning;
-using SharedApplication.Serializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,29 +15,22 @@ builder.Services.AddInfras(builder.Configuration);
 builder.Services.AddSharedApplication<Program>();
 builder.Services.AddJWTAuthorization();
 builder.Services.AddGlobalErrorMiddleware();
-builder.Services.AddDefaultVersioning();
 
-builder.Services.AddDefaultEventBusExtension<Program>(
-    builder.Configuration,
-    (config, context) =>
-{
-   
-});
 
-builder.Services.AddControllers()
-    .AddDefaultJson();
+
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.EnsureDataInit<RegistrationContext>().Wait();
+// Configure the HTTP request pipeline.
 
-app.UseGlobalErrorMiddleware();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseGlobalErrorMiddleware();
 
 app.UseHttpsRedirection();
 

@@ -1,74 +1,48 @@
-﻿using Infrastructure.Identity.Contexts;
-using MediatR;
-using Service.Identity.DTOs;
-using SharedApplication.Authorize.Contracts;
+﻿using SharedApplication.Authorize.Contracts;
 using SharedApplication.CQRS;
-using SharedDomain.Defaults;
-using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Exceptions;
-using SharedDomain.Repositories.Base;
 
 namespace Service.Identity.Commands.Auth
 {
-    
+    public record AuthorizeResponse(string Token, UserInforResponse UserInfo);
+    public record UserInforResponse(string Name, List<string> Roles);
 
-    public record TokenCommand(string UserName, string Password, string? SiteCode = null): IRequest<AuthorizeResponse>;
+    public record TokenCommand(string UserName, string Password): ICommand<AuthorizeResponse>;
 
 
-    public class TokenCommandHandler : IRequestHandler<TokenCommand, AuthorizeResponse>
+    public class TokenCommandHandler : ICommandHandler<TokenCommand, AuthorizeResponse>
     {
         private readonly ITokenGenerator _tokenGenerator;
         private readonly IIdentityService _identityService;
-        private readonly ISQLRepository<IdentityContext, Site> _sites;
 
-        public TokenCommandHandler(IIdentityService identityService, ITokenGenerator tokenGenerator, ISQLRepository<IdentityContext, Site> sites)
+        public TokenCommandHandler(IIdentityService identityService, ITokenGenerator tokenGenerator)
         {
             _identityService = identityService;
             _tokenGenerator = tokenGenerator;
-            _sites = sites;
         }
 
         public async Task<AuthorizeResponse> Handle(TokenCommand request, CancellationToken cancellationToken)
         {
-            
-
             var result = await _identityService.SigninUserAsync(request.UserName, request.Password);
 
-            if (result.IsLockedOut)
-            {
-                throw new BadRequestException("This accout was locked.");
-            }
-
-            if (!result.Succeeded)
+            if (!result)
             {
                 throw new BadRequestException("Invalid username or password");
             }
 
-            var user = _identityService.GetFullMember(e=>e.UserName == request.UserName).Result;
-            
-            if (user == null) {
-                return new(null, null, false);
-            }
+            var (user, roles) = await _identityService.GetUserDetailsAsync(await _identityService.GetUserIdAsync(request.UserName));
 
-            var site = await _sites.GetOne(e=>e.Id.ToString() == user.Info.SiteId.ToString());
-
-            string token = _tokenGenerator.GenerateJwt(user!.Info, user.Roles, user.Claims);
+            string token = _tokenGenerator.GenerateJwt(user);
 
             return new AuthorizeResponse
             (
-
+                
                 token,
-                new() {
-                    UserName = user.Info.UserName,
-                    Email = user.Info.Email,
-                    FullName = $"{user.Info.FirstName} {user.Info.LastName}",
-                    SiteId =  user.Roles.Any(e=>e == Roles.SuperAdmin) ? "root": user.Info.SiteId.ToString()!,
-                    SiteCode = user.Roles.Any(e=>e == Roles.SuperAdmin) ? "root": site.SiteCode,
-                    Role = user.Roles.Any(r => r == Roles.SuperAdmin)?Roles.SuperAdmin: user.Roles.First()
-
-                }
+                new (
+                    user.UserName,
+                    roles.ToList()
+                )
             );
-            //throw new NotImplementedException();
         }
     }
 }

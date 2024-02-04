@@ -1,42 +1,33 @@
 ﻿using AutoMapper;
-using Infrastructure.FarmRegistry.Contexts;
+using Infrastructure.Registration.Repositories;
 using MediatR;
 using Service.FarmRegistry.DTOs;
-using SharedApplication.Pagination;
-using SharedDomain.Entities.Subscribe;
-using SharedDomain.Repositories.Base;
+using SharedDomain.Entities.PostHarvest;
 
 namespace Service.Registration.Queries
 {
-    public class GetSolutionsQuery: IRequest<PagedList<SolutionResponse>>
+    public class GetSolutionsQuery: IRequest<List<SolutionResponse>>
     {
-        public PaginationRequest Pagination { get; set; } = new();
     }
 
-    public class GetSolutionsQueryHandler : IRequestHandler<GetSolutionsQuery, PagedList<SolutionResponse>>
+    public class GetSolutionsQueryHandler : IRequestHandler<GetSolutionsQuery, List<SolutionResponse>>
     {
-        private ISQLRepository<RegistrationContext, PackageSolution> _repo;
-        private readonly IMapper _mapper;
+        private ISolutionQueryRepo _repo;
+        private IMapper _mapper;
 
-        public GetSolutionsQueryHandler(IMapper mapper, 
-            ISQLRepository<RegistrationContext, PackageSolution> repo)
+        public GetSolutionsQueryHandler(ISolutionQueryRepo repo, IMapper mapper)
         {
-            _mapper = mapper;
             _repo = repo;
+            _mapper = mapper;
         }
 
-        public Task<PagedList<SolutionResponse>> Handle(GetSolutionsQuery request, CancellationToken cancellationToken)
+        public Task<List<SolutionResponse>> Handle(GetSolutionsQuery request, CancellationToken cancellationToken)
         {
-            var rs = _repo.GetMany().Result!
+            var rs = _repo.All
                 .OrderBy (x => x.Name)
                 .ToList();
 
-            return Task.FromResult(
-                PagedList<SolutionResponse>.ToPagedList(
-                    _mapper.Map<List<SolutionResponse>>(rs),
-                    request.Pagination.PageNumber,
-                    request.Pagination.PageSize
-                ));
+            return Task.FromResult(_mapper.Map<List<SolutionResponse>>(rs));
         }
     }
 }

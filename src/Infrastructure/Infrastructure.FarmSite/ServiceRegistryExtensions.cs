@@ -4,10 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using SharedDomain.Entities.Subscribe;
 using SharedApplication.Persistence;
 using SharedDomain.Entities.FarmComponents;
-using SharedApplication.MultiTenant;
-using SharedDomain.Entities.FarmComponents.Others;
-using Microsoft.AspNetCore.Builder;
-using SharedDomain.Defaults;
 
 namespace Infrastructure.FarmSite
 {
@@ -15,39 +11,19 @@ namespace Infrastructure.FarmSite
     {
         public static IServiceCollection AddInfras(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDefaultSQLDB<SiteContext>(configuration)
-                    .AddMultiTenant(configuration);
+            services.AddDefaultSQLDB<SiteContext>(configuration);
 
-            services.AddSQLRepo<SiteContext, Site>()
-                    .AddSQLRepo<SiteContext, CapitalState>()
-                    .AddSQLRepo<SiteContext, Document>()
-                    .AddSQLRepo<SiteContext, Subscripton>();
+            services.AddSQLCommandRepo<SiteContext, Site>()
+                    .AddSQLCommandRepo<SiteContext, CapitalState>()
+                    .AddSQLCommandRepo<SiteContext, Document>();
                     
-            
+            /*
+                        services.AddScoped<ISolutionQueryRepo, SolutionQueryRepo>()
+            .AddScoped<IRegistryQueryRepo, RegistryQueryRepo>()
+                            
+            */
+
             return services;
-        }
-
-        public static IApplicationBuilder SeedData(this IApplicationBuilder app)
-        {
-            using var scope = app.ApplicationServices.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<SiteContext>(); 
-
-            db.Database.EnsureCreated();
-            if(!db.Sites.Any(e=>e.Id.ToString() == TempData.FarmId)) {
-                db.Sites.Add(new()
-                {
-                    Id = new Guid(TempData.FarmId),
-                    Name = "site01",
-                    IsActive = true,
-                    SiteCode = "site021.abc",
-                    
-                });
-
-                db.SaveChanges();
-            }
-            
-
-            return app;
         }
     }
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SharedDomain.Defaults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +14,9 @@ namespace SharedApplication.CORS
             services.AddCors(options =>
             {
                 options.AddPolicy(corsName, builder => builder
-                    //.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    .AllowCredentials()
-                    .WithExposedHeaders(AdditionHeader.Pagination)
-                    .SetIsOriginAllowed(origin => true));
+                    .AllowCredentials());
             });
             return services;
         }
