@@ -23,7 +23,6 @@ namespace Service.Disease.DTOs
         public string? Feedback { get; set; }
         public string? Location { get; set; }
         public Guid? CreateBy { get; set; }
-
         public Guid? LandId { get; set; }
     }
 }
