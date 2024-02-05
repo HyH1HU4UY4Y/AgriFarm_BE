@@ -1,4 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Service.Supply.Commands.Supplies;
+using Service.Supply.DTOs;
+using Service.Supply.Queries.Supplies;
+using SharedApplication.Pagination;
+using SharedDomain.Common;
+using System.ComponentModel.DataAnnotations;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,38 +16,59 @@ namespace Service.Supply.Controllers
     [ApiController]
     public class SuppliesController : ControllerBase
     {
-        // GET: api/<SuppliesController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private IMediator _mediator;
+
+        public SuppliesController(IMediator mediator)
         {
-            return new string[] { "value1", "value2" };
+            _mediator = mediator;
         }
 
-        // GET api/<SuppliesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("get-by")]
+        public async Task<IActionResult> Get([Required][FromQuery]Guid itemId)
         {
-            return "value";
+            var items = await _mediator.Send(new GetItemSupplyDetailsQuery
+            {
+                ItemId = itemId,
+            });
+
+            Response.AddPaginationHeader(items.MetaData);
+
+            return Ok(new DefaultResponse<PagedList<SupplyDetailResponse>>
+            {
+                Data = items,
+                Status = 200
+            });
         }
 
-        // POST api/<SuppliesController>
-        [HttpPost("post")]
-        public async Task<IActionResult> Post([FromBody] string value)
-        {
 
-            return Ok();
+        
+        [HttpPost("add-contract")]
+        public async Task<IActionResult> Post([FromBody] NewContractRequest request)
+        {
+            var cmd = new AddNewContractCommand {
+                
+            };
+            var rs = await _mediator.Send(cmd);
+
+            return StatusCode(201, rs);
         }
 
-        // PUT api/<SuppliesController>/5
-        [HttpPut("{id}")]
+        
+        /*[HttpPut("put")]
         public void Put(int id, [FromBody] string value)
         {
-        }
+        }*/
 
-        // DELETE api/<SuppliesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete([FromQuery][Required] Guid id)
         {
+            await _mediator.Send(new DeleteSupplyContractCommand
+            {
+                Id = id 
+            });
+
+            return NoContent();
         }
     }
 }

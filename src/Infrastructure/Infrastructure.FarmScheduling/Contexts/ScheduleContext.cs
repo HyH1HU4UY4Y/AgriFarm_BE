@@ -30,8 +30,6 @@ namespace Infrastructure.FarmScheduling.Contexts
         public DbSet<ActivityParticipant> ActivityParticipants { get; set; }
         public DbSet<MinimalUserInfo> Participants { get; set; }
         public DbSet<TrainingDetail> TrainingDetails { get; set; }
-        public DbSet<TrainingContent> TrainingContents { get; set; }
-        public DbSet<ExpertInfo> Experts { get; set; }
         public DbSet<ConsumeCultivation> ConsumeDetails { get; set; }
         public DbSet<BaseComponent> Components { get; set; }
 
@@ -51,7 +49,7 @@ namespace Infrastructure.FarmScheduling.Contexts
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ParticipantConfig).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SeasonConfig).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(FarmSoil).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(FarmSoilConfig).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ExpertConfig).Assembly);
 
 

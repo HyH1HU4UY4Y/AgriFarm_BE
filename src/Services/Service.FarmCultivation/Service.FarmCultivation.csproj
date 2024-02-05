@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,16 +6,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>5c82912d-5647-4955-b24d-6c3ceece601f</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Infrastructure\Infrastructure.FarmHarvest\Infrastructure.FarmCultivation.csproj" />
+    <ProjectReference Include="..\..\Core\Common\SharedApplication.csproj" />
+    <ProjectReference Include="..\..\Core\Domain\SharedDomain.csproj" />
+    <ProjectReference Include="..\..\Core\EventBus\EventBus.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure.FarmCultivation\Infrastructure.FarmCultivation.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SharedDomain.Entities.Schedules
 {
-    public class Activity : BaseEntity
+    public class Activity : BaseEntity, IMultiSite
     {
         public Guid SeasonId { get; set; }
         public CultivationSeason Season { get; set; }

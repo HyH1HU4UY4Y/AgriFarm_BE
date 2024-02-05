@@ -10,16 +10,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SharedApplication.MultiTenant.Implement;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace SharedApplication.Persistence.Repositories
 {
-    public class SQLRepositoryV2<TDbContext, TEntity> : ISQLRepository<TDbContext, TEntity>
+    public class SQLRepositoryV2<TDbContext, TEntity> : ISQLRepository<TDbContext, TEntity> 
         where TDbContext : DbContext where TEntity : class, IBaseEntity<Guid>
     {
         protected readonly TDbContext _context;
         private readonly IQueryable<TEntity> _all;
         private readonly ILogger<SQLRepositoryV2<TDbContext, TEntity>> _logger;
         private readonly IMultiTenantResolver _multiTenantResolver;
+        private Guid _siteId = Guid.Empty;
 
         public SQLRepositoryV2(TDbContext context,
             ILogger<SQLRepositoryV2<TDbContext, TEntity>> logger,
@@ -33,6 +35,10 @@ namespace SharedApplication.Persistence.Repositories
             }
             _logger = logger;
             _multiTenantResolver = multiTenantResolver;
+            if (!_multiTenantResolver.IsSuperAdmin())
+            {
+                _siteId = _multiTenantResolver.GetTenantId();
+            }
         }
 
 
@@ -65,7 +71,8 @@ namespace SharedApplication.Persistence.Repositories
 
         public virtual async Task<TEntity?> GetOne(
             Expression<Func<TEntity, bool>> selector,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+            bool checkRole = false)
         {
             var rs = _all;
             if (include != null) rs = include(rs);
@@ -75,7 +82,8 @@ namespace SharedApplication.Persistence.Repositories
 
         public virtual Task<List<TEntity>?> GetMany(
                 Expression<Func<TEntity, bool>> filter = null,
-                Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
+                Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+                bool checkRole = false)
         {
             var items = _all;
 
@@ -88,6 +96,10 @@ namespace SharedApplication.Persistence.Repositories
             if (filter != null)
             {
                 items = items.Where(filter);
+            }
+            if (checkRole && !_multiTenantResolver.IsSuperAdmin())
+            {
+                items = items.Where(e => e.GetType().GetProperty("SiteId").GetValue(e).ToString() == _siteId.ToString());
             }
 
             return Task.FromResult(items.AsNoTracking().ToList())!;
@@ -128,6 +140,9 @@ namespace SharedApplication.Persistence.Repositories
 
             await Task.CompletedTask;
         }
+
+        public Guid GetSiteId()
+            => _siteId;
 
     }
 }

@@ -33,7 +33,7 @@ builder.Services.AddDefaultEventBusExtension<Program>(
     builder.Configuration,
     (config, context) =>
     {
-        config.AddReceiveEndpoint<InitFarmOwnerConsumer>(EventQueue.InitFarmOwner, context);
+        config.AddReceiveEndpoint<InitFarmOwnerConsumer>(EventQueue.InitFarmOwnerQueue, context);
     });
 
 
@@ -69,12 +69,16 @@ using (var scope = app.Services.CreateScope())
     {
         await _m.Send(new CreateMemberCommand
         {
+            Staff = new()
+            {
+                FirstName = $"Admin",
+                LastName = $"Owner",
+                Password = "@123456",
+                UserName = $"owner01@farmer"
+            },
             AccountType = AccountType.Admin,
-            FirstName = $"Admin",
-            LastName = $"Owner",
             SiteId = new Guid(TempData.FarmId),
-            Password = "@123456",
-            UserName = $"owner01@farmer"
+
         });
 
         for (var i = 1; i <= 5; i++)
@@ -82,11 +86,14 @@ using (var scope = app.Services.CreateScope())
             await _m.Send(new CreateMemberCommand
             {
                 AccountType = AccountType.Member,
-                FirstName = $"User",
-                LastName = $"User{i}",
-                Password = "@123456",
-                SiteId = new Guid(TempData.FarmId),
-                UserName = $"Userx0{i}@test.vn"
+                Staff = new()
+                {
+                    FirstName = $"User",
+                    LastName = $"User{i}",
+                    Password = "@123456",
+                    UserName = $"Userx0{i}@test.vn"
+                },
+                SiteId = new Guid(TempData.FarmId)
             });
         }
     }

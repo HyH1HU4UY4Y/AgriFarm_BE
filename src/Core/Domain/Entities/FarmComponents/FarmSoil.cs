@@ -20,9 +20,9 @@ namespace SharedDomain.Entities.FarmComponents
         }
 
         [NotMapped]
-        public Dictionary<double, double> Positions 
+        public List<PositionPoint> Positions 
         {
-            get => JsonConvert.DeserializeObject<Dictionary<double, double>>(_positionStr)??new();
+            get => JsonConvert.DeserializeObject<List<PositionPoint>>(_positionStr)??new();
             set => _positionStr = JsonConvert.SerializeObject(value);
         }
 

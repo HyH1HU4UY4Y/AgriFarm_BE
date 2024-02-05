@@ -81,7 +81,11 @@ namespace SharedApplication.Persistence
                 {
                     Console.WriteLine("yes");
                 }*/
-                property.SetColumnType("varchar(150)");
+                if(property.FindAnnotation("MaxLength") == null)
+                {
+
+                    property.SetMaxLength(300);
+                }
             }
 
             //set delete behavior

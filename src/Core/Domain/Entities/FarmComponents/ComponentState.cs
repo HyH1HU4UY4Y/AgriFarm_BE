@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +19,7 @@ namespace SharedDomain.Entities.FarmComponents
         public Guid? ActivityId { get; set; }
         public Activity? Activity { get; set; }
 
+        [MaxLength(8000)]
         public string Data { get; private set; }
 
         public void SetData(Dictionary<string, object> data)

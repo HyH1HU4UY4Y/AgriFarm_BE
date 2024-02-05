@@ -1,10 +1,14 @@
 ﻿
 using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Service.Soil.Command;
+using Service.Soil.DTOs;
 using Service.Soil.Queries;
 using SharedApplication.Pagination;
+using SharedDomain.Common;
 using SharedDomain.Defaults;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,55 +16,104 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Service.Soil.Controllers
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/lands")]
     [ApiController]
     [ApiVersion("1.0")]
     public class FarmLandsController : ControllerBase
     {
         private IMediator _mediator;
+        private IMapper _mapper;
 
-        public FarmLandsController(IMediator mediator)
+        public FarmLandsController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
-        // GET: api/<FarmLandsController>
-        [HttpGet]
-        public async Task<IActionResult> Get([Required][FromQuery]string siteCode)
+
+        [HttpGet("get")]
+        public async Task<IActionResult> Get([Required][FromQuery]string siteCode, Guid? id = null)
         {
-            var rs = await _mediator.Send(new GetLandBySiteCodeQuery
-            {
-                SiteCode = siteCode
+            if(id == null) {
+
+                var items = await _mediator.Send(new GetLandsBySiteCodeQuery
+                {
+                    SiteCode = siteCode
+                });
+
+                Response.AddPaginationHeader(items.MetaData);
+
+                return Ok(new DefaultResponse<PagedList<LandResponse>>
+                {
+                    Data = items,
+                    Status = 200
+                });
+            }
+
+            var item = await _mediator.Send(new GetLandBySiteCodeQuery { 
+                SiteCode = siteCode,
+                Id = id.Value
             });
 
-            Response.AddPaginationHeader(rs.MetaData);
+            return Ok(new DefaultResponse<LandResponse>
+            {
+                Data = item,
+                Status = 200
+            });
 
-            return Ok(rs);
         }
 
-        // GET api/<FarmLandsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("with-properties")]
+        public async Task<IActionResult> GetLandWithProperties(Guid? id = null)
         {
-            return "value";
+            if(id == null)
+            {
+                var items = await _mediator.Send(new GetLandsWithPropertiesQuery { });
+
+                Response.AddPaginationHeader(items.MetaData);
+
+                return Ok(new DefaultResponse<PagedList<LandWithPropertiesResponse>>
+                {
+                    Data = items,
+                    Status = 200
+                });
+            }
+
+            var item = await _mediator.Send(new GetLandWithPropertiesQuery { 
+                Id = id.Value
+            });
+
+            return Ok(item);
+            
         }
 
-        // POST api/<FarmLandsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        
+        [HttpPost("post")]
+        public async Task<IActionResult> Post([FromBody] AddNewLandCommand request)
         {
+            var rs = await _mediator.Send(request);
+
+            return StatusCode(201, rs);
         }
 
-        // PUT api/<FarmLandsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+
+        [HttpPut("put")]
+        public async Task<IActionResult> Put([FromQuery]Guid id, [FromBody] LandRequest request)
         {
+            var cmd = _mapper.Map<UpdateLandCommand>(request);
+            cmd.Id = id;
+
+            await _mediator.Send(cmd);
+
+            return NoContent();
         }
 
-        // DELETE api/<FarmLandsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete([FromQuery]Guid id)
         {
+            await _mediator.Send(new DeleteLandCommand { Id = id });
+
+            return NoContent();
         }
     }
 }

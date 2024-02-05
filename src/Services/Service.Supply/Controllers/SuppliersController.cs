@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Service.Supply.Commands;
+using Service.Supply.Commands.Suppliers;
 using Service.Supply.DTOs;
-using Service.Supply.Queries;
+using Service.Supply.Queries.Suppliers;
+using SharedDomain.Common;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,12 +15,10 @@ namespace Service.Supply.Controllers
     public class SuppliersController : ControllerBase
     {
         private IMediator _mediator;
-        private IMapper _mapper;
 
-        public SuppliersController(IMediator mediator, IMapper mapper)
+        public SuppliersController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
 
         [HttpGet("get")]
@@ -31,7 +30,9 @@ namespace Service.Supply.Controllers
                 return Ok(items);
             }
 
-            var item = await _mediator.Send(new GetSupplierByIdQuery {Id = (Guid)id });
+            var item = await _mediator.Send(new GetSupplierByIdQuery {
+                Id = id.Value 
+            });
 
             return Ok(item);
         }
@@ -41,10 +42,17 @@ namespace Service.Supply.Controllers
         [HttpPost("post")]
         public async Task<IActionResult> Post([FromBody] SupplierRequest request)
         {
-            var cmd = _mapper.Map<CreateNewSupplierCommand>(request);
-            var rs = await _mediator.Send(cmd);
+            
+            var rs = await _mediator.Send(new CreateNewSupplierCommand
+            {
+                Supplier = request
+            });
 
-            return CreatedAtAction(nameof(Get),rs, null);
+            return StatusCode(201, new DefaultResponse<Guid>
+            {
+                Data = rs,
+                Status = 201
+            });
         }
 
         
@@ -52,10 +60,12 @@ namespace Service.Supply.Controllers
         public async Task<IActionResult> Put([FromQuery]Guid id, [FromBody] SupplierRequest request)
         {
 
-            var cmd = _mapper.Map<UpdateSupplierCommand>(request);
-            cmd.Id = id;
 
-            await _mediator.Send(cmd);
+            await _mediator.Send(new UpdateSupplierCommand
+            {
+                Id = id,
+                Supplier = request
+            });
 
             return NoContent();
         }
@@ -64,7 +74,9 @@ namespace Service.Supply.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromQuery]Guid id)
         {
-            await _mediator.Send(new DeleteSupplierCommand { Id = id });
+            await _mediator.Send(new DeleteSupplierCommand { 
+                Id = id 
+            });
 
             return NoContent();
         }

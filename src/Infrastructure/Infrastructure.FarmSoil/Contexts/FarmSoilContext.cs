@@ -25,6 +25,7 @@ namespace Infrastructure.Soil.Contexts
         //public DbSet<Activity> Activities { get; set; }
         public DbSet<ComponentProperty> Properties { get; set; }
         public DbSet<ComponentState> States { get; set; }
+        
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -32,10 +32,10 @@ namespace EventBus
                         hostConfigurator.Username(setting.UserName);
                         hostConfigurator.Password(setting.Password);
                     });
-                    configurator.UseMessageRetry(retryConfigurator =>
+                    /*configurator.UseMessageRetry(retryConfigurator =>
                     {
-                        retryConfigurator.Interval(3, TimeSpan.FromMinutes(5));
-                    });
+                        retryConfigurator.Interval(1, TimeSpan.FromMinutes(5));
+                    });*/
 
                     receiverConfig(configurator, context);
                 });

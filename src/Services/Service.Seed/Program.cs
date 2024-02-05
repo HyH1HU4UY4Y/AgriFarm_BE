@@ -8,6 +8,8 @@ using EventBus;
 
 using Infrastructure.Seed;
 using Infrastructure.Seed.Contexts;
+using SharedApplication.Serializer;
+using SharedApplication.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +21,9 @@ builder.Services.AddDomainCors(cors);
 builder.Services.AddInfras(builder.Configuration);
 builder.Services.AddSharedApplication<Program>();
 builder.Services.AddJWTAuthorization();
+builder.Services.AddDefaultVersioning();
 builder.Services.AddGlobalErrorMiddleware();
+
 
 builder.Services.AddDefaultEventBusExtension<Program>(
     builder.Configuration,
@@ -28,16 +32,18 @@ builder.Services.AddDefaultEventBusExtension<Program>(
 
     });
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers()
+                .AddDefaultJson();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 app.EnsureDataInit<SeedlingContext>().Wait();
-
 app.UseGlobalErrorMiddleware();
+app.SeedData();
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -48,5 +54,8 @@ app.UseCors(cors);
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+
+app.MapControllers();
 
 app.Run();

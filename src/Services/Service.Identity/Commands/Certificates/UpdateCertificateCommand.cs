@@ -1,21 +1,19 @@
 ﻿using AutoMapper;
 using Infrastructure.Identity.Contexts;
 using MediatR;
+using Service.Identity.DTOs;
 using SharedDomain.Entities.Users;
 using SharedDomain.Repositories.Base;
 
 namespace Service.Identity.Commands.Certificates
 {
-    public class UpdateCertificateCommand: IRequest<Guid>
+    public class UpdateCertificateCommand: IRequest<CertificateDetailResponse>
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Provider { get; set; }
-        public string Resource { get; set; }
+        public CertificateRequest Certificate { get; set; }
     }
 
-    public class UpdateCertificateCommandHandler : IRequestHandler<UpdateCertificateCommand, Guid>
+    public class UpdateCertificateCommandHandler : IRequestHandler<UpdateCertificateCommand, CertificateDetailResponse>
     {
         private ISQLRepository<IdentityContext, Certificate> _certs;
         private IUnitOfWork<IdentityContext> _unitOfWork;
@@ -34,18 +32,18 @@ namespace Service.Identity.Commands.Certificates
             _logger = logger;
         }
 
-        public async Task<Guid> Handle(UpdateCertificateCommand request, CancellationToken cancellationToken)
+        public async Task<CertificateDetailResponse> Handle(UpdateCertificateCommand request, CancellationToken cancellationToken)
         {
 
 
             var cer = await _certs.GetOne(x => x.Id == request.Id);
 
-            _mapper.Map(request, cer);
+            _mapper.Map(request.Certificate, cer);
             await _certs.UpdateAsync(cer);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return cer.Id;
+            return _mapper.Map<CertificateDetailResponse>(cer);
         }
     }
 }

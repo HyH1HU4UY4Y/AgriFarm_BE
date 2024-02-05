@@ -12,19 +12,19 @@ using System.Threading.Tasks;
 
 namespace SharedApplication.Persistence.Repositories
 {
-    public class SQLRepository<TDbContext, TEntity> : ISQLRepository<TDbContext, TEntity> where TDbContext : DbContext where TEntity : BaseEntity
+    /*public class SQLRepository<TDbContext, TEntity> : ISQLRepository<TDbContext, TEntity> where TDbContext : DbContext where TEntity : BaseEntity
     {
         protected readonly TDbContext _context;
         private readonly IQueryable<TEntity> _all;
         private readonly IMultiTenantResolver _resolver;
-        protected readonly string _siteId;
+        protected readonly Guid _siteId;
 
         public SQLRepository(TDbContext context, IMultiTenantResolver resolver)
         {
             _context = context;
             _all = context.Set<TEntity>().Where(e => !e.IsDeleted);
             _resolver = resolver;
-            _siteId = _resolver.GetTenantIdAsync();
+            _siteId = _resolver.GetTenantId();
         }
 
 
@@ -101,5 +101,5 @@ namespace SharedApplication.Persistence.Repositories
         {
             throw new NotImplementedException();
         }
-    }
+    }*/
 }

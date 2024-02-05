@@ -4,12 +4,12 @@
       "UpstreamPathTemplate": "/api/{version}/user/{controller}/{action}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
 
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamPathTemplate": "/api/{controller}/{action}",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5292
+          "Port": 7020
         }
       ]
     },
@@ -22,7 +22,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5185
+          "Port": 7248
         }
       ]
     },
@@ -35,7 +35,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 5060
+          "Port": 7215
         }
       ]
     }

@@ -28,7 +28,7 @@ builder.Services.AddDefaultEventBusExtension<Program>(
     builder.Configuration,
     (config, context) =>
 {
-    config.AddReceiveEndpoint<FarmRegistedSuccessConsumer>(EventQueue.RegistFarmQueue, context);
+    //config.AddReceiveEndpoint<FarmRegistedSuccessConsumer>(EventQueue.RegistFarmQueue, context);
 });
 
 
@@ -49,7 +49,7 @@ app.UseSwaggerUI();
 
 app.UseGlobalErrorMiddleware();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseCors(cors);
 

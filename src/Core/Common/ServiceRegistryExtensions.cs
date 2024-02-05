@@ -16,6 +16,7 @@ namespace SharedApplication
             var applicationAssembly = typeof(T).Assembly;
             services.AddMediatR(applicationAssembly);
             services.AddAutoMapper(applicationAssembly);
+            services.AddSwaggerGenNewtonsoftSupport();
 
             return services;
         }

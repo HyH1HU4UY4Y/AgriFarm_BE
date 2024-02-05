@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Common\SharedApplication.csproj" />
+    <ProjectReference Include="..\..\Core\Domain\SharedDomain.csproj" />
+    <ProjectReference Include="..\..\Core\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.FarmWater\Infrastructure.Water.csproj" />
   </ItemGroup>
 

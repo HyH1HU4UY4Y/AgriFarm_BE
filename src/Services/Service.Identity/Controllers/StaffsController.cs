@@ -23,15 +23,12 @@ namespace Service.Identity.Controllers
     public class StaffsController : ControllerBase
     {
         private IMediator _mediator;
-        private IMapper _mapper ;
 
-        public StaffsController(IMediator mediator, IMapper mapper)
+        public StaffsController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
 
-        // GET: api/<StaffsController>
         [HttpGet("get")]
         public async Task<IActionResult> GetStaff(
             [FromQuery][Required]Guid siteId, 
@@ -67,7 +64,7 @@ namespace Service.Identity.Controllers
                 UserId = (Guid)userId 
             });
 
-            return Ok(new DefaultResponse<UserResponse>
+            return Ok(new DefaultResponse<UserDetailResponse>
             {
                 Data = user,
                 Status = 200
@@ -75,28 +72,18 @@ namespace Service.Identity.Controllers
             
         }
 
-        
-        [HttpGet("value")]
-        public string GetValue()
-        {
-            return "value";
-        }
 
-        // POST api/<StaffsController>
         [HttpPost("add-new-staff")]
         public async Task<IActionResult> AddNewStaff([FromQuery]Guid siteId, [FromBody] AddStaffRequest request)
         {
             var rs = await _mediator.Send(new CreateMemberCommand
             {
                 SiteId = siteId,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Password = request.Password,
-                UserName = request.UserName,
+                Staff = request,
                 AccountType = AccountType.Member
             });
 
-            return StatusCode(201,new DefaultResponse<Guid>
+            return StatusCode(201,new DefaultResponse<UserResponse>
             {
                 Status =201,
                 Data = rs
@@ -104,25 +91,31 @@ namespace Service.Identity.Controllers
             });
         }
 
-        // PUT api/<StaffsController>/5
         [HttpPut("edit")]
         public async Task<IActionResult> EditStaff(
             [Required][FromQuery]Guid id
             , [FromBody] SaveMemberDetailRequest request)
         {
-            var cmd = _mapper.Map<UpdateMemberCommand>(request);
-            cmd.Id = id;
+            
+            var rs = await _mediator.Send(new UpdateMemberCommand
+            {
+                Id = id,
+                User = request
+            });
 
-            await _mediator.Send(cmd);
-
-            return NoContent();
+            return Ok(new DefaultResponse<UserDetailResponse>
+            {
+                 Data= rs,
+                 Status = 200
+            });
         }
 
-        // DELETE api/<StaffsController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([Required][FromQuery]Guid id)
         {
-            await _mediator.Send(new DeleteMemberCommand { Id = id });
+            await _mediator.Send(new DeleteMemberCommand {
+                Id = id 
+            });
 
             return NoContent();
         }

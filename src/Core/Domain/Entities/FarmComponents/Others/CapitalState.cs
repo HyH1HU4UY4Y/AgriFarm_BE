@@ -7,7 +7,7 @@ using SharedDomain.Entities.Base;
 
 namespace SharedDomain.Entities.FarmComponents.Others
 {
-    public class CapitalState : BaseEntity
+    public class CapitalState : BaseEntity, IMultiSite
     {
         public Guid SiteId { get; set; }
         public Site Site { get; set; }

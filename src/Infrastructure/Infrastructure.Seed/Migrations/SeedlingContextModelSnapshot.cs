@@ -35,8 +35,8 @@ namespace Infrastructure.Seed.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
 
                     b.Property<bool>("IsConsumable")
                         .HasColumnType("boolean");
@@ -49,19 +49,24 @@ namespace Infrastructure.Seed.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
+
+                    b.Property<string>("Resource")
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("text");
 
                     b.Property<Guid>("SiteId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)")
-                        .HasColumnName("Measure Unit");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)")
+                        .HasColumnName("MeasureUnit");
 
                     b.HasKey("Id");
 
@@ -72,7 +77,7 @@ namespace Infrastructure.Seed.Migrations
                     b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Common.SeedInfo", b =>
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Common.ReferencedSeed", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,10 +90,8 @@ namespace Infrastructure.Seed.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("Details")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -96,19 +99,33 @@ namespace Infrastructure.Seed.Migrations
                     b.Property<DateTime>("LastModify")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("Manufactory")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<DateTime?>("ManufactureDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("Notes")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
+
+                    b.Property<string>("Property")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("Resources")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("SeedInfos", (string)null);
+                    b.ToTable("RefSeedInfos", (string)null);
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.ComponentProperty", b =>
@@ -134,14 +151,16 @@ namespace Infrastructure.Seed.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<double>("Require")
                         .HasColumnType("double precision");
 
                     b.Property<string>("Unit")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<double>("Value")
                         .HasColumnType("double precision");
@@ -159,12 +178,6 @@ namespace Infrastructure.Seed.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("AvatarImg")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -174,61 +187,26 @@ namespace Infrastructure.Seed.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("LogoImg")
-                        .HasColumnType("varchar(150)");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("SiteCode")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Sites");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.AdditionOfActivity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ActivityId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("AdditionType")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable((string)null);
-
-                    b.UseTpcMappingStrategy();
-                });
-
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmSeed", b =>
                 {
                     b.HasBaseType("SharedDomain.Entities.FarmComponents.BaseComponent");
 
-                    b.Property<Guid?>("SeedInfoId")
+                    b.Property<Guid?>("ReferenceId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Stock")
@@ -237,39 +215,9 @@ namespace Infrastructure.Seed.Migrations
                     b.Property<decimal?>("UnitPrice")
                         .HasColumnType("numeric");
 
-                    b.HasIndex("SeedInfoId");
+                    b.HasIndex("ReferenceId");
 
                     b.ToTable("FarmSeeds", (string)null);
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.Cultivations.ConsumeCultivation", b =>
-                {
-                    b.HasBaseType("SharedDomain.Entities.Schedules.AdditionOfActivity");
-
-                    b.Property<Guid>("ComponentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Instructions")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("Resources")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<double>("UseValue")
-                        .HasColumnType("double precision");
-
-                    b.HasIndex("ComponentId");
-
-                    b.ToTable("UsedRecords");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.BaseComponent", b =>
@@ -300,19 +248,11 @@ namespace Infrastructure.Seed.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SharedDomain.Entities.FarmComponents.Common.SeedInfo", null)
-                        .WithMany("Uses")
-                        .HasForeignKey("SeedInfoId");
-                });
+                    b.HasOne("SharedDomain.Entities.FarmComponents.Common.ReferencedSeed", "Reference")
+                        .WithMany("InUse")
+                        .HasForeignKey("ReferenceId");
 
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.Cultivations.ConsumeCultivation", b =>
-                {
-                    b.HasOne("SharedDomain.Entities.FarmComponents.BaseComponent", "Component")
-                        .WithMany()
-                        .HasForeignKey("ComponentId")
-                        .IsRequired();
-
-                    b.Navigation("Component");
+                    b.Navigation("Reference");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.BaseComponent", b =>
@@ -320,9 +260,9 @@ namespace Infrastructure.Seed.Migrations
                     b.Navigation("Properties");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Common.SeedInfo", b =>
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Common.ReferencedSeed", b =>
                 {
-                    b.Navigation("Uses");
+                    b.Navigation("InUse");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Site", b =>
