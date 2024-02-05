@@ -8,23 +8,23 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.FarmSite.Queries
 {
-    public class GetAllSiteQuery: IRequest<PagedList<SiteResponse>>
+    public class GetAllFarmQuery: IRequest<PagedList<SiteResponse>>
     {
         public PaginationRequest Pagination { get; set; } = new();
     }
 
-    public class GetAllSiteQueryHandler : IRequestHandler<GetAllSiteQuery, PagedList<SiteResponse>>
+    public class GetAllFarmQueryHandler : IRequestHandler<GetAllFarmQuery, PagedList<SiteResponse>>
     {
         private readonly ISQLRepository<SiteContext, Site> _repo;
         private readonly IMapper _mapper;
 
-        public GetAllSiteQueryHandler(ISQLRepository<SiteContext, Site> repo, IMapper mapper)
+        public GetAllFarmQueryHandler(ISQLRepository<SiteContext, Site> repo, IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;
         }
 
-        public Task<PagedList<SiteResponse>> Handle(GetAllSiteQuery request, CancellationToken cancellationToken)
+        public Task<PagedList<SiteResponse>> Handle(GetAllFarmQuery request, CancellationToken cancellationToken)
         {
             var rs = _repo.GetMany().Result!
                         .OrderBy (x => x.Name)

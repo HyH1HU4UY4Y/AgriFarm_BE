@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Infrastructure.Identity.Contexts;
 using MediatR;
+using Service.Identity.DTOs;
 using SharedApplication.Authorize.Contracts;
 using SharedDomain.Defaults;
 using SharedDomain.Entities.FarmComponents;
@@ -9,20 +10,13 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Identity.Commands.Users
 {
-    public class UpdateMemberCommand : IRequest<Guid>
+    public class UpdateMemberCommand : IRequest<UserDetailResponse>
     {
         public Guid Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string? IdentificationCard { get; set; }
-        public string? PhoneNumber { get; set; }
-        public string? Address { get; set; }
-        public Gender? Gender { get; set; }
-        public string? Education { get; set; }
-        public DateTime? DOB { get; set; }
+        public SaveMemberDetailRequest User { get; set; }
     }
 
-    public class UpdateMemberCommandHandler : IRequestHandler<UpdateMemberCommand, Guid>
+    public class UpdateMemberCommandHandler : IRequestHandler<UpdateMemberCommand, UserDetailResponse>
     {
         private IIdentityService _identity;
         private ISQLRepository<IdentityContext, Site> _sites;
@@ -41,7 +35,7 @@ namespace Service.Identity.Commands.Users
             _logger = logger;
         }
 
-        public async Task<Guid> Handle(UpdateMemberCommand request, CancellationToken cancellationToken)
+        public async Task<UserDetailResponse> Handle(UpdateMemberCommand request, CancellationToken cancellationToken)
         {
             var user = _identity.FindAccount(e => e.Id == request.Id);
             if (user == null)
@@ -50,11 +44,11 @@ namespace Service.Identity.Commands.Users
 
             }
 
-            _mapper.Map(request, user);
+            _mapper.Map(request.User, user);
 
             await _identity.UpdateUserProfile(user);
 
-            return user.Id;
+            return _mapper.Map<UserDetailResponse>(user);
         }
     }
 

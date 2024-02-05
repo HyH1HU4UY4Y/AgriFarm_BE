@@ -44,11 +44,15 @@ namespace Service.Identity.Consumers
 
             var createCmd = new CreateMemberCommand
             {
-                FirstName = data.FirstName,
-                LastName = data.LastName,
+                Staff = new()
+                {
+                    FirstName = data.FirstName,
+                    LastName = data.LastName,
+                    Password = "@123456",
+                    UserName = data.Email
+                },
+                
                 SiteId = data.SiteId,
-                Password = "@123456",
-                UserName = data.Email,
                 AccountType = AccountType.Admin
             };
 

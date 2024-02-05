@@ -24,6 +24,7 @@ namespace Infrastructure.Seed
 
             services.AddSQLRepo<SeedlingContext, Site>()
                     .AddSQLRepo<SeedlingContext, FarmSeed>()
+                    .AddSQLRepo<SeedlingContext, ReferencedSeed>()
                     .AddSQLRepo<SeedlingContext, ComponentState>()
                     ;
 

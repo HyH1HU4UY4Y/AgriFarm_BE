@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
-using SharedDomain.Defaults;
 
 namespace Service.Identity.DTOs
 {
-    public class CertificateRequest
+    public class CertificateDetailResponse
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Provider { get; set; }

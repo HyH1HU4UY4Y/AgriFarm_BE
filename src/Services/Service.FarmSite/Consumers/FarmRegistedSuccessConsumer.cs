@@ -6,6 +6,7 @@ using Infrastructure.FarmSite.Contexts;
 using MassTransit;
 using MediatR;
 using Service.FarmSite.Commands;
+using Service.FarmSite.Commands.Farms;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Entities.Subscribe;
 using SharedDomain.Repositories.Base;
@@ -35,8 +36,12 @@ namespace Service.FarmSite.Consumers
             var form = context.Message.Data;
             var siteCmd = new CreateNewFarmCommand
             {
-                Name = form.SiteName,
-                SiteCode = form.SiteCode,
+                Site = new()
+                {
+                    Name = form.SiteName,
+                    SiteCode = form.SiteCode,
+                },
+                
                 IsActive = true
             };
 

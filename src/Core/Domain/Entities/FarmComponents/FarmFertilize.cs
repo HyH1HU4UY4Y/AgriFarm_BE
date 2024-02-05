@@ -10,6 +10,10 @@ namespace SharedDomain.Entities.FarmComponents
 {
     public class FarmFertilize : BaseComponent
     {
+        public FarmFertilize()
+        {
+            IsConsumable = true;
+        }
         public decimal? UnitPrice { get; set; }
         public int Stock { get; set; } = 0; 
         public Guid? ReferenceId { get; set; }

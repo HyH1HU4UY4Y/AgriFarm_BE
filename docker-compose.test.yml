@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+    Nsqldb:
+        container_name: "Npgsql_Db"
+        ports:
+          - '5432:5432'
+        restart: always
+        networks:
+          agri.network:
+            ipv4_address: 10.38.0.13
+        environment:
+          - POSTGRES_USER=farmer
+          - POSTGRES_PASSWORD=@o123456
+        
+
+    pgadmin:
+        container_name: pgadmin
+        environment:
+          - PGADMIN_DEFAULT_EMAIL=admin@system.vn
+          - PGADMIN_DEFAULT_PASSWORD=admin1234
+        restart: always
+        ports:
+          - '5050:80'
+        networks:
+          agri.network:
+            ipv4_address: 10.38.0.14
+
+    rabbitmq:
+        image: rabbitmq:3-management
+        container_name: 'Farm-RBMsgBus'
+        ports:
+            - 5672:5672
+            - 15672:15672
+        
+        networks:
+            agri.network:
+                ipv4_address: 10.38.0.12
+        environment:
+            - RABBITMQ_DEFAULT_USER=farmer
+            - RABBITMQ_DEFAULT_PASS=farmer
+
+    service.registration:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80
+          
+    service.farmsite:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80
+    
+    service.identity:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80

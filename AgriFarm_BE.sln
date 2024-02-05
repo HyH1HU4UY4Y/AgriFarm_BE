@@ -81,10 +81,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Seed", "src\Service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.FarmCultivation", "src\Services\Service.FarmCultivation\Service.FarmCultivation.csproj", "{F7B193F9-F5F7-432E-9C7B-2349285141DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.FarmCultivation", "src\Infrastructure\Infrastructure.FarmCultivation\Infrastructure.FarmCultivation.csproj", "{206EB6F4-4DA0-4AC4-BB32-AABBF2D7E7F2}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.RiskAssessment", "src\Infrastructure\Infrastructure.RiskAssessment\Infrastructure.RiskAssessment.csproj", "{1D79B77B-E693-45BF-84D8-7E09E539D8EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.FarmCultivation", "src\Infrastructure\Infrastructure.FarmCultivation\Infrastructure.FarmCultivation.csproj", "{206EB6F4-4DA0-4AC4-BB32-AABBF2D7E7F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.RiskAssessment", "src\Services\Service.RiskAssessment\Service.RiskAssessment.csproj", "{77EE69AC-E5EC-41B9-B473-83E894027870}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.RiskAssessment", "src\Infrastructure\Infrastructure.RiskAssessment\Infrastructure.RiskAssessment.csproj", "{1D79B77B-E693-45BF-84D8-7E09E539D8EC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.RiskAssessment", "src\Services\Service.RiskAssessment\Service.RiskAssessment.csproj", "{77EE69AC-E5EC-41B9-B473-83E894027870}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

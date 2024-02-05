@@ -26,7 +26,7 @@ namespace Infrastructure.Seed.Contexts
         //public DbSet<Activity> Activities { get; set; }
         public DbSet<ComponentProperty> Properties { get; set; }
         //public DbSet<ComponentState> States { get; set; }
-        public DbSet<ConsumeCultivation> UsedRecords { get; set; }
+        //public DbSet<ConsumeCultivation> UsedRecords { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -42,10 +42,11 @@ namespace Infrastructure.Seed.Contexts
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);
             modelBuilder.Ignore<Activity>();
+            modelBuilder.Ignore<ConsumeCultivation>();
             modelBuilder.Ignore<ComponentDocument>();
             modelBuilder.Ignore<ComponentState>();
 
-            modelBuilder.Entity<AdditionOfActivity>().UseTpcMappingStrategy();
+            //modelBuilder.Entity<AdditionOfActivity>().UseTpcMappingStrategy();
             //modelBuilder.Entity<BaseComponent>().UseTpcMappingStrategy();
             //modelBuilder.Ignore<BaseComponent>();
         }

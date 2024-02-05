@@ -60,6 +60,7 @@ namespace Infrastructure.Seed.Migrations
                     IsConsumable = table.Column<bool>(type: "boolean", nullable: false),
                     MeasureUnit = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
                     Notes = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
+                    Resource = table.Column<string>(type: "text", maxLength: 2147483647, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -125,34 +126,6 @@ namespace Infrastructure.Seed.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "UsedRecords",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ActivityId = table.Column<Guid>(type: "uuid", nullable: false),
-                    AdditionType = table.Column<int>(type: "integer", nullable: false),
-                    ComponentId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Instructions = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
-                    Resources = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
-                    UseValue = table.Column<double>(type: "double precision", nullable: false),
-                    Unit = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
-                    Notes = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UsedRecords", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UsedRecords_BaseComponent_ComponentId",
-                        column: x => x.ComponentId,
-                        principalTable: "BaseComponent",
-                        principalColumn: "Id");
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_BaseComponent_SiteId",
                 table: "BaseComponent",
@@ -167,11 +140,6 @@ namespace Infrastructure.Seed.Migrations
                 name: "IX_Properties_ComponentId",
                 table: "Properties",
                 column: "ComponentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UsedRecords_ComponentId",
-                table: "UsedRecords",
-                column: "ComponentId");
         }
 
         /// <inheritdoc />
@@ -182,9 +150,6 @@ namespace Infrastructure.Seed.Migrations
 
             migrationBuilder.DropTable(
                 name: "Properties");
-
-            migrationBuilder.DropTable(
-                name: "UsedRecords");
 
             migrationBuilder.DropTable(
                 name: "RefSeedInfos");

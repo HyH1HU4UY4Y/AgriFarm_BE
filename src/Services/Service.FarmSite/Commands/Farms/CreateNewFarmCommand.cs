@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
 using Infrastructure.FarmSite.Contexts;
 using MediatR;
+using Service.FarmSite.DTOs;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
 
-namespace Service.FarmSite.Commands
+namespace Service.FarmSite.Commands.Farms
 {
     public class CreateNewFarmCommand : IRequest<Guid>
     {
-        public string Name { get; set; }
-        public string SiteCode { get; set; }
-        public bool IsActive { get; set; } = false;
+        public SiteRequest Site { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 
     public class CreateNewFarmCommandHandler : IRequestHandler<CreateNewFarmCommand, Guid>
@@ -34,11 +34,12 @@ namespace Service.FarmSite.Commands
 
         public async Task<Guid> Handle(CreateNewFarmCommand request, CancellationToken cancellationToken)
         {
-            var site = _mapper.Map<Site>(request);
-            
+            var site = _mapper.Map<Site>(request.Site);
+            site.IsActive = request.IsActive;
+
 
             await _sites.AddAsync(site);
-            var rs = _context.SaveChangesAsync(cancellationToken).Result >0;
+            var rs = _context.SaveChangesAsync(cancellationToken).Result > 0;
             if (!rs)
             {
                 throw new NotFoundException("Not Found!");

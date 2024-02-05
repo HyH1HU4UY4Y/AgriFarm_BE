@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Supply.Migrations
 {
     [DbContext(typeof(SupplyContext))]
-    [Migration("20240131100711_init")]
+    [Migration("20240205061144_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -48,9 +48,15 @@ namespace Infrastructure.Supply.Migrations
                     b.Property<Guid>("SiteId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Components");
+
+                    b.HasDiscriminator<string>("Type").HasValue("BaseComponent");
 
                     b.UseTphMappingStrategy();
                 });
@@ -165,6 +171,48 @@ namespace Infrastructure.Supply.Migrations
                     b.HasIndex("SupplierId");
 
                     b.ToTable("SupplyDetails");
+                });
+
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmEquipment", b =>
+                {
+                    b.HasBaseType("SharedDomain.Entities.FarmComponents.BaseComponent");
+
+                    b.HasDiscriminator().HasValue("Equipment");
+                });
+
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmFertilize", b =>
+                {
+                    b.HasBaseType("SharedDomain.Entities.FarmComponents.BaseComponent");
+
+                    b.HasDiscriminator().HasValue("Fertilize");
+                });
+
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmPesticide", b =>
+                {
+                    b.HasBaseType("SharedDomain.Entities.FarmComponents.BaseComponent");
+
+                    b.HasDiscriminator().HasValue("Pesticide");
+                });
+
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmSeed", b =>
+                {
+                    b.HasBaseType("SharedDomain.Entities.FarmComponents.BaseComponent");
+
+                    b.HasDiscriminator().HasValue("Seed");
+                });
+
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmSoil", b =>
+                {
+                    b.HasBaseType("SharedDomain.Entities.FarmComponents.BaseComponent");
+
+                    b.HasDiscriminator().HasValue("Soil");
+                });
+
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmWater", b =>
+                {
+                    b.HasBaseType("SharedDomain.Entities.FarmComponents.BaseComponent");
+
+                    b.HasDiscriminator().HasValue("Water");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.PreHarvest.SupplyDetail", b =>

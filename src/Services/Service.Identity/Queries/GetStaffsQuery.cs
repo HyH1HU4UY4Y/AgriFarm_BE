@@ -20,7 +20,9 @@ namespace Service.Identity.Queries
         private IMapper _mapper;
         private ILogger<GetStaffsQueryHandler> _logger;
 
-        public GetStaffsQueryHandler(IIdentityService identity, IMapper mapper, ILogger<GetStaffsQueryHandler> logger)
+        public GetStaffsQueryHandler(IIdentityService identity, 
+            IMapper mapper, 
+            ILogger<GetStaffsQueryHandler> logger)
         {
             _identity = identity;
             _mapper = mapper;

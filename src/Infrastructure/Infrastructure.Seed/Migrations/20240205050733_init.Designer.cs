@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Seed.Migrations
 {
     [DbContext(typeof(SeedlingContext))]
-    [Migration("20240201120208_init")]
+    [Migration("20240205050733_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -58,6 +58,10 @@ namespace Infrastructure.Seed.Migrations
                     b.Property<string>("Notes")
                         .HasMaxLength(8000)
                         .HasColumnType("character varying(8000)");
+
+                    b.Property<string>("Resource")
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("text");
 
                     b.Property<Guid>("SiteId")
                         .HasColumnType("uuid");
@@ -201,37 +205,6 @@ namespace Infrastructure.Seed.Migrations
                     b.ToTable("Sites");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.AdditionOfActivity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ActivityId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("AdditionType")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable((string)null);
-
-                    b.UseTpcMappingStrategy();
-                });
-
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmSeed", b =>
                 {
                     b.HasBaseType("SharedDomain.Entities.FarmComponents.BaseComponent");
@@ -248,40 +221,6 @@ namespace Infrastructure.Seed.Migrations
                     b.HasIndex("ReferenceId");
 
                     b.ToTable("FarmSeeds", (string)null);
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.Cultivations.ConsumeCultivation", b =>
-                {
-                    b.HasBaseType("SharedDomain.Entities.Schedules.AdditionOfActivity");
-
-                    b.Property<Guid>("ComponentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Instructions")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("character varying(300)");
-
-                    b.Property<string>("Notes")
-                        .HasMaxLength(300)
-                        .HasColumnType("character varying(300)");
-
-                    b.Property<string>("Resources")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("character varying(300)");
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("character varying(300)");
-
-                    b.Property<double>("UseValue")
-                        .HasColumnType("double precision");
-
-                    b.HasIndex("ComponentId");
-
-                    b.ToTable("UsedRecords");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.BaseComponent", b =>
@@ -317,16 +256,6 @@ namespace Infrastructure.Seed.Migrations
                         .HasForeignKey("ReferenceId");
 
                     b.Navigation("Reference");
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.Cultivations.ConsumeCultivation", b =>
-                {
-                    b.HasOne("SharedDomain.Entities.FarmComponents.BaseComponent", "Component")
-                        .WithMany()
-                        .HasForeignKey("ComponentId")
-                        .IsRequired();
-
-                    b.Navigation("Component");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.BaseComponent", b =>

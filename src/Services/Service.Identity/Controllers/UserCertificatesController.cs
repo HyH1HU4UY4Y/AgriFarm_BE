@@ -1,9 +1,14 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Identity.Commands.Certificates;
 using Service.Identity.DTOs;
+using Service.Identity.Queries;
+using SharedApplication.Authorize;
+using SharedDomain.Common;
+using System.ComponentModel.DataAnnotations;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,51 +17,72 @@ namespace Service.Identity.Controllers
     [Route("api/v{version:apiVersion}/my-cert")]
     [ApiVersion("1.0")]
     [ApiController]
+    [Authorize]
     public class UserCertificatesController : ControllerBase
     {
         private IMediator _mediator;
-        private IMapper _mapper;
 
         public UserCertificatesController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("get")]
+        public async Task<IActionResult> Get([FromQuery]Guid id)
         {
-            
+            var rs = await _mediator.Send(new GetCertificateByIdQuery
+            {
+                Id = id
+            });
 
-            return Ok();
+            return Ok(new DefaultResponse<CertificateDetailResponse>
+            {
+                Data = rs,
+                Status = 200
+            });
         }
 
         
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         
-        [HttpPost]
+        [HttpPost("post")]
         public async Task<IActionResult> Post([FromBody] CertificateRequest request)
         {
-            var cmd = _mapper.Map<AddCertificateCommand>(request);
-            var rs = await _mediator.Send(cmd);
+            Guid uId = Guid.Empty;
+            if (!Guid.TryParse(HttpContext.User.GetUserId(), out uId))
+            {
+                return Unauthorized();
+            }
 
-            return StatusCode(201);
+            var rs = await _mediator.Send(new AddCertificateCommand
+            {
+                Certificate = request,
+                UserId = uId
+            });
+
+            return StatusCode(201, new DefaultResponse<CertificateResponse>
+            {
+                Data = rs,
+                Status = 201
+            });
         }
 
         
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, [FromBody] CertificateRequest request)
+        [HttpPut("put")]
+        public async Task<IActionResult> Put([FromQuery][Required]Guid id, 
+            [FromBody] CertificateRequest request)
         {
 
-            var cmd = _mapper.Map<UpdateCertificateCommand>(request);
-            cmd.Id = id;
-            var rs = await _mediator.Send(cmd);
+            var rs = await _mediator.Send(new UpdateCertificateCommand
+            {
+                Certificate = request,
+                Id = id
+            });
 
-            return NoContent();
+            return Ok(new DefaultResponse<CertificateDetailResponse>
+            {
+                Data = rs,
+                Status = 200
+            });
         }
 
         

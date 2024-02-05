@@ -19,6 +19,7 @@ namespace Infrastructure.Supply.Migrations
                     SiteId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     IsConsumable = table.Column<bool>(type: "boolean", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },

@@ -1,4 +1,6 @@
-﻿namespace Service.FarmSite.DTOs
+﻿using Newtonsoft.Json;
+
+namespace Service.FarmSite.DTOs
 {
     public class SiteResponse
     {
@@ -7,7 +9,9 @@
         public string? Intro { get; set; }
         public string SiteCode { get; set; }
         public bool IsActive { get; set; }
+        [JsonProperty("avatar")]
         public string? AvatarImg { get; set; }
+        [JsonProperty("logo")]
         public string? LogoImg { get; set; }
     }
 }
