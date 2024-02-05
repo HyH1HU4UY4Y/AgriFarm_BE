@@ -1,6 +1,19 @@
 {
   "Routes": [
     {
+      "UpstreamPathTemplate": "/api/{version}/risk/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.38.0.6",
+          "Port": 80
+        }
+      ]
+    },
+    {
       "UpstreamPathTemplate": "/api/{version}/user/{controller}/{action}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
 
