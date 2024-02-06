@@ -22,9 +22,16 @@ namespace Service.FarmRegistry.Controllers
         }
 
         [HttpGet()]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(
+            [FromHeader] int? pageNumber = null, [FromHeader] int? pageSize = null
+        )
         {
-            var rs = await _mediator.Send(new GetSolutionsQuery());
+            PaginationRequest page = new(pageNumber, pageSize);
+
+            var rs = await _mediator.Send(new GetSolutionsQuery
+            {
+                Pagination = page
+            });
 
             return Ok(new DefaultResponse<PagedList<SolutionResponse>>
             {

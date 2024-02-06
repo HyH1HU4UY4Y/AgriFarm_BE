@@ -8,11 +8,15 @@ namespace Service.Identity.Mapper
     {
         public MapperProfile()
         {
-            CreateMap<Member, UserResponse>().ReverseMap();
+            CreateMap<Member, UserResponse>()
+                .ForMember(des=>des.isLockout, o=>o.MapFrom(s=>(s.LockoutEnd != null)))    
+                .ReverseMap();
+            
             CreateMap<Member, UserDetailResponse>()
                 .ForMember(des=>des.DOB, o=>o.MapFrom(s=>s.DOB.Value.ToString("yyyy/MM/dd")))
                 .ForMember(des=>des.CreatedDate, o=>o.MapFrom(s=>s.CreatedDate.ToString("yyyy/MM/dd")))
                 .ForMember(des=>des.CreatedDate, o=>o.MapFrom(s=>s.LastModify.ToString("yyyy/MM/dd")))
+                .ForMember(des => des.isLockout, o => o.MapFrom(s => (s.LockoutEnd != null)))
                 .ReverseMap();
 
             CreateMap<AddStaffRequest, Member>().ReverseMap();

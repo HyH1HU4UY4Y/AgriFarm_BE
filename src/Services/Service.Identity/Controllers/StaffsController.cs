@@ -33,20 +33,18 @@ namespace Service.Identity.Controllers
         public async Task<IActionResult> GetStaff(
             [FromQuery][Required]Guid siteId, 
             [FromQuery]Guid? userId = null,
-            [FromHeader]int? pageNumber = null, [FromHeader]int? pageSize = null)
+            [FromHeader]int? pageNumber = null, [FromHeader]int? pageSize = null
+        )
         {
             if (userId == null)
             {
-                var cmd = new GetStaffsQuery { SiteId = siteId };
-                if(pageNumber != null && pageSize != null)
-                {
-                    cmd.Pagination = new() {
-                        PageNumber = (int)pageNumber,
-                        PageSize = (int)pageSize
-                    };
-                }
 
-                var users = await _mediator.Send(cmd);
+                PaginationRequest page = new(pageNumber,pageSize);
+
+                var users = await _mediator.Send(new GetStaffsQuery { 
+                    SiteId = siteId,
+                    Pagination = page
+                });
 
                 Response.AddPaginationHeader(users.MetaData);
 
