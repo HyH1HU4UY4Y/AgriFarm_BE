@@ -37,9 +37,14 @@ namespace Service.FarmRegistry.Controllers
 
         [Authorize(Roles = Roles.SuperAdmin)]
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(
+            [FromHeader] int? pageNumber = null, [FromHeader] int? pageSize = null
+        )
         {
-            var rs = await _mediator.Send(new GetRegisterFormsQuery()); 
+            PaginationRequest page = new(pageNumber, pageSize);
+            var rs = await _mediator.Send(new GetRegisterFormsQuery { 
+                Pagination = page
+            }); 
 
             return Ok(new DefaultResponse<PagedList<RegisterFormResponse>>{
                 Data = rs,

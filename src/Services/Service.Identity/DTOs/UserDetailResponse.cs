@@ -16,6 +16,7 @@ namespace Service.Identity.DTOs
         public string? Address { get; set; }
         public Gender? Gender { get; set; }
         public string? Education { get; set; }
+        public bool isLockout { get; set; }
         public string Role { get; set; }
         public string DOB { get; set; }
         [JsonProperty("onboarding")]

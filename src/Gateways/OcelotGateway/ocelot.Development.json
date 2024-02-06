@@ -5,7 +5,7 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
 
       "DownstreamScheme": "https",
-      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
@@ -17,8 +17,8 @@
       "UpstreamPathTemplate": "/api/{version}/register/{controller}/{action}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
 
-      "DownstreamScheme": "http",
-      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
@@ -30,8 +30,8 @@
       "UpstreamPathTemplate": "/api/{version}/farm/{controller}/{action}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
 
-      "DownstreamScheme": "http",
-      "DownstreamPathTemplate": "/api/{controller}/{action}",
+      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/{version}/s{controller}/{action}",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",

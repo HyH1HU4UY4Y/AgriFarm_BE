@@ -6,6 +6,7 @@ using MediatR;
 using Service.Identity.Commands.Users;
 using SharedDomain.Defaults;
 using SharedDomain.Entities.FarmComponents;
+using SharedDomain.Entities.Users;
 using SharedDomain.Repositories.Base;
 
 namespace Service.Identity.Consumers
@@ -57,8 +58,6 @@ namespace Service.Identity.Consumers
             };
 
             var rs = await _mediator.Send(createCmd);
-
-            
 
         }
     }

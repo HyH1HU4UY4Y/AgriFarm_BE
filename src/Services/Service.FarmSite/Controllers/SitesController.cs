@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Service.FarmSite.Commands;
 using Service.FarmSite.Commands.Farms;
 using Service.FarmSite.DTOs;
@@ -30,11 +31,16 @@ namespace Service.FarmSite.Controllers
 
         [Authorize(Roles = Roles.Admin)]
         [HttpGet("get")]
-        public async Task<IActionResult> Get([FromQuery]Guid? id = null)
+        public async Task<IActionResult> Get(
+            [FromQuery]Guid? id = null,
+            [FromHeader] int? pageNumber = null, [FromHeader] int? pageSize = null)
         {
             if(id == null)
             {
-                var items = await _mediator.Send(new GetAllFarmQuery());
+                PaginationRequest page = new(pageNumber, pageSize);
+                var items = await _mediator.Send(new GetAllFarmQuery { 
+                    Pagination = page
+                });
 
 
                 return Ok(new DefaultResponse<List<SiteResponse>>
