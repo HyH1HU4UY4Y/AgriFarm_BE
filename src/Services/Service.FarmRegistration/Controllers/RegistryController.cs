@@ -44,8 +44,9 @@ namespace Service.FarmRegistry.Controllers
             PaginationRequest page = new(pageNumber, pageSize);
             var rs = await _mediator.Send(new GetRegisterFormsQuery { 
                 Pagination = page
-            }); 
+            });
 
+            Response.AddPaginationHeader(rs.MetaData);
             return Ok(new DefaultResponse<PagedList<RegisterFormResponse>>{
                 Data = rs,
                 Status = 200

@@ -13,12 +13,12 @@ namespace SharedApplication.Pagination
         const int maxPageSize = 30;
         //[JsonProperty("number")]
         public int PageNumber { get; set; } = 1;
-        private int _pageSize = 5;
+        private int _pageSize = 10;
 
         public PaginationRequest(int? pageNumber = null, int? pageSize = null)
         {
-            PageNumber = pageNumber??1;
-            PageSize = pageSize??_pageSize;
+            PageNumber = pageNumber ?? 1;
+            PageSize = pageSize ?? _pageSize;
         }
 
         public int PageSize
