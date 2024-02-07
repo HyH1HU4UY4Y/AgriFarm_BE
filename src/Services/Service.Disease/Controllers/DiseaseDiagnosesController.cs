@@ -133,6 +133,7 @@ namespace Service.Disease.Controllers
                     PlantDiseaseId = request.PlantDiseaseId,
                     Description = request.Description,
                     Feedback = request.Feedback,
+                    Location = request.Location,
                     CreateBy = request.CreateBy,
                     LandId = request.LandId
                 });
@@ -147,6 +148,7 @@ namespace Service.Disease.Controllers
                 else
                 {
                     response.statusCode = Ok().StatusCode;
+                    response.data = rs;
                 }
             } catch (Exception)
             {
