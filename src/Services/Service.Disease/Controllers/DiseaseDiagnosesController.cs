@@ -211,5 +211,40 @@ namespace Service.Disease.Controllers
             return data;
 
         }
+
+        [HttpPut("update-feedback-content")]
+        public async Task<IActionResult> UpdateFeedBack([FromBody] FeedbackUpdateRequest request)
+        {
+            FeedbackUpdateResponse response = new FeedbackUpdateResponse();
+            try
+            {
+                var rs = await _mediator.Send(new UpdateFeedbackCommand
+                {
+                    Id = request.Id,
+                    Feedback = request.Feedback
+                });
+                if (rs == null)
+                {
+                    response.statusCode = NoContent().StatusCode;
+                    response.message = new List<string>
+                    {
+                        "Invalid id!"
+                    };
+                }
+                else
+                {
+                    response.statusCode = Ok().StatusCode;
+                }
+            }
+            catch (Exception)
+            {
+                response.statusCode = NoContent().StatusCode;
+                response.message = new List<string>
+                {
+                    "Update fail!"
+                };
+            }
+            return Ok(response);
+        }
     }
 }
