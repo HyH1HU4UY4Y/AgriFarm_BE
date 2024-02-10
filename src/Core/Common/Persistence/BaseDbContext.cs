@@ -1,11 +1,14 @@
 ﻿using Application.CommonExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using SharedApplication.MultiTenant;
 using SharedDomain.Entities.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -57,6 +60,7 @@ namespace SharedApplication.Persistence
                         {
                             history.Entity.DeletedDate = DateTime.Now;
                             history.State = EntityState.Modified;
+
                         }
                         break;
                     case EntityState.Modified:
@@ -99,5 +103,8 @@ namespace SharedApplication.Persistence
 
             //modelBuilder.SetQueryFilterOnAllEntities<ITraceableItem>(e=>!e.IsDeleted);
         }
+
+        
+
     }
 }

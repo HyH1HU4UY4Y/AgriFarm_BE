@@ -36,10 +36,10 @@ namespace SharedApplication.Authorize.Services
             var result = new List<Claim>
             {
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new(ClaimTypes.Email, user.Email!),
-                new(FarmClaimType.FirstName, $"{user.FirstName}"),
-                new(FarmClaimType.LastName, $"{user.LastName}"),
-                new(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty),
+                //new(ClaimTypes.Email, user.Email!),
+                //new(FarmClaimType.FirstName, $"{user.FirstName}"),
+                //new(FarmClaimType.LastName, $"{user.LastName}"),
+                //new(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty),
                 new(FarmClaimType.SiteId, user.SiteId?.ToString() ?? "root"),
 
             };

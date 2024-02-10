@@ -1,15 +1,19 @@
 ﻿using Infrastructure.Identity.Contexts;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using SharedApplication.Authorize;
 using SharedApplication.MultiTenant;
 using SharedApplication.Persistence;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Entities.Users;
+using System.Net;
 
 namespace Infrastructure.Identity
 {
@@ -20,7 +24,10 @@ namespace Infrastructure.Identity
             
             services.AddDefaultSQLDB<IdentityContext>(configuration);
 
-            services.AddIdentity<Member, IdentityRole<Guid>>()
+            services.AddIdentity<Member, IdentityRole<Guid>>(o =>
+            {
+
+            })
             .AddEntityFrameworkStores<IdentityContext>()
             .AddDefaultTokenProviders();
 
@@ -46,6 +53,24 @@ namespace Infrastructure.Identity
                 options.SignIn.RequireConfirmedEmail = false;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
                 options.User.RequireUniqueEmail = true;
+                
+
+                
+            });
+
+            services.Configure<CookieAuthenticationOptions>(o =>
+            {
+                o.Events.OnRedirectToAccessDenied = c =>
+                {
+                    c.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    return Task.FromResult<object>(null);
+                };
+                o.Events.OnRedirectToLogin = c =>
+                {
+                    c.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return Task.FromResult<object>(null);
+                };
+                
             });
 
 

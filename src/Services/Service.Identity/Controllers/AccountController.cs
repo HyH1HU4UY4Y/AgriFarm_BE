@@ -54,11 +54,8 @@ namespace Service.Identity.Controllers
         public async Task<IActionResult> Profile()
         {
 
-            Guid uId = Guid.Empty;
-            Guid sId = Guid.Empty;
-            if(!Guid.TryParse(HttpContext.User.GetUserId(), out uId)
-                || !Guid.TryParse(HttpContext.User.GetSiteId(), out sId)
-                )
+            
+            if (!HttpContext.User.TryCheckIdentity(out var uId, out var sId))
             {
                 return Unauthorized();
             }
@@ -80,8 +77,7 @@ namespace Service.Identity.Controllers
         [HttpPut("edit-profile")]
         public async Task<IActionResult> Edit([FromBody] SaveMemberDetailRequest request)
         {
-            Guid uId = Guid.Empty;
-            if (!Guid.TryParse(HttpContext.User.GetUserId(), out uId))
+            if (!HttpContext.User.TryCheckIdentity(out var uId, out var sId))
             {
                 return Unauthorized();
             }
