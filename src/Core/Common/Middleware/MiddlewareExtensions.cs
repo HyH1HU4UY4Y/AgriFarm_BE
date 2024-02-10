@@ -22,5 +22,18 @@ namespace SharedApplication.Middleware
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             return app;
         }
+
+        public static IServiceCollection AddIdentityClaimsMiddleware(this IServiceCollection services)
+        {
+            services.AddTransient<IdentityClaimsMiddleware>();
+            return services;
+        }
+
+
+        public static IApplicationBuilder UseIdentityClaimsMiddleware(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<IdentityClaimsMiddleware>();
+            return app;
+        }
     }
 }

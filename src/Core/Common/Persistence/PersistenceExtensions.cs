@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedApplication.Persistence.Repositories;
 using SharedDomain.Entities.Base;
 using SharedDomain.Repositories.Base;
+using System.Reflection;
 
 namespace SharedApplication.Persistence
 {

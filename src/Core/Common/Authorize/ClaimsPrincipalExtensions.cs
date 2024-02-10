@@ -1,4 +1,5 @@
-﻿using SharedDomain.Defaults;
+﻿using Microsoft.AspNetCore.Http;
+using SharedDomain.Defaults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,11 @@ namespace SharedApplication.Authorize
            => principal.FindFirstValue(ClaimTypes.NameIdentifier);
 
         public static string? GetSiteId(this ClaimsPrincipal principal)
-           => principal.FindFirstValue(FarmClaimType.SiteId);
+        {
+
+            var val = principal.FindFirstValue(FarmClaimType.SiteId);
+            return val == "root" ? Guid.Empty.ToString() : val;
+        }
         
         public static string? GetScope(this ClaimsPrincipal principal)
            => principal.FindFirstValue(FarmClaimType.Scope);
@@ -40,5 +45,14 @@ namespace SharedApplication.Authorize
             principal is null
                 ? throw new ArgumentNullException(nameof(principal))
                 : principal.FindFirst(claimType)?.Value;
+
+        public static bool TryCheckIdentity(this ClaimsPrincipal principal, out Guid userId, out Guid siteId)
+        {
+            userId = Guid.Empty;
+            var u = Guid.TryParse(principal.GetUserId(), out userId);
+            siteId = new Guid(principal.GetSiteId()??"");
+
+            return u;
+        }
     }
 }
