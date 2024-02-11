@@ -8,6 +8,13 @@ using Infrastructure.Payment;
 using SharedApplication.Persistence;
 using Infrastructure.Payment.Context;
 using System.Reflection;
+using SharedDomain.Repositories.Base;
+using SharedApplication.Persistence.Repositories;
+using Infrastructure.Payment.VnPay.Config;
+using MediatR;
+using Service.Payment.Commands.MerchantCommands;
+using Service.Payment.Interface;
+using Service.Payment.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +27,8 @@ builder.Services.AddInfras(builder.Configuration);
 builder.Services.AddSharedApplication<Program>();
 builder.Services.AddJWTAuthorization();
 builder.Services.AddGlobalErrorMiddleware();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -42,6 +51,14 @@ builder.Services.AddSwaggerGen(
         var path = Path.Combine(AppContext.BaseDirectory, xmlFileName);
         options.IncludeXmlComments(path);
     });
+
+/*builder.Services.AddMediatR(r =>
+{
+    r.RegisterServicesFromAssembly(typeof(CreateMerchantCommand).Assembly);
+});*/
+
+builder.Services.Configure<VnpayConfig>(
+    builder.Configuration.GetSection(VnpayConfig.ConfigName));
 
 var app = builder.Build();
 app.EnsureDataInit<PaymentContext>().Wait();

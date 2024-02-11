@@ -15,7 +15,7 @@ namespace Infrastructure.Payment.Context
         }
 
         public DbSet<Merchant> Merchants { get; set; }
-        public DbSet<Paymentt> Paymentts { get; set; }
+        public DbSet<SharedDomain.Entities.Pay.Paymentt> Paymentts { get; set; }
         public DbSet<PaymentDestination> PaymentDestinations { get; set; }
         public DbSet<PaymentNotification> PaymentNotifications { get; set; }
         public DbSet<PaymentSignature> PaymentSignatures { get; set; }

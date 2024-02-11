@@ -5,7 +5,7 @@ namespace SharedDomain.Entities.Pay
 {
     public class PaymentSignature : BaseEntity
     {
-        public string? PaymentId { get; set; } = string.Empty;
+        public Guid? PaymentId { get; set; }
         public Paymentt? Paymentt { get; set; }
         public string? SignValue { get; set; } = string.Empty;
         public string? SignAlgo { get; set; } = string.Empty;

@@ -4,7 +4,6 @@ using Infrastructure.Payment.Context;
 using MediatR;
 using Microsoft.Data.SqlClient;
 using Service.Payment.DTOs.MerchantDTOs;
-using SharedApplication.Pagination.Models;
 using SharedDomain.Entities.Diagnosis;
 using SharedDomain.Entities.Pay;
 using SharedDomain.Exceptions;

@@ -2,7 +2,7 @@
 {
     public class PaymentLinkDTO
     {
-        public string PaymentId { get; set; } = string.Empty;
+        public Guid? PaymentId { get; set; }
         public string PaymentUrl { get; set; } = string.Empty;
     }
 }

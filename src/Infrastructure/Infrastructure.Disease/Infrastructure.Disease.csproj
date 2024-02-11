@@ -9,10 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Common\SharedApplication.csproj" />
     <ProjectReference Include="..\..\Core\Domain\SharedDomain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\Infrastructure.Payment\Infrastructure.Payment.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,9 +4,9 @@ using SharedDomain.Entities.Pay;
 
 namespace Infrastructure.Payment.Config
 {
-    public class PaymentConfig : IEntityTypeConfiguration<Paymentt>
+    public class PaymentConfig : IEntityTypeConfiguration<SharedDomain.Entities.Pay.Paymentt>
     {
-        public void Configure(EntityTypeBuilder<Paymentt> builder)
+        public void Configure(EntityTypeBuilder<SharedDomain.Entities.Pay.Paymentt> builder)
         {
             builder
                 .Ignore(e => e.IsDeleted)

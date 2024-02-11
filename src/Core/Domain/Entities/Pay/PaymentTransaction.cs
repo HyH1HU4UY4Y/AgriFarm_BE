@@ -10,8 +10,8 @@ namespace SharedDomain.Entities.Pay
         public string? TranStatus { get; set; } = string.Empty;
         public decimal? TranAmount { get; set; }
         public DateTime? TranDate { get; set; }
-        public string? PaymentId { get; set; } = string.Empty;
-        public Paymentt? Paymentt { get; set; }
-        public string? TranRefId { get; set; } = string.Empty;
+        public Guid? PaymentId { get; set; }
+        public Paymentt? Payment { get; set; }
+        public Guid? TranRefId { get; set; } 
     }
 }

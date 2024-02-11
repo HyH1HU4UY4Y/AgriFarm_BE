@@ -21,7 +21,6 @@
   <ItemGroup>
     <Folder Include="Commands\PaymentCommands\" />
     <Folder Include="DTOs\PaymentNotificationDTOs\" />
-    <Folder Include="DTOs\PaymentDTOs\" />
   </ItemGroup>
 
 </Project>
