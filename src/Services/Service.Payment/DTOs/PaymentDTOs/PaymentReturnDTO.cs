@@ -1,4 +1,4 @@
-﻿namespace Service.Payment.DTOs
+﻿namespace Service.Payment.DTOs.PaymentDTOs
 {
     public class PaymentReturnDTO
     {

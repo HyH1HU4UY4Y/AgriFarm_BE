@@ -1,4 +1,6 @@
-﻿using Infrastructure.Payment.VnPay.Config;
+﻿using Infrastructure.Payment.Utils;
+using Infrastructure.Payment.VnPay.Config;
+using Infrastructure.Payment.VnPay.Response;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +10,9 @@ using Service.Payment.Commands.MerchantCommands;
 using Service.Payment.DTOs.MerchantDTOs;
 using Service.Payment.DTOs.PaymentDTOs;
 using Service.Payment.Queries.MerchantQueries;
+using Service.Payment.Queries.Payment;
+using System;
+using Mapster;
 
 namespace Service.Payment.Controllers
 {
@@ -76,30 +81,57 @@ namespace Service.Payment.Controllers
             return Ok(response);
         }
 
+        */
+
         //[Authorize(Roles = Roles.Admin)]
-        [HttpGet("get-by-id")]
-        public async Task<IActionResult> GetById([FromQuery] Guid id)
+        /* [HttpGet("get-by-id")]
+         [Route("vnpay-return")]
+         public async Task<IActionResult> VnpayReturn([FromQuery] Guid id)
+         {
+             PaymentDetailResponse response = new PaymentDetailResponse();
+             var rs = await _mediator.Send(new GetPaymentByQuery
+             {
+                 PaymentId = id
+             });
+             if (rs != null)
+             {
+                 response.Id = rs.Id;
+                 response.PaymentStatus = rs.PaymentStatus;
+                 response.PaymentMessage = rs.PaymentLastMessage;
+                 response.PaymentDate = rs.PaymentDate;
+                 response.PaymentRefId = rs.PaymentRefId;
+                 response.Amount = rs.PaidAmount;
+                 response.Signature = rs.Signature;
+                 response.statusCode = Ok().StatusCode;
+             }
+             else
+             {
+                 response.statusCode = NoContent().StatusCode;
+                 response.message = new List<string> {
+                     "Data not found!"
+                 };
+             }
+             return Ok(response);
+         }*/
+
+        [HttpGet]
+        [Route("vnpay-return")]
+        public async Task<IActionResult> VnpayReturn([FromQuery] VnpayPayResponse response)
         {
-            // Get by id
-            MerchantDetailResponse response = new MerchantDetailResponse();
-            var rs = await _mediator.Send(new GetMerchantByQuery
+            string returnUrl = string.Empty;
+            var returnModel = new PaymentReturnDTO();
+            var processResult = await _mediator.Send(response.Adapt<ProcessVnpayPaymentReturn>());
+
+            if (processResult != (null,null))
             {
-                MerchantId = id
-            });
-            if (rs != null)
-            {
-                response.data = rs;
-                response.statusCode = Ok().StatusCode;
+                returnModel = processResult.Item1 as PaymentReturnDTO;
+                returnUrl = processResult.Item2 as string;
             }
-            else
-            {
-                response.statusCode = NoContent().StatusCode;
-                response.message = new List<string> {
-                    "Data not found!"
-                };
-            }
-            return Ok(response);
-        }*/
+
+            if (returnUrl.EndsWith("/"))
+                returnUrl = returnUrl.Remove(returnUrl.Length - 1, 1);
+            return Redirect($"{returnUrl}?{returnModel.ToQueryString()}");
+        }
 
         [HttpPost("add")]
         public async Task<IActionResult> InsertPayment([FromBody] PaymentInsertRequest request)
