@@ -20,4 +20,8 @@
     public class DiseaseInfoDeleteResponse : ResponseStatus
     {
     }
+
+    public class FeedbackUpdateResponse : ResponseStatus
+    {
+    }
 }

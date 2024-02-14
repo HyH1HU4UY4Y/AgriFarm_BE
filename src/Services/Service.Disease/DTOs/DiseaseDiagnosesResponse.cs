@@ -23,8 +23,9 @@
     public class DiseaseDiagnosesUpdateResponse : ResponseStatus
     {
     }
-    public class DiseaseDiagnosesInsertResponse : ResponseStatus
+    public class DiseaseDiagnosesInsertResponse : ResponseStatus 
     {
+        public DiseaseDiagnosesDTO? data { get; set; }
     }
     public class DiseaseDiagnosesExportResponse : ResponseStatus
     {

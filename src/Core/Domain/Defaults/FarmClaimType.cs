@@ -8,9 +8,9 @@ namespace SharedDomain.Defaults
 {
     public class FarmClaimType
     {
-        public const string SiteId = "site_id";
+        public const string SiteId = "siteId";
         public const string Scope = "scope";
-        public const string FirstName = "first_name";
-        public const string LastName = "last_name";
+        public const string FirstName = "firstName";
+        public const string LastName = "lastName";
     }
 }

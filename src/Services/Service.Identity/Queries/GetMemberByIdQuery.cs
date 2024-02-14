@@ -43,8 +43,11 @@ namespace Service.Identity.Queries
 
         public async Task<UserDetailResponse> Handle(GetMemberByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await _identity.GetFullMember(e => e.Id == request.UserId
+            var user = request.SiteId == Guid.Empty?
+                await _identity.GetFullMember(e => e.Id == request.UserId):
+                await _identity.GetFullMember(e => e.Id == request.UserId
                         && e.SiteId == request.SiteId);
+
 
             if(user == null)
             {

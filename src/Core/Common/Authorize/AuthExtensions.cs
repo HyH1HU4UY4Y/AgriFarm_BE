@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using SharedDomain.Defaults;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using SharedApplication.Authorize.Services;
+using Microsoft.AspNetCore.Authentication;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace SharedApplication.Authorize
 {
@@ -16,8 +18,8 @@ namespace SharedApplication.Authorize
             services.AddScoped<IIdentityService, IdentityService>();
 
             services.AddJWTAuthorization();
-            
 
+            services.AddTransient<IClaimsTransformation, FarmClaimsTransformation>();
             /*
                         services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>()
                                 .AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
@@ -27,16 +29,22 @@ namespace SharedApplication.Authorize
         
         public static IServiceCollection AddJWTAuthorization(this IServiceCollection services)
         {
-            
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(x =>
+                .AddJwtBearer(o =>
             {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = TokenHelperExtensions.GetValidateParameter();
+                o.RequireHttpsMetadata = false;
+                o.SaveToken = true;
+                o.TokenValidationParameters = TokenHelperExtensions.GetValidateParameter();
+                o.MapInboundClaims = false;
             });
+
+            
 
             return services;
         }
+
+        
     }
 }

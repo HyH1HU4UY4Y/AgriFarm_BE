@@ -31,11 +31,24 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
 
       "DownstreamScheme": "https",
-      "DownstreamPathTemplate": "/api/{version}/s{controller}/{action}",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": 7215
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/{version}/soil/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+
+      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7042
         }
       ]
     }

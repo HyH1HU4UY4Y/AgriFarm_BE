@@ -25,4 +25,10 @@ namespace Service.Disease.DTOs
         public Guid? CreateBy { get; set; }
         public Guid? LandId { get; set; }
     }
+
+    public class FeedbackUpdateRequest
+    {
+        public Guid Id { get; set; }
+        public string? Feedback { get; set; }
+    }
 }
