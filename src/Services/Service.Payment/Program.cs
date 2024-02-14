@@ -15,6 +15,7 @@ using MediatR;
 using Service.Payment.Commands.MerchantCommands;
 using Service.Payment.Interface;
 using Service.Payment.Services;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +61,17 @@ builder.Services.AddSwaggerGen(
 builder.Services.Configure<VnpayConfig>(
     builder.Configuration.GetSection(VnpayConfig.ConfigName));
 
+/*builder.Services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(builder.Configuration.GetConnectionString("NSql"),
+                new Hangfire.SqlServer.SqlServerStorageOptions()
+                {
+                    //TODO: Change hangfire sql server option
+                }));
+builder.Services.AddHangfireServer();*/
+
 var app = builder.Build();
 app.EnsureDataInit<PaymentContext>().Wait();
 
@@ -69,6 +81,7 @@ app.UseSwaggerUI();
 
 
 app.UseHttpsRedirection();
+//app.UseHangfireDashboard();
 
 app.UseCors(cors);
 

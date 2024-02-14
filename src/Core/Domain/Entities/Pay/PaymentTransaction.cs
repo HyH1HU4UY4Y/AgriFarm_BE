@@ -12,6 +12,7 @@ namespace SharedDomain.Entities.Pay
         public DateTime? TranDate { get; set; }
         public Guid? PaymentId { get; set; }
         public Paymentt? Payment { get; set; }
-        public Guid? TranRefId { get; set; } 
+        public Guid? TranRefId { get; set; }
+        public Guid? CreatedBy { get; set; }
     }
 }

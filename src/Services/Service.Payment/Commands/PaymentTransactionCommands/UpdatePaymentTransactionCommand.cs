@@ -1,4 +1,4 @@
-﻿namespace Service.Payment.Commands.PaymentTransaction
+﻿namespace Service.Payment.Commands.PaymentTransactionCommands
 {
     public class UpdatePaymentTransactionCommand
     {

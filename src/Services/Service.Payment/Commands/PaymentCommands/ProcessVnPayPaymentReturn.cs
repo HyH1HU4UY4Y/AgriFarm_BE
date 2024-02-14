@@ -62,6 +62,7 @@ namespace Service.Payment.Commands
                             returnUrl = merchant!.MerchantReturnUrl ?? string.Empty;
                             resultData.PaymentStatus = "00";
                             resultData.PaymentId = payment.Id.ToString();
+                            //resultData.Amount = payment.RequiredAmount;
 
                             resultData.Signature = Guid.NewGuid().ToString();
                         }
@@ -76,6 +77,7 @@ namespace Service.Payment.Commands
                         resultData.PaymentStatus = "10";
                         resultData.PaymentMessage = "Payment process failed";
                     }
+                    result = (resultData, returnUrl);
                 } 
                 else
                 {

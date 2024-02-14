@@ -1,4 +1,4 @@
-﻿namespace Service.Payment.Commands.PaymentNotification
+﻿namespace Service.Payment.Commands.PaymentNotificationCommands
 {
     public class DeletePaymentNotificationCommand
     {

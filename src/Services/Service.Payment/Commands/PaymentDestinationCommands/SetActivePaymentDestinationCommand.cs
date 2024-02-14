@@ -1,4 +1,4 @@
-﻿namespace Service.Payment.Commands.PaymentDestination
+﻿namespace Service.Payment.Commands.PaymentDestinationCommands
 {
     public class SetActivePaymentDestinationCommand
     {

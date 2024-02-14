@@ -1,4 +1,4 @@
-﻿namespace Service.Payment.Commands.PaymentSignature
+﻿namespace Service.Payment.Commands.PaymentSignatureCommands
 {
     public class UpdateSignatureCommand
     {

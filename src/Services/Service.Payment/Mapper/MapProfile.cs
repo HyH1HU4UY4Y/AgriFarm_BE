@@ -5,6 +5,7 @@ using Service.Payment.Commands.MerchantCommands;
 using Service.Payment.DTOs;
 using Service.Payment.DTOs.MerchantDTOs;
 using Service.Payment.DTOs.PaymentDTOs;
+using Service.Payment.DTOs.PaymentTransactionDTOs;
 using Service.Payment.Queries.Payment;
 using SharedDomain.Entities.Pay;
 
@@ -24,6 +25,8 @@ namespace Service.Disease.Mapper
             CreateMap<Paymentt, GetPaymentByQuery>().ReverseMap();
 
             CreateMap<VnpayPayResponse, ProcessVnpayPaymentReturn>().ReverseMap();
+
+            CreateMap<PaymentTransaction, PaymentTransactionDTO>().ReverseMap();
         }
     }
 }
