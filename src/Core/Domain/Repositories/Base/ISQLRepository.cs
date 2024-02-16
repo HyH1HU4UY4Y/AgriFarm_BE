@@ -16,7 +16,7 @@ namespace SharedDomain.Repositories.Base
         Task<List<TEntity>?> GetMany(
                 Expression<Func<TEntity, bool>> filter = null,
                 Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
-                bool checkRole = false);
+                bool siteFilter = false);
 
         Task<TEntity> AddAsync(TEntity entity);
         Task SoftDeleteAsync(TEntity entity);

@@ -83,7 +83,7 @@ namespace SharedApplication.Persistence.Repositories
         public virtual Task<List<TEntity>?> GetMany(
                 Expression<Func<TEntity, bool>> filter = null,
                 Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
-                bool checkRole = false)
+                bool siteFilter = false)
         {
             var items = _all;
 
@@ -97,9 +97,15 @@ namespace SharedApplication.Persistence.Repositories
             {
                 items = items.Where(filter);
             }
-            if (checkRole && !_multiTenantResolver.IsSuperAdmin())
+            if (siteFilter && !_multiTenantResolver.IsSuperAdmin() 
+                && items.AsEnumerable().All(e=>e is IMultiSite))
             {
-                items = items.Where(e => e.GetType().GetProperty("SiteId").GetValue(e).ToString() == _siteId.ToString());
+                items = items.AsEnumerable()
+                    .Cast<IMultiSite>()
+                    .Where(e=>e.SiteId == _siteId)
+                    //.Where(e => e.GetType().GetProperty("SiteId").GetValue(e).ToString() == _siteId.ToString())
+                    .Cast<TEntity>()
+                    .AsQueryable();
             }
 
             return Task.FromResult(items.AsNoTracking().ToList())!;

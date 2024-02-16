@@ -33,7 +33,10 @@ namespace SharedApplication.Authorize.Services
 
         public async Task<SignInResult> SigninUserAsync(string userName, string password)
         {
-            var result = await _signInManager.PasswordSignInAsync(userName, password, true, false);
+            SignInResult result = new();
+            var user = await _userManager.FindByNameAsync(userName);
+
+            result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 
             if (result.IsLockedOut)
             {

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20240127102516_init")]
+    [Migration("20240215081432_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -54,29 +54,29 @@ namespace Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("825c2da1-8e1e-481a-b6d0-0bc851be1696"),
-                            ConcurrencyStamp = "8b971115-3cfe-4625-8243-f0da08dce328",
+                            Id = new Guid("7b0a2803-ebdd-4f06-b5db-0c0ba28ba787"),
+                            ConcurrencyStamp = "678cb82e-3465-4416-a8c2-15482cf729c5",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = new Guid("69804932-88d8-4467-971f-f5bc3df2373c"),
-                            ConcurrencyStamp = "ef98ea49-dcd6-4f62-b6c6-08d6c3cc5b8b",
+                            Id = new Guid("935fa4fb-abf0-424b-8cf1-5f8dab32cb1c"),
+                            ConcurrencyStamp = "cae88c23-c334-4735-8724-4c312c6d2492",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = new Guid("58353fc9-f5e4-44e5-b202-4b434c88bb96"),
-                            ConcurrencyStamp = "f7480a83-6b98-4aa8-89d6-60de52016e65",
+                            Id = new Guid("661e6475-913b-46d8-ad57-dec01094521e"),
+                            ConcurrencyStamp = "ad562cb6-6182-4c74-a10c-51d3fe74caff",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("a2b3b43e-9add-4947-aa71-9cca26cb17db"),
-                            ConcurrencyStamp = "8407be8a-70ac-4cba-9581-ad8127f37532",
+                            Id = new Guid("ce64120e-0e58-4d4e-80f1-d8288209da47"),
+                            ConcurrencyStamp = "14148cb8-a9fa-4b37-9de9-760ec623d101",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         });
@@ -168,23 +168,23 @@ namespace Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("09372bfb-b338-4b8b-9818-bb3686f2bc51"),
-                            RoleId = new Guid("825c2da1-8e1e-481a-b6d0-0bc851be1696")
+                            UserId = new Guid("d7825d84-df73-4216-9b3a-cd46481bddfd"),
+                            RoleId = new Guid("7b0a2803-ebdd-4f06-b5db-0c0ba28ba787")
                         },
                         new
                         {
-                            UserId = new Guid("09372bfb-b338-4b8b-9818-bb3686f2bc51"),
-                            RoleId = new Guid("69804932-88d8-4467-971f-f5bc3df2373c")
+                            UserId = new Guid("d7825d84-df73-4216-9b3a-cd46481bddfd"),
+                            RoleId = new Guid("935fa4fb-abf0-424b-8cf1-5f8dab32cb1c")
                         },
                         new
                         {
-                            UserId = new Guid("09372bfb-b338-4b8b-9818-bb3686f2bc51"),
-                            RoleId = new Guid("58353fc9-f5e4-44e5-b202-4b434c88bb96")
+                            UserId = new Guid("d7825d84-df73-4216-9b3a-cd46481bddfd"),
+                            RoleId = new Guid("661e6475-913b-46d8-ad57-dec01094521e")
                         },
                         new
                         {
-                            UserId = new Guid("09372bfb-b338-4b8b-9818-bb3686f2bc51"),
-                            RoleId = new Guid("a2b3b43e-9add-4947-aa71-9cca26cb17db")
+                            UserId = new Guid("d7825d84-df73-4216-9b3a-cd46481bddfd"),
+                            RoleId = new Guid("ce64120e-0e58-4d4e-80f1-d8288209da47")
                         });
                 });
 
@@ -398,23 +398,23 @@ namespace Infrastructure.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("09372bfb-b338-4b8b-9818-bb3686f2bc51"),
+                            Id = new Guid("d7825d84-df73-4216-9b3a-cd46481bddfd"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b403a9f2-9983-4a7f-9b85-94adca49e164",
-                            CreatedDate = new DateTime(2024, 1, 27, 17, 25, 16, 395, DateTimeKind.Local).AddTicks(8101),
+                            ConcurrencyStamp = "f7af2d71-037e-4a5e-afcf-b33e2ee52a95",
+                            CreatedDate = new DateTime(2024, 2, 15, 15, 14, 32, 831, DateTimeKind.Local).AddTicks(2600),
                             Email = "admin01@system",
                             EmailConfirmed = true,
                             FirstName = "Super",
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 27, 17, 25, 16, 395, DateTimeKind.Local).AddTicks(8109),
+                            LastModify = new DateTime(2024, 2, 15, 15, 14, 32, 831, DateTimeKind.Local).AddTicks(2608),
                             LastName = "Admin 01",
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN01@SYSTEM",
                             NormalizedUserName = "ADMIN01@SYSTEM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFJyppLEd4g+5rGsaPmZQQczojScKl4OlfLWzC1Arx2d3tiyy+6EZkxLUbcLDqU8rg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFZGjDh1pnfRGlgVJKDEeefaKB3DN3QaWBKvl3MPWPY8fUDD4JUi5VxKqwboT0PjPg==",
                             PhoneNumber = "0122222222",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "2ac3efdd-3697-4182-b345-0b6a35582f2f",
+                            SecurityStamp = "4b9a8a30-11ed-49bc-93c2-4031e7e2a7cd",
                             TwoFactorEnabled = false,
                             UserName = "admin01@system"
                         });
