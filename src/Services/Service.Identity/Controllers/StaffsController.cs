@@ -10,6 +10,7 @@ using SharedDomain.Common;
 using SharedDomain.Defaults;
 using SharedApplication.Pagination;
 using System.ComponentModel.DataAnnotations;
+using SharedApplication.Authorize;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -36,6 +37,8 @@ namespace Service.Identity.Controllers
             [FromHeader]int? pageNumber = null, [FromHeader]int? pageSize = null
         )
         {
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
+
             if (userId == null)
             {
 

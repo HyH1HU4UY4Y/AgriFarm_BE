@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SharedApplication.Persistence.Configs;
 using SharedDomain.Entities.FarmComponents;
 using System;
 using System.Collections.Generic;
@@ -14,17 +15,7 @@ namespace Infrastructure.Identity.Config
         public void Configure(EntityTypeBuilder<Site> builder)
         {
             builder.ToTable("SiteDetails");
-            builder
-                .Ignore(e => e.PaymentDetail)
-                .Ignore(e => e.Capitals)
-                .Ignore(e => e.Components)
-                .Ignore(e => e.Intro)
-                .Ignore(e => e.Subscripts)
-                .Ignore(e => e.LogoImg)
-                .Ignore(e => e.AvatarImg)
-                .Ignore(e => e.CreatedDate)
-                .Ignore(e => e.LastModify)
-                ;
+            builder.ExtractSite();
         }
     }
 }

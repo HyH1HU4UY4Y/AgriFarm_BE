@@ -11,7 +11,7 @@ namespace SharedDomain.Entities.FarmComponents
     public class FarmSoil : BaseComponent
     {
         private string _positionStr;
-        public string Position { 
+        public string? Position { 
             get => _positionStr;
             set {
                 _positionStr = value;
@@ -22,7 +22,9 @@ namespace SharedDomain.Entities.FarmComponents
         [NotMapped]
         public List<PositionPoint> Positions 
         {
-            get => JsonConvert.DeserializeObject<List<PositionPoint>>(_positionStr)??new();
+            get => !string.IsNullOrWhiteSpace(_positionStr) ?
+                JsonConvert.DeserializeObject<List<PositionPoint>>(_positionStr)!
+                : new();
             set => _positionStr = JsonConvert.SerializeObject(value);
         }
 

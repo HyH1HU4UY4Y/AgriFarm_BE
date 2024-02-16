@@ -26,7 +26,8 @@ builder.Services.AddDomainCors(cors);
 builder.Services.AddInfras(builder.Configuration);
 builder.Services.AddSharedApplication<Program>();
 builder.Services.AddGlobalErrorMiddleware()
-                .AddIdentityClaimsMiddleware();
+                //.AddIdentityClaimsMiddleware()
+                ;
 builder.Services.AddDefaultVersioning();
 builder.Services.AddAuthModule(builder.Configuration);
 builder.Services.AddDefaultEventBusExtension<Program>(
@@ -110,7 +111,7 @@ app.UseGlobalErrorMiddleware();
 app.UseCors(cors);
 
 app.UseAuthentication();
-app.UseIdentityClaimsMiddleware();
+//app.UseIdentityClaimsMiddleware();
 app.UseAuthorization();
 
 app.MapControllers();

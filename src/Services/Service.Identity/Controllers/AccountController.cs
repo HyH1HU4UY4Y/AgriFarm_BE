@@ -5,6 +5,7 @@ using Service.Identity.Commands.Users;
 using Service.Identity.DTOs;
 using Service.Identity.Queries;
 using SharedApplication.Authorize;
+using SharedApplication.Authorize.Values;
 using SharedDomain.Common;
 using System.ComponentModel.DataAnnotations;
 
@@ -55,7 +56,7 @@ namespace Service.Identity.Controllers
         {
 
             
-            if (!HttpContext.User.TryCheckIdentity(out var uId, out var sId))
+            if (HttpContext.User.TryCheckIdentity(out var uId, out var sId) == SystemIdentity.Anonymous)
             {
                 return Unauthorized();
             }
@@ -77,7 +78,7 @@ namespace Service.Identity.Controllers
         [HttpPut("edit-profile")]
         public async Task<IActionResult> Edit([FromBody] SaveMemberDetailRequest request)
         {
-            if (!HttpContext.User.TryCheckIdentity(out var uId, out var sId))
+            if (HttpContext.User.TryCheckIdentity(out var uId, out var sId) == SystemIdentity.Anonymous)
             {
                 return Unauthorized();
             }

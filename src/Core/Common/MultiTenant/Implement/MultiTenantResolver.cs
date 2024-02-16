@@ -18,7 +18,7 @@ namespace SharedApplication.MultiTenant.Implement
 
         public MultiTenantResolver(IHttpContextAccessor contextAccessor, ILogger<MultiTenantResolver> logger)
         {
-            _httpContext = contextAccessor.HttpContext;
+            _httpContext = contextAccessor.HttpContext!;
             if (_httpContext != null)
             {
                 _currentTenant = _httpContext.User?.GetSiteId() ?? "";
@@ -43,7 +43,7 @@ namespace SharedApplication.MultiTenant.Implement
 
         public bool IsSuperAdmin()
         {
-            return _currentTenant == "root";
+            return _currentTenant == Guid.Empty.ToString();
         }
     }
 }
