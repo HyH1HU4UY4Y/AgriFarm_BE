@@ -17,9 +17,7 @@ namespace Service.Disease.Commands
     public class CreateDiseaseInfoCommand : IRequest<DiseaseInfoDTO>
     {
         public string? DiseaseName { get; set; }
-        [StringLength(8000)]
         public string? Symptoms { get; set; }
-        [StringLength(8000)]
         public string? Cause { get; set; }
         public string? PreventiveMeasures { get; set; }
         public string? Suggest { get; set; }

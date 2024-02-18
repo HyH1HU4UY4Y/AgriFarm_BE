@@ -149,13 +149,14 @@ namespace Service.Disease.Controllers
             {
                 var rs = await _mediator.Send(new UpdateDiseaseInfoCommand
                 {
+                    Id = request.Id,
                     DiseaseName = request.DiseaseName!,
                     Symptoms = request.Symptoms!,
                     Cause = request.Cause!,
                     PreventiveMeasures = request.PreventiveMeasures!,
                     Suggest = request.Suggest!,
                     UpdateBy = request.UpdateBy
-            });
+                }) ;
                 if (rs == null)
                 {
                     response.statusCode = NoContent().StatusCode;
@@ -214,99 +215,5 @@ namespace Service.Disease.Controllers
             }
             return Ok(response);
         }
-
-
-
-        // GET: api/<DiseaseInfosController>
-        //[Authorize(Roles = Roles.SuperAdmin)]
-        //[HttpGet("get")]
-        /*public async Task<IActionResult> Get()
-        {
-            var rs = await _mediator.Send(new GetAllDiseaseInfosQuery());
-
-            return Ok(rs);
-        }
-
-        // GET api/<DiseaseInfosController>/5
-        //[Authorize(Roles = Roles.SuperAdmin)]
-        [HttpGet("get")]
-        public async Task<IActionResult> GetDiseaseById([FromQuery] Guid diseaseId)
-        {
-
-            var disease = await _mediator.Send(new GetDiseaseByIdQuery
-            {
-                DiseaseId = diseaseId,
-            });
-
-            return Ok(disease);
-
-        }*/
-
-
-        /*//[Authorize(Roles = Roles.SuperAdmin)]
-        [HttpPost("add-new-disease")]
-        public async Task<IActionResult> AddNewDisease([FromBody] CreateDiseaseCommand request)
-        {
-            var rs = await _mediator.Send(new CreateDiseaseCommand
-            {
-                DiseaseName = request.DiseaseName,
-                Symptoms = request.Symptoms,
-                Cause = request.Cause,
-                PreventiveMeasures = request.PreventiveMeasures,
-                Suggest = request.Suggest,
-                CreateBy = request.CreateBy,
-                UpdateBy = request.UpdateBy,
-                DeletedDate = null,
-            });
-
-            return Ok(rs);
-        }
-
-
-        // PUT api/<DiseaseInfosController>
-        [HttpPut("update-disease")]
-        public async Task<IActionResult> UpdateDisease([FromQuery] Guid id, [FromBody] UpdateDiseaseCommand request)
-        {
-            var rs = await _mediator.Send(new UpdateDiseaseCommand
-            {
-                Id = id,
-                DiseaseName = request.DiseaseName,
-                Symptoms = request.Symptoms,
-                Cause = request.Cause,
-                PreventiveMeasures = request.PreventiveMeasures,
-                Suggest = request.Suggest,
-                CreateBy = request.CreateBy,
-                UpdateBy = request.UpdateBy
-            });
-
-            return Ok(rs);
-        }
-
-        // PUT api/<DiseaseInfosController>
-        [HttpDelete("delete-disease")]
-        public async Task<IActionResult> DeleteDisease([FromQuery] Guid id)
-        {
-            var rs = await _mediator.Send(new DeleteDiseaseCommand
-            {
-                Id = id,
-                
-            });
-
-            return Ok(rs);
-        }
-
-
-
-        // PUT api/<DiseaseInfosController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<DiseaseInfosController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }*/
     }
 }
