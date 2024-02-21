@@ -8,13 +8,13 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Water.Commands
 {
-    public class UpdateFarmWaterCommand : IRequest<Guid>
+    public class UpdateFarmWaterCommand : IRequest<WaterResponse>
     {
         public Guid Id { get; set; }
         public WaterRequest Water { get; set; }
     }
 
-    public class UpdateFarmWaterCommandHandler : IRequestHandler<UpdateFarmWaterCommand, Guid>
+    public class UpdateFarmWaterCommandHandler : IRequestHandler<UpdateFarmWaterCommand, WaterResponse>
     {
         private ISQLRepository<FarmWaterContext, FarmWater> _waters;
         private IUnitOfWork<FarmWaterContext> _unit;
@@ -32,7 +32,7 @@ namespace Service.Water.Commands
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(UpdateFarmWaterCommand request, CancellationToken cancellationToken)
+        public async Task<WaterResponse> Handle(UpdateFarmWaterCommand request, CancellationToken cancellationToken)
         {
             var item = await _waters.GetOne(e => e.Id == request.Id);
 
@@ -47,7 +47,7 @@ namespace Service.Water.Commands
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<WaterResponse>(item);
         }
     }
 }

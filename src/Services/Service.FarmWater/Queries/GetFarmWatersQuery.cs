@@ -12,6 +12,7 @@ namespace Service.Water.Queries
     public class GetFarmWatersQuery : IRequest<PagedList<WaterResponse>>
     {
         public PaginationRequest Pagination { get; set; } = new();
+        public Guid SiteId { get; set; }
     }
 
     public class GetFarmWatersQueryHandler : IRequestHandler<GetFarmWatersQuery, PagedList<WaterResponse>>
@@ -35,7 +36,7 @@ namespace Service.Water.Queries
 
         public async Task<PagedList<WaterResponse>> Handle(GetFarmWatersQuery request, CancellationToken cancellationToken)
         {
-            var items = await _waters.GetMany();
+            var items = await _waters.GetMany(e=>e.SiteId == request.SiteId);
 
 
             return PagedList<WaterResponse>.ToPagedList(
