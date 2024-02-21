@@ -35,7 +35,7 @@ namespace Service.Pesticide.Queries.FarmPesticides
 
         public async Task<PesticideResponse> Handle(GetFarmPesticideByIdQuery request, CancellationToken cancellationToken)
         {
-            var item = _pesticides.GetOne(e => e.Id == request.Id, ls => ls.Include(x => x.Properties));
+            var item = await _pesticides.GetOne(e => e.Id == request.Id, ls => ls.Include(x => x.Properties));
 
             if (item == null)
             {

@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Pesticide.Commands.RefPesticides;
 using Service.Pesticide.DTOs;
@@ -12,9 +13,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Service.Pesticide.Controllers
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/ref-pesticides")]
     [ApiController]
     [ApiVersion("1.0")]
+    [Authorize]
     public class RefPesticidesController : ControllerBase
     {
         private IMediator _mediator;
@@ -25,13 +27,20 @@ namespace Service.Pesticide.Controllers
         }
 
         [HttpGet("get")]
-        public async Task<IActionResult> Get([FromQuery] Guid? id = null)
+        public async Task<IActionResult> Get(
+            [FromQuery] Guid? id = null,
+            [FromHeader] int? pageNumber = null, [FromHeader] int? pageSize = null
+            )
         {
-            //TODO: add check http context and site query string for super admin
 
             if (id == null)
             {
-                var items = await _mediator.Send(new GetRefPesticidesQuery());
+                PaginationRequest page = new(pageNumber, pageSize);
+
+                var items = await _mediator.Send(new GetRefPesticidesQuery
+                {
+                    Pagination = page
+                });
 
                 Response.AddPaginationHeader(items.MetaData);
 
@@ -54,13 +63,16 @@ namespace Service.Pesticide.Controllers
         }
 
 
-
         [HttpPost("post")]
         public async Task<IActionResult> Post([FromBody] RefPesticideRequest request)
         {
             var rs = await _mediator.Send(new AddRefPesticideCommand { Pesticide = request });
 
-            return StatusCode(201);
+            return StatusCode(201, new DefaultResponse<RefPesticideResponse>
+            {
+                Data = rs,
+                Status = 201
+            });
         }
 
         [HttpPut("put")]
@@ -73,7 +85,11 @@ namespace Service.Pesticide.Controllers
                 Pesticide = request
             });
 
-            return NoContent();
+            return Ok(new DefaultResponse<RefPesticideResponse>
+            {
+                Data = rs,
+                Status = 200
+            });
         }
 
         [HttpDelete("delete")]

@@ -1,20 +1,25 @@
 ﻿using Asp.Versioning;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Pesticide.Commands.FarmPesticides;
 using Service.Pesticide.DTOs;
 using Service.Pesticide.Queries;
 using Service.Pesticide.Queries.FarmPesticides;
+using SharedApplication.Authorize;
+using SharedApplication.Authorize.Values;
 using SharedApplication.Pagination;
 using SharedDomain.Common;
+using SharedDomain.Entities.FarmComponents;
 using System.ComponentModel.DataAnnotations;
 
 namespace Service.Pesticide.Controllers
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiController]
+    [Route("api/v{version:apiVersion}/farm-pesticides")]
     [ApiVersion("1.0")]
+    [ApiController]
+    [Authorize]
     public class FarmPesticidesController : ControllerBase
     {
         private IMediator _mediator;
@@ -25,13 +30,28 @@ namespace Service.Pesticide.Controllers
         }
 
         [HttpGet("get")]
-        public async Task<IActionResult> Get([FromQuery] Guid? id = null)
+        public async Task<IActionResult> Get(
+            [FromQuery] Guid? id = null,
+            [FromQuery] Guid? siteId = null,
+            [FromHeader] int? pageNumber = null, [FromHeader] int? pageSize = null
+            )
         {
-            //TODO: add check http context and site query string for super admin
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
 
             if (id == null)
             {
-                var items = await _mediator.Send(new GetFarmPesticidesQuery());
+                if (identity == SystemIdentity.Supervisor && siteId == null)
+                {
+                    return NotFound();
+                }
+
+                PaginationRequest page = new(pageNumber, pageSize);
+
+                var items = await _mediator.Send(new GetFarmPesticidesQuery
+                {
+                    Pagination = page,
+                    SiteId = identity == SystemIdentity.Supervisor ? siteId.Value : sId
+                });
 
                 Response.AddPaginationHeader(items.MetaData);
 
@@ -54,17 +74,34 @@ namespace Service.Pesticide.Controllers
         }
 
 
-
         [HttpPost("post")]
-        public async Task<IActionResult> Post([FromBody] PesticideRequest request)
+        public async Task<IActionResult> Post(
+            [FromBody] PesticideCreateRequest request,
+            [FromQuery] Guid? siteId = null
+            )
         {
-            var rs = await _mediator.Send(new AddFarmPesticideCommand { Pesticide = request });
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
 
-            return StatusCode(201);
+            if (identity == SystemIdentity.Supervisor && siteId == null)
+            {
+                return NotFound();
+            }
+
+            var rs = await _mediator.Send(new AddFarmPesticideCommand { 
+                Pesticide = request,
+                SiteId = identity == SystemIdentity.Supervisor ? siteId.Value : sId
+            });
+
+            return StatusCode(201, new DefaultResponse<PesticideResponse>
+            {
+                Data = rs,
+                Status = 201
+            });
         }
 
         [HttpPut("put")]
-        public async Task<IActionResult> Put([Required][FromQuery] Guid id, [FromBody] PesticideRequest request)
+        public async Task<IActionResult> Put([Required][FromQuery] Guid id, 
+            [FromBody] PesticideInfoRequest request)
         {
 
             var rs = await _mediator.Send(new UpdateFarmPesticideCommand
@@ -73,7 +110,11 @@ namespace Service.Pesticide.Controllers
                 Pesticide = request
             });
 
-            return NoContent();
+            return Ok(new DefaultResponse<PesticideResponse>
+            {
+                Data = rs,
+                Status = 200
+            });
         }
 
         [HttpDelete("delete")]

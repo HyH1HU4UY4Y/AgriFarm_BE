@@ -8,6 +8,8 @@ using EventBus;
 
 using Infrastructure.Pesticide;
 using Infrastructure.Pesticide.Contexts;
+using SharedApplication.Versioning;
+using SharedApplication.Serializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,7 @@ builder.Services.AddDomainCors(cors);
 builder.Services.AddInfras(builder.Configuration);
 builder.Services.AddSharedApplication<Program>();
 builder.Services.AddJWTAuthorization();
+builder.Services.AddDefaultVersioning();
 builder.Services.AddGlobalErrorMiddleware();
 
 builder.Services.AddDefaultEventBusExtension<Program>(
@@ -28,7 +31,8 @@ builder.Services.AddDefaultEventBusExtension<Program>(
 
     });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+                .AddDefaultJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -38,9 +42,10 @@ var app = builder.Build();
 app.EnsureDataInit<FarmPesticideContext>().Wait();
 
 app.UseGlobalErrorMiddleware();
+app.SeedData();
+
 app.UseSwagger();
 app.UseSwaggerUI();
-
 
 //app.UseHttpsRedirection();
 
