@@ -9,8 +9,10 @@ namespace Service.Fertilize.Mapper
     {
         public MapperProfile()
         {
+            CreateMap<PropertyValue, ComponentProperty>().ReverseMap();
 
-            CreateMap<FertilizeRequest, FarmFertilize>().ReverseMap();
+            CreateMap<FertilizeCreateRequest, FarmFertilize>().ReverseMap();
+            CreateMap<FertilizeInfoRequest, FarmFertilize>().ReverseMap();
             CreateMap<FarmFertilize, FertilizeResponse>().ReverseMap();
 
             CreateMap<RefFertilizeRequest, ReferencedFertilize>().ReverseMap();

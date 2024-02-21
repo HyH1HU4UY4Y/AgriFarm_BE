@@ -35,7 +35,7 @@ namespace Service.Fertilize.Queries.FarmFertilizes
 
         public async Task<FertilizeResponse> Handle(GetFarmFertilizeByIdQuery request, CancellationToken cancellationToken)
         {
-            var item = _fertilizes.GetOne(e => e.Id == request.Id, ls => ls.Include(x => x.Properties));
+            var item = await _fertilizes.GetOne(e => e.Id == request.Id, ls => ls.Include(x => x.Properties));
 
             if (item == null)
             {
