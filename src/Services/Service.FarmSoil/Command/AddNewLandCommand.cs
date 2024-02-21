@@ -17,17 +17,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Service.Soil.Command
 {
-    public class AddNewLandCommand: IRequest<Guid>
+    public class AddNewLandCommand: IRequest<LandResponse>
     {
-        [JsonProperty("land")]
-        [Required]
-        public LandRequest LandRequest { get; set; }
-        [JsonProperty("contract")]
+        public Guid SiteId { get; set; }
+        public LandRequest Land { get; set; }
         public SupplyContractRequest? SupplyContract { get; set; }
+        public List<PositionPoint> Positions { get; set; } = new();
     }
 
 
-    public class AddNewLandCommandHandler : IRequestHandler<AddNewLandCommand, Guid>
+    public class AddNewLandCommandHandler : IRequestHandler<AddNewLandCommand, LandResponse>
     {
         private ISQLRepository<FarmSoilContext, FarmSoil> _lands;
         private IUnitOfWork<FarmSoilContext> _unit;
@@ -48,13 +47,21 @@ namespace Service.Soil.Command
             _bus = bus;
         }
 
-        public async Task<Guid> Handle(AddNewLandCommand request, CancellationToken cancellationToken)
+        public async Task<LandResponse> Handle(AddNewLandCommand request, CancellationToken cancellationToken)
         {
-            //if()
+            
 
-            var item = _mapper.Map<FarmSoil>(request.LandRequest);
-            item.SiteId = new Guid(TempData.FarmId);
+            var item = _mapper.Map<FarmSoil>(request.Land);
+            item.SiteId = request.SiteId;
+
+            if (request.Positions.Any())
+            {
+                item.Positions = request.Positions;
+            }
+
             await _lands.AddAsync(item);
+
+
             await _unit.SaveChangesAsync(cancellationToken);
 
 
@@ -72,7 +79,7 @@ namespace Service.Soil.Command
                         SiteId = item.SiteId,
                         SupplierId = request.SupplyContract.SupplierId,
                         SupplierName = request.SupplyContract.SupplierName,
-                        Unit = request.LandRequest.Unit,
+                        Unit = request.Land.Unit,
                         UnitPrice = request.SupplyContract.Price,
                         Content = request.SupplyContract.Content,
                         Resource = request.SupplyContract.Resource
@@ -82,7 +89,7 @@ namespace Service.Soil.Command
             }
             
 
-            return item.Id;
+            return _mapper.Map<LandResponse>(item);
         }
     }
 

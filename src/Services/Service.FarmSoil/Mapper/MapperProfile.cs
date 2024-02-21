@@ -20,7 +20,6 @@ namespace Service.Soil.Mapper
 
             CreateMap<ComponentProperty, PropertyResponse>().ReverseMap();
 
-            CreateMap<LandRequest, UpdateLandCommand>().ReverseMap();
         }
     }
 }
