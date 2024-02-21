@@ -9,14 +9,14 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Equipment.Commands
 {
-    public class UpdateEquipmentCommand : IRequest<Guid>
+    public class UpdateEquipmentCommand : IRequest<EquipmentResponse>
     {
         public Guid Id { get; set; }
         public EquipmentRequest Equipment { get; set; }
 
     }
 
-    public class UpdateEquipmentCommandHandler : IRequestHandler<UpdateEquipmentCommand, Guid>
+    public class UpdateEquipmentCommandHandler : IRequestHandler<UpdateEquipmentCommand, EquipmentResponse>
     {
         private ISQLRepository<FarmEquipmentContext, FarmEquipment> _equipments;
         private IUnitOfWork<FarmEquipmentContext> _unit;
@@ -34,7 +34,7 @@ namespace Service.Equipment.Commands
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(UpdateEquipmentCommand request, CancellationToken cancellationToken)
+        public async Task<EquipmentResponse> Handle(UpdateEquipmentCommand request, CancellationToken cancellationToken)
         {
             var item = await _equipments.GetOne(e => e.Id == request.Id);
 
@@ -49,7 +49,7 @@ namespace Service.Equipment.Commands
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<EquipmentResponse>(item);
         }
     }
 }
