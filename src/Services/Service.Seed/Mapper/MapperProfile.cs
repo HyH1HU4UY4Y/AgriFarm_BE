@@ -10,11 +10,12 @@ namespace Service.Seed.Mapper
         public MapperProfile() { 
             CreateMap<PropertyValue, ComponentProperty>().ReverseMap();
 
-            CreateMap<SeedRequest, FarmSeed>().ReverseMap();
+            CreateMap<SeedCreateRequest, FarmSeed>().ReverseMap();
+            CreateMap<SeedInfoRequest, FarmSeed>().ReverseMap();
             CreateMap<FarmSeed, SeedResponse>().ReverseMap();
 
             CreateMap<RefSeedRequest, ReferencedSeed>().ReverseMap();
-            CreateMap<ReferencedSeed, SeedResponse>().ReverseMap();
+            CreateMap<ReferencedSeed, RefSeedResponse>().ReverseMap();
 
 
         }

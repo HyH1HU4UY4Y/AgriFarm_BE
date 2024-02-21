@@ -9,12 +9,12 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Seed.Commands.RefSeeds
 {
-    public class AddRefSeedCommand : IRequest<Guid>
+    public class AddRefSeedCommand : IRequest<RefSeedResponse>
     {
         public RefSeedRequest Seed { get; set; }
     }
 
-    public class AddRefSeedCommandHandler : IRequestHandler<AddRefSeedCommand, Guid>
+    public class AddRefSeedCommandHandler : IRequestHandler<AddRefSeedCommand, RefSeedResponse>
     {
         private ISQLRepository<SeedlingContext, ReferencedSeed> _seeds;
         private IUnitOfWork<SeedlingContext> _unit;
@@ -32,7 +32,7 @@ namespace Service.Seed.Commands.RefSeeds
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(AddRefSeedCommand request, CancellationToken cancellationToken)
+        public async Task<RefSeedResponse> Handle(AddRefSeedCommand request, CancellationToken cancellationToken)
         {
             /*TODO:
                 - check for each bussiness role
@@ -45,7 +45,7 @@ namespace Service.Seed.Commands.RefSeeds
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<RefSeedResponse>(item);
         }
     }
 }

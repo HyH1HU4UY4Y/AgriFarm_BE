@@ -1,11 +1,13 @@
 ﻿using Asp.Versioning;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Seed.Commands;
 using Service.Seed.Commands.RefSeeds;
 using Service.Seed.DTOs;
 using Service.Seed.Queries;
 using Service.Seed.Queries.RefSeeds;
+using SharedApplication.Authorize;
 using SharedApplication.Pagination;
 using SharedDomain.Common;
 using System.ComponentModel.DataAnnotations;
@@ -14,26 +16,35 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Service.Seed.Controllers
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/ref-seeds")]
     [ApiController]
     [ApiVersion("1.0")]
-    public class ReferenceSeedsController : ControllerBase
+    [Authorize]
+    public class RefSeedsController : ControllerBase
     {
         private IMediator _mediator;
 
-        public ReferenceSeedsController(IMediator mediator)
+        public RefSeedsController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpGet("get")]
-        public async Task<IActionResult> Get([FromQuery] Guid? id = null)
+        public async Task<IActionResult> Get(
+            [FromQuery] Guid? id = null,
+            [FromHeader] int? pageNumber = null, [FromHeader] int? pageSize = null
+            )
         {
-            //TODO: add check http context and site query string for super admin
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
 
             if (id == null)
             {
-                var items = await _mediator.Send(new GetRefSeedsQuery());
+                PaginationRequest page = new(pageNumber, pageSize);
+
+                var items = await _mediator.Send(new GetRefSeedsQuery
+                {
+                    Pagination = page
+                });
 
                 Response.AddPaginationHeader(items.MetaData);
 
@@ -62,7 +73,11 @@ namespace Service.Seed.Controllers
         {
             var rs = await _mediator.Send(new AddRefSeedCommand { Seed = request });
 
-            return StatusCode(201);
+            return StatusCode(201, new DefaultResponse<RefSeedResponse>
+            {
+                Data = rs,
+                Status = 201
+            });
         }
 
         [HttpPut("put")]
@@ -75,7 +90,11 @@ namespace Service.Seed.Controllers
                 Seed = request
             });
 
-            return NoContent();
+            return Ok(new DefaultResponse<RefSeedResponse>
+            {
+                Data = rs,
+                Status = 200
+            });
         }
 
         [HttpDelete("delete")]

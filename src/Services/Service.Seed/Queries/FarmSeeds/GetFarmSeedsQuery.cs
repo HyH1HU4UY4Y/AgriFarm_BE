@@ -13,6 +13,7 @@ namespace Service.Seed.Queries.FarmSeeds
     public class GetFarmSeedsQuery : IRequest<PagedList<SeedResponse>>
     {
         public PaginationRequest Pagination { get; set; } = new();
+        public Guid SiteId { get; set; }
     }
 
     public class GetFarmSeedsQueryHandler : IRequestHandler<GetFarmSeedsQuery, PagedList<SeedResponse>>
@@ -36,8 +37,11 @@ namespace Service.Seed.Queries.FarmSeeds
 
         public async Task<PagedList<SeedResponse>> Handle(GetFarmSeedsQuery request, CancellationToken cancellationToken)
         {
-            var items = await _seeds.GetMany(null, ls => ls.Include(x => x.Properties));
 
+
+            var items = await _seeds.GetMany(
+                        e => e.SiteId == request.SiteId, 
+                        ls => ls.Include(x => x.Properties));
             
 
             return PagedList<SeedResponse>.ToPagedList(
