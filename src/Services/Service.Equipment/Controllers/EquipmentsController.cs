@@ -1,19 +1,26 @@
 ﻿
+using Asp.Versioning;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Equipment.Commands;
 using Service.Equipment.DTOs;
 using Service.Equipment.Queries;
+using SharedApplication.Authorize;
+using SharedApplication.Authorize.Values;
 using SharedApplication.Pagination;
 using SharedDomain.Common;
+using SharedDomain.Entities.FarmComponents;
 using System.ComponentModel.DataAnnotations;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Service.Equipment.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/farm-equipments")]
+    [ApiVersion("1.0")]
     [ApiController]
+    [Authorize]
     public class EquipmentsController : ControllerBase
     {
         private IMediator _mediator;
@@ -24,13 +31,28 @@ namespace Service.Equipment.Controllers
         }
 
         [HttpGet("get")]
-        public async Task<IActionResult> Get([FromQuery]Guid? id = null)
+        public async Task<IActionResult> Get(
+            [FromQuery] Guid? id = null,
+            [FromQuery] Guid? siteId = null,
+            [FromHeader] int? pageNumber = null, [FromHeader] int? pageSize = null
+            )
         {
+
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
+
             if (id == null)
             {
+                if (identity == SystemIdentity.Supervisor && siteId == null)
+                {
+                    return NotFound();
+                }
+
+                PaginationRequest page = new(pageNumber, pageSize);
+
                 var items = await _mediator.Send(new GetEquipmentsQuery
                 {
-
+                    Pagination = page,
+                    SiteId = identity == SystemIdentity.Supervisor ? siteId.Value : sId
                 });
 
                 Response.AddPaginationHeader(items.MetaData);
@@ -57,13 +79,24 @@ namespace Service.Equipment.Controllers
 
 
         [HttpPost("post")]
-        public async Task<IActionResult> Post([FromBody] EquipmentRequest request)
+        public async Task<IActionResult> Post(
+            [FromBody] EquipmentRequest request,
+            [FromQuery] Guid? siteId = null
+            )
         {
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
+            if (identity == SystemIdentity.Supervisor && siteId == null)
+            {
+                return NotFound();
+            }
+
             var rs = await _mediator.Send(new AddEquipmentCommand
             {
-                Equipment = request
+                Equipment = request,
+                SiteId = identity == SystemIdentity.Supervisor ? siteId.Value : sId
             });
-            return StatusCode(201, new DefaultResponse<Guid>
+
+            return StatusCode(201, new DefaultResponse<EquipmentResponse>
             {
                 Data = rs,
                 Status = 201
@@ -81,7 +114,11 @@ namespace Service.Equipment.Controllers
                 Equipment = request
             });
 
-            return NoContent();
+            return Ok(new DefaultResponse<EquipmentResponse>
+            {
+                Data = rs,
+                Status = 200
+            });
         }
 
 

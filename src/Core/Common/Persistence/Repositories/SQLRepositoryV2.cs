@@ -118,6 +118,25 @@ namespace SharedApplication.Persistence.Repositories
             await Task.CompletedTask;
         }
 
+        public virtual async Task RawDeleteBatchAsync(IEnumerable<TEntity> entities)
+        {
+            _context.Set<TEntity>().RemoveRange(entities);
+            await Task.CompletedTask;
+        }
+
+        public virtual async Task SoftDeleteBatchAsync(IEnumerable<TEntity> entities)
+        {
+            foreach (var entity in entities) {
+                if (typeof(TEntity).IsAssignableTo(typeof(ITraceableItem)))
+                    (entity as ITraceableItem)!.IsDeleted = true;
+                else
+                    _logger.LogWarning($"This item (id:{entity.Id}) only can raw delete.");
+                _context.Set<TEntity>().Remove(entity);
+            }
+            
+            await Task.CompletedTask;
+        }
+
 
         public virtual async Task<TEntity> AddOrUpdateAsync(TEntity entity)
         {

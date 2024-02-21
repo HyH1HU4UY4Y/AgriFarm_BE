@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharedApplication.Persistence.Configs;
 
 namespace Infrastructure.Equipment.Config
 {
@@ -13,11 +14,7 @@ namespace Infrastructure.Equipment.Config
     {
         public void Configure(EntityTypeBuilder<Site> builder)
         {
-            builder
-                .Ignore(e => e.PaymentDetail)
-                .Ignore(e => e.Intro)
-                .Ignore(e => e.Capitals)
-                .Ignore(e => e.Subscripts);
+            builder.ExtractSite();
 
 
         }

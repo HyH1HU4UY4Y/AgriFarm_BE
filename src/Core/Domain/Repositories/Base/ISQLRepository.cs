@@ -25,6 +25,8 @@ namespace SharedDomain.Repositories.Base
         Task<TEntity> AddOrUpdateAsync(TEntity entity);
         Task AddBatchAsync(IEnumerable<TEntity> entities);
         Task UpdateBatchAsync(IEnumerable<TEntity> entities);
+        Task RawDeleteBatchAsync(IEnumerable<TEntity> entities);
+        Task SoftDeleteBatchAsync(IEnumerable<TEntity> entities);
         Guid GetSiteId();
     }
 

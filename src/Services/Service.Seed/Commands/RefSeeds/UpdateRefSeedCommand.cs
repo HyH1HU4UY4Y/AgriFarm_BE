@@ -10,13 +10,13 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Seed.Commands.RefSeeds
 {
-    public class UpdateRefSeedCommand : IRequest<Guid>
+    public class UpdateRefSeedCommand : IRequest<RefSeedResponse>
     {
         public Guid Id { get; set; }
         public RefSeedRequest Seed { get; set; }
     }
 
-    public class UpdateRefSeedCommandHandler : IRequestHandler<UpdateRefSeedCommand, Guid>
+    public class UpdateRefSeedCommandHandler : IRequestHandler<UpdateRefSeedCommand, RefSeedResponse>
     {
         private ISQLRepository<SeedlingContext, ReferencedSeed> _seeds;
         private IUnitOfWork<SeedlingContext> _unit;
@@ -34,7 +34,7 @@ namespace Service.Seed.Commands.RefSeeds
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(UpdateRefSeedCommand request, CancellationToken cancellationToken)
+        public async Task<RefSeedResponse> Handle(UpdateRefSeedCommand request, CancellationToken cancellationToken)
         {
             var item = await _seeds.GetOne(e => e.Id == request.Id);
 
@@ -49,7 +49,7 @@ namespace Service.Seed.Commands.RefSeeds
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<RefSeedResponse>(item);
         }
     }
 }

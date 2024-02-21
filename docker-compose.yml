@@ -93,6 +93,7 @@ services:
           agri.network:
             ipv4_address: 10.38.0.5
      
+
     service.riskassessment:
         build:
           context: .
@@ -103,6 +104,84 @@ services:
         networks:
           agri.network:
             ipv4_address: 10.38.0.6
+
+    service.soil:
+        build:
+          context: .
+          dockerfile: src/Services/Service.FarmSoil/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Staging
+            - ASPNETCORE_URLS=http://+:80
+        networks:
+          agri.network:
+            ipv4_address: 10.38.0.7
+
+    service.seed:
+        build:
+          context: .
+          dockerfile: src/Services/Service.Seed/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Staging
+            - ASPNETCORE_URLS=http://+:80
+        networks:
+          agri.network:
+            ipv4_address: 10.38.0.8
+
+    
+    service.pesticide:
+        build:
+          context: .
+          dockerfile: src/Services/Service.FarmPesticide/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Staging
+            - ASPNETCORE_URLS=http://+:80
+        networks:
+          agri.network:
+            ipv4_address: 10.38.0.9
+
+    service.fertilize:
+        build:
+          context: .
+          dockerfile: src/Services/Service.FarmFertilize/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Staging
+            - ASPNETCORE_URLS=http://+:80
+        networks:
+          agri.network:
+            ipv4_address: 10.38.0.10
+
+    service.equipment:
+        build:
+          context: .
+          dockerfile: src/Services/Service.Equipment/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Staging
+            - ASPNETCORE_URLS=http://+:80
+        networks:
+          agri.network:
+            ipv4_address: 10.38.0.11
+
+    service.water:
+        build:
+          context: .
+          dockerfile: src/Services/Service.FarmWater/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Staging
+            - ASPNETCORE_URLS=http://+:80
+        networks:
+          agri.network:
+            ipv4_address: 10.38.0.15
+
+    service.cultivation:
+        build:
+          context: .
+          dockerfile: src/Services/Service.FarmCultivation/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Staging
+            - ASPNETCORE_URLS=http://+:80
+        networks:
+          agri.network:
+            ipv4_address: 10.38.0.16
 
 networks:
   agri.network:

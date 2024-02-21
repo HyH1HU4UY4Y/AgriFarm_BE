@@ -8,13 +8,14 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Equipment.Commands
 {
-    public class AddEquipmentCommand: IRequest<Guid>
+    public class AddEquipmentCommand: IRequest<EquipmentResponse>
     {
         public EquipmentRequest Equipment {  get; set; }
+        public Guid SiteId { get; set; }
 
     }
 
-    public class AddEquipmentCommandHandler : IRequestHandler<AddEquipmentCommand, Guid>
+    public class AddEquipmentCommandHandler : IRequestHandler<AddEquipmentCommand, EquipmentResponse>
     {
         private ISQLRepository<FarmEquipmentContext, FarmEquipment> _equipments;
         private IUnitOfWork<FarmEquipmentContext> _unit;
@@ -32,20 +33,21 @@ namespace Service.Equipment.Commands
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(AddEquipmentCommand request, CancellationToken cancellationToken)
+        public async Task<EquipmentResponse> Handle(AddEquipmentCommand request, CancellationToken cancellationToken)
         {
             /*TODO:
-                - check for super admin
-                - check integrated with Equipment info
+                //- check for super admin
+                
             */
 
             var item = _mapper.Map<FarmEquipment>(request.Equipment);
+            item.SiteId = request.SiteId;
 
             await _equipments.AddAsync(item);
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<EquipmentResponse>(item);
         }
     }
 }

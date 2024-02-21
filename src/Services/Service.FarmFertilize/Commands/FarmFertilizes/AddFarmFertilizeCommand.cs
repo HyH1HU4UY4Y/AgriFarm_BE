@@ -10,12 +10,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Service.Fertilize.Commands.FarmFertilizes
 {
-    public class AddFarmFertilizeCommand : IRequest<Guid>
+    public class AddFarmFertilizeCommand : IRequest<FertilizeResponse>
     {
-        public FertilizeRequest Fertilize { get; set; }
+        public FertilizeCreateRequest Fertilize { get; set; }
+        public Guid SiteId { get; set; }
     }
 
-    public class AddFarmFertilizeCommandHandler : IRequestHandler<AddFarmFertilizeCommand, Guid>
+    public class AddFarmFertilizeCommandHandler : IRequestHandler<AddFarmFertilizeCommand, FertilizeResponse>
     {
         private ISQLRepository<FarmFertilizeContext, FarmFertilize> _fertilizes;
         private IUnitOfWork<FarmFertilizeContext> _unit;
@@ -33,20 +34,21 @@ namespace Service.Fertilize.Commands.FarmFertilizes
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(AddFarmFertilizeCommand request, CancellationToken cancellationToken)
+        public async Task<FertilizeResponse> Handle(AddFarmFertilizeCommand request, CancellationToken cancellationToken)
         {
             /*TODO:
-                - check for super admin
+                //- check for super admin
                 - check integrated with ref Fertilize info
             */
 
             var item = _mapper.Map<FarmFertilize>(request.Fertilize);
+            item.SiteId = request.SiteId;
 
             await _fertilizes.AddAsync(item);
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<FertilizeResponse>(item);
         }
     }
 }

@@ -124,7 +124,8 @@ namespace Infrastructure.Soil.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
 
                     b.Property<bool>("IsConsumable")
                         .HasColumnType("boolean");
@@ -140,19 +141,23 @@ namespace Infrastructure.Soil.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Notes")
-                        .HasColumnType("text");
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
 
                     b.Property<string>("Position")
-                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("character varying(300)");
+
+                    b.Property<string>("Resource")
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("text");
 
                     b.Property<Guid>("SiteId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Unit")
                         .HasColumnType("text")
-                        .HasColumnName("Measure Unit");
+                        .HasColumnName("MeasureUnit");
 
                     b.HasKey("Id");
 

@@ -7,12 +7,12 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Pesticide.Commands.RefPesticides
 {
-    public class AddRefPesticideCommand : IRequest<Guid>
+    public class AddRefPesticideCommand : IRequest<RefPesticideResponse>
     {
         public RefPesticideRequest Pesticide { get; set; }
     }
 
-    public class AddRefPesticideCommandHandler : IRequestHandler<AddRefPesticideCommand, Guid>
+    public class AddRefPesticideCommandHandler : IRequestHandler<AddRefPesticideCommand, RefPesticideResponse>
     {
         private ISQLRepository<FarmPesticideContext, ReferencedPesticide> _pesticides;
         private IUnitOfWork<FarmPesticideContext> _unit;
@@ -30,7 +30,7 @@ namespace Service.Pesticide.Commands.RefPesticides
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(AddRefPesticideCommand request, CancellationToken cancellationToken)
+        public async Task<RefPesticideResponse> Handle(AddRefPesticideCommand request, CancellationToken cancellationToken)
         {
             /*TODO:
                 - check for each bussiness role
@@ -43,7 +43,7 @@ namespace Service.Pesticide.Commands.RefPesticides
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<RefPesticideResponse>(item);
         }
     }
 }

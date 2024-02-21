@@ -13,7 +13,7 @@ namespace Service.Soil.Queries
     public class GetLandsBySiteCodeQuery: IRequest<PagedList<LandResponse>>
     {
         public PaginationRequest? Pagination { get; set; } = new();
-        public string SiteCode { get; set; }
+        public Guid SiteId { get; set; }
     }
 
     public class GetLandsBySiteCodeQueryHandler : IRequestHandler<GetLandsBySiteCodeQuery, PagedList<LandResponse>>
@@ -36,7 +36,8 @@ namespace Service.Soil.Queries
         public async Task<PagedList<LandResponse>> Handle(GetLandsBySiteCodeQuery request, CancellationToken cancellationToken)
         {
             var items = await _lands.GetMany(
-                e => e.Site.SiteCode == request.SiteCode, ls => ls.Include(x => x.Site)
+                e => e.SiteId == request.SiteId
+                , ls => ls.Include(x => x.Site)
                 );
 
             var rs = PagedList<LandResponse>.ToPagedList(

@@ -7,16 +7,19 @@ using Service.FarmSite.Commands;
 using Service.FarmSite.Commands.Farms;
 using Service.FarmSite.DTOs;
 using Service.FarmSite.Queries;
+using SharedApplication.Authorize;
+using SharedApplication.Authorize.Values;
 using SharedApplication.Pagination;
 using SharedDomain.Common;
 using SharedDomain.Defaults;
+using SharedDomain.Entities.FarmComponents;
 using System.ComponentModel.DataAnnotations;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Service.FarmSite.Controllers
 {
-    [Authorize(Roles = Roles.SuperAdmin)]
+    [Authorize]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
     [ApiController]
@@ -29,14 +32,27 @@ namespace Service.FarmSite.Controllers
             _mediator = mediator;
         }
 
-        [Authorize(Roles = Roles.Admin)]
+        /*
+        TODO:
+            - for anonymous user 
+        */
+
+        
         [HttpGet("get")]
         public async Task<IActionResult> Get(
             [FromQuery]Guid? id = null,
             [FromHeader] int? pageNumber = null, [FromHeader] int? pageSize = null)
         {
-            if(id == null)
+
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
+
+            if (id == null && identity == SystemIdentity.Supervisor)
             {
+                /*if (identity != SystemIdentity.Supervisor)
+                {
+                    return NotFound();
+                }*/
+
                 PaginationRequest page = new(pageNumber, pageSize);
                 var items = await _mediator.Send(new GetAllFarmQuery { 
                     Pagination = page
@@ -50,19 +66,22 @@ namespace Service.FarmSite.Controllers
                 });
             }
 
-            var item = await _mediator.Send(new GetFarmByIdQuery());
+            var item = await _mediator.Send(new GetFarmByIdQuery
+            {
+                Id = identity == SystemIdentity.Supervisor? id.Value: sId
+            });
 
 
-            return Ok(new DefaultResponse<SiteResponse>
+            return Ok(new DefaultResponse<FullSiteResponse>
             {
                 Data = item,
                 Status = 200
             });
         }
 
-        
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] SiteRequest request)
+        [Authorize(Roles = Roles.SuperAdmin)]
+        [HttpPost("post")]
+        public async Task<IActionResult> Post([FromBody] SiteCreateRequest request)
         {
             var rs = await _mediator.Send(new CreateNewFarmCommand
             {
@@ -73,20 +92,49 @@ namespace Service.FarmSite.Controllers
             return StatusCode(201);
         }
 
-
-        [HttpPut("put")]
-        public async Task<IActionResult> Put([FromQuery][Required]Guid id, [FromBody] SiteEditRequest request)
+        [Authorize(Roles=Roles.Admin)]
+        [HttpPost("add-position")]
+        public async Task<IActionResult> AddPosition(
+            [FromQuery][Required]Guid siteId,
+            [FromBody] List<PositionPoint> request)
         {
-            var rs = await _mediator.Send(new UpdateFarmCommand
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
+
+            var rs = await _mediator.Send(new SetPositionCommand
             {
-                Id = id,
-                Site = request
+                Positions = request,
+                SiteId  = identity == SystemIdentity.Supervisor ? siteId : sId
+
             });
 
-            return NoContent();
+            return StatusCode(201, new DefaultResponse<FullSiteResponse>
+            {
+                Data = rs,
+                Status = 201
+            });
         }
 
 
+        
+        [HttpPut("put")]
+        public async Task<IActionResult> Put([FromQuery][Required]Guid id, [FromBody] SiteEditRequest request)
+        {
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
+
+            var rs = await _mediator.Send(new UpdateFarmCommand
+            {
+                Id = identity == SystemIdentity.Supervisor ? id : sId,
+                Site = request
+            });
+
+            return Ok(new DefaultResponse<FullSiteResponse>
+            {
+                Data = rs,
+                Status = 200
+            });
+        }
+
+        [Authorize(Roles = Roles.SuperAdmin)]
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete([Required][FromQuery]Guid id)
         {

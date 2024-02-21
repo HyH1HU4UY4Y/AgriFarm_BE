@@ -45,6 +45,15 @@ namespace Infrastructure.Soil
 
                 });
 
+                db.Sites.Add(new()
+                {
+                    Id = new Guid(TempData.FarmId2),
+                    Name = "site02",
+                    IsActive = true,
+                    SiteCode = "site032.xyz",
+
+                });
+
                 db.FarmLands.AddRange(new FarmSoil[]
                 {
                     new(){
@@ -117,7 +126,7 @@ namespace Infrastructure.Soil
                         }),
                         Acreage = 100,
                         Unit = "m2",
-                        SiteId = new Guid(TempData.FarmId),
+                        SiteId = new Guid(TempData.FarmId2),
                         Properties = new ComponentProperty[]
                         {
                             new()

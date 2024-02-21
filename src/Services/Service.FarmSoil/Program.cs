@@ -45,7 +45,7 @@ app.UseSwaggerUI();
 
 app.UseGlobalErrorMiddleware();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseCors(cors);
 

@@ -1,12 +1,15 @@
 ﻿using Asp.Versioning;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Seed.Commands.FarmSeeds;
 using Service.Seed.DTOs;
-using Service.Seed.Queries;
 using Service.Seed.Queries.FarmSeeds;
+using SharedApplication.Authorize;
+using SharedApplication.Authorize.Values;
 using SharedApplication.Pagination;
 using SharedDomain.Common;
+using SharedDomain.Entities.FarmComponents.Common;
 using System.ComponentModel.DataAnnotations;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -14,8 +17,9 @@ using System.ComponentModel.DataAnnotations;
 namespace Service.Seed.Controllers
 {
     [Route("api/v{version:apiVersion}/farm-seeds")]
-    [ApiController]
     [ApiVersion("1.0")]
+    [ApiController]
+    [Authorize]
     public class FarmSeedsController : ControllerBase
     {
         private IMediator _mediator;
@@ -25,14 +29,28 @@ namespace Service.Seed.Controllers
             _mediator = mediator;
         }
 
+
         [HttpGet("get")]
-        public async Task<IActionResult> Get([FromQuery] Guid? id = null)
+        public async Task<IActionResult> Get([FromQuery] Guid? id = null,
+            [FromQuery]Guid? siteId = null,
+            [FromHeader]int? pageNumber = null, [FromHeader] int? pageSize = null
+            )
         {
-            //TODO: add check http context and site query string for super admin
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
 
             if(id == null)
             {
-                var items = await _mediator.Send(new GetFarmSeedsQuery());
+                if(identity == SystemIdentity.Supervisor && siteId == null) { 
+                    return NotFound();
+                }
+
+                PaginationRequest page = new(pageNumber, pageSize);
+
+                var items = await _mediator.Send(new GetFarmSeedsQuery
+                {
+                    Pagination = page,
+                    SiteId = identity == SystemIdentity.Supervisor? siteId.Value: sId
+                });
 
                 Response.AddPaginationHeader(items.MetaData);
 
@@ -54,18 +72,34 @@ namespace Service.Seed.Controllers
             
         }
 
-
-        
         [HttpPost("post")]
-        public async Task<IActionResult> Post([FromBody] SeedRequest request)
+        public async Task<IActionResult> Post(
+            [FromBody] SeedCreateRequest request,
+            [FromQuery] Guid? siteId = null
+            )
         {
-            var rs = await _mediator.Send(new AddFarmSeedCommand { Seed = request});
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
 
-            return StatusCode(201);
+            if (identity == SystemIdentity.Supervisor && siteId == null)
+            {
+                return NotFound();
+            }
+
+            var rs = await _mediator.Send(new AddFarmSeedCommand { 
+                Seed = request,
+                SiteId = identity == SystemIdentity.Supervisor ? siteId.Value : sId
+            });
+
+            return StatusCode(201, new DefaultResponse<SeedResponse>
+            {
+                Data = rs,
+                Status = 201
+            });
         }
 
         [HttpPut("put")]
-        public async Task<IActionResult> Put([Required][FromQuery]Guid id, [FromBody] SeedRequest request)
+        public async Task<IActionResult> Put([Required][FromQuery]Guid id, 
+            [FromBody] SeedInfoRequest request)
         {
 
             var rs = await _mediator.Send(new UpdateFarmSeedCommand
@@ -74,8 +108,13 @@ namespace Service.Seed.Controllers
                 Seed = request
             });
 
-            return NoContent();
+            return Ok(new DefaultResponse<SeedResponse>
+            {
+                Status = 200,
+                Data = rs
+            });
         }
+        
 
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete([Required][FromQuery]Guid id)

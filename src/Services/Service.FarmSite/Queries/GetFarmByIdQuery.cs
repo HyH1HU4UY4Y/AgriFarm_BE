@@ -9,12 +9,12 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.FarmSite.Queries
 {
-    public class GetFarmByIdQuery: IRequest<SiteResponse>
+    public class GetFarmByIdQuery: IRequest<FullSiteResponse>
     {
         public Guid Id { get; set; }
     }
 
-    public class GetByIdFarmQueryHandler : IRequestHandler<GetFarmByIdQuery, SiteResponse>
+    public class GetByIdFarmQueryHandler : IRequestHandler<GetFarmByIdQuery, FullSiteResponse>
     {
         private readonly ISQLRepository<SiteContext, Site> _repo;
         private readonly IMapper _mapper;
@@ -25,7 +25,7 @@ namespace Service.FarmSite.Queries
             _mapper = mapper;
         }
 
-        public async Task<SiteResponse> Handle(GetFarmByIdQuery request, CancellationToken cancellationToken)
+        public async Task<FullSiteResponse> Handle(GetFarmByIdQuery request, CancellationToken cancellationToken)
         {
             var item = await _repo.GetOne(e => e.Id == request.Id);
 
@@ -34,7 +34,7 @@ namespace Service.FarmSite.Queries
                 throw new NotFoundException("Item not exist");
             }
 
-            return _mapper.Map<SiteResponse>(item);
+            return _mapper.Map<FullSiteResponse>(item);
         }
     }
 }

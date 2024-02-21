@@ -7,12 +7,13 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Water.Commands
 {
-    public class AddFarmWaterCommand : IRequest<Guid>
+    public class AddFarmWaterCommand : IRequest<WaterResponse>
     {
         public WaterRequest Water { get; set; }
+        public Guid SiteId { get; set; }
     }
 
-    public class AddFarmWaterCommandHandler : IRequestHandler<AddFarmWaterCommand, Guid>
+    public class AddFarmWaterCommandHandler : IRequestHandler<AddFarmWaterCommand, WaterResponse>
     {
         private ISQLRepository<FarmWaterContext, FarmWater> _waters;
         private IUnitOfWork<FarmWaterContext> _unit;
@@ -30,20 +31,20 @@ namespace Service.Water.Commands
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(AddFarmWaterCommand request, CancellationToken cancellationToken)
+        public async Task<WaterResponse> Handle(AddFarmWaterCommand request, CancellationToken cancellationToken)
         {
             /*TODO:
-                - check for super admin
-                - check integrated with ref Water info
+                //- check for super admin
             */
 
             var item = _mapper.Map<FarmWater>(request.Water);
+            item.SiteId = request.SiteId;
 
             await _waters.AddAsync(item);
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<WaterResponse>(item);
         }
     }
 }

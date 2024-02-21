@@ -8,13 +8,13 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Seed.Commands.FarmSeeds
 {
-    public class UpdateFarmSeedCommand : IRequest<Guid>
+    public class UpdateFarmSeedCommand : IRequest<SeedResponse>
     {
         public Guid Id { get; set; }
-        public SeedRequest Seed { get; set; }
+        public SeedInfoRequest Seed { get; set; }
     }
 
-    public class UpdateFarmSeedCommandHandler : IRequestHandler<UpdateFarmSeedCommand, Guid>
+    public class UpdateFarmSeedCommandHandler : IRequestHandler<UpdateFarmSeedCommand, SeedResponse>
     {
         private ISQLRepository<SeedlingContext, FarmSeed> _seeds;
         private IUnitOfWork<SeedlingContext> _unit;
@@ -32,7 +32,7 @@ namespace Service.Seed.Commands.FarmSeeds
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(UpdateFarmSeedCommand request, CancellationToken cancellationToken)
+        public async Task<SeedResponse> Handle(UpdateFarmSeedCommand request, CancellationToken cancellationToken)
         {
             var item = await _seeds.GetOne(e => e.Id == request.Id);
 
@@ -47,7 +47,7 @@ namespace Service.Seed.Commands.FarmSeeds
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<SeedResponse>(item);
         }
     }
 }

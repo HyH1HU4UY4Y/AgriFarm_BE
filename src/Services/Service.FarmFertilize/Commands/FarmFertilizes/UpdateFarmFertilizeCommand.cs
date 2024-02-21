@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Infrastructure.Fertilize.Contexts;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Service.Fertilize.DTOs;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Exceptions;
@@ -8,13 +9,13 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Fertilize.Commands.FarmFertilizes
 {
-    public class UpdateFarmFertilizeCommand : IRequest<Guid>
+    public class UpdateFarmFertilizeCommand : IRequest<FertilizeResponse>
     {
         public Guid Id { get; set; }
-        public FertilizeRequest Fertilize { get; set; }
+        public FertilizeInfoRequest Fertilize { get; set; }
     }
 
-    public class UpdateFarmFertilizeCommandHandler : IRequestHandler<UpdateFarmFertilizeCommand, Guid>
+    public class UpdateFarmFertilizeCommandHandler : IRequestHandler<UpdateFarmFertilizeCommand, FertilizeResponse>
     {
         private ISQLRepository<FarmFertilizeContext, FarmFertilize> _fertilizes;
         private IUnitOfWork<FarmFertilizeContext> _unit;
@@ -32,9 +33,10 @@ namespace Service.Fertilize.Commands.FarmFertilizes
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(UpdateFarmFertilizeCommand request, CancellationToken cancellationToken)
+        public async Task<FertilizeResponse> Handle(UpdateFarmFertilizeCommand request, CancellationToken cancellationToken)
         {
-            var item = await _fertilizes.GetOne(e => e.Id == request.Id);
+            var item = await _fertilizes.GetOne(e => e.Id == request.Id,
+                                ls => ls.Include(x => x.Properties));
 
             if (item == null)
             {
@@ -47,7 +49,7 @@ namespace Service.Fertilize.Commands.FarmFertilizes
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<FertilizeResponse>(item);
         }
     }
 }

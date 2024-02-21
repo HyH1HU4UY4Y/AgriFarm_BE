@@ -9,7 +9,7 @@ pgadmin:
 - pass: admin1234
 
 
-nqsl db:
+nsql db:
 - host ip: 10.38.0.13
 - user: farmer
 - pass: @o123456

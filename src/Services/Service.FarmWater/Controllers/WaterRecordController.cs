@@ -8,11 +8,17 @@ using SharedApplication.Pagination;
 using Service.Water.DTOs;
 using Service.Water.Queries;
 using Service.Water.Commands;
+using SharedApplication.Authorize;
+using SharedApplication.Authorize.Values;
+using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Service.Water.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/farm-water")]
+    [ApiVersion("1.0")]
     [ApiController]
+    [Authorize]
     public class WaterRecordController : ControllerBase
     {
         private IMediator _mediator;
@@ -23,13 +29,27 @@ namespace Service.Water.Controllers
         }
 
         [HttpGet("get")]
-        public async Task<IActionResult> Get([FromQuery] Guid? id = null)
+        public async Task<IActionResult> Get(
+            [FromQuery] Guid? id = null,
+            [FromQuery] Guid? siteId = null,
+            [FromHeader] int? pageNumber = null, [FromHeader] int? pageSize = null
+            )
         {
-            //TODO: add check http context and site query string for super admin
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
 
             if (id == null)
             {
-                var items = await _mediator.Send(new GetFarmWatersQuery());
+                if (identity == SystemIdentity.Supervisor && siteId == null)
+                {
+                    return NotFound();
+                }
+
+                PaginationRequest page = new(pageNumber, pageSize);
+
+                var items = await _mediator.Send(new GetFarmWatersQuery { 
+                    Pagination = page,
+                    SiteId = identity == SystemIdentity.Supervisor ? siteId.Value : sId
+                });
 
                 Response.AddPaginationHeader(items.MetaData);
 
@@ -54,11 +74,27 @@ namespace Service.Water.Controllers
 
 
         [HttpPost("post")]
-        public async Task<IActionResult> Post([FromBody] WaterRequest request)
+        public async Task<IActionResult> Post(
+            [FromBody] WaterRequest request,
+            [FromQuery] Guid? siteId = null
+            )
         {
-            var rs = await _mediator.Send(new AddFarmWaterCommand { Water = request });
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
+            if (identity == SystemIdentity.Supervisor && siteId == null)
+            {
+                return NotFound();
+            }
 
-            return StatusCode(201);
+            var rs = await _mediator.Send(new AddFarmWaterCommand { 
+                Water = request,
+                SiteId = identity == SystemIdentity.Supervisor ? siteId.Value : sId
+            });
+
+            return StatusCode(201, new DefaultResponse<WaterResponse>
+            {
+                Data = rs,
+                Status = 201
+            });
         }
 
         [HttpPut("put")]
@@ -71,7 +107,11 @@ namespace Service.Water.Controllers
                 Water = request
             });
 
-            return NoContent();
+            return Ok(new DefaultResponse<WaterResponse>
+            {
+                Data = rs,
+                Status = 200
+            });
         }
 
         [HttpDelete("delete")]

@@ -8,14 +8,14 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.FarmSite.Commands.Farms
 {
-    public class UpdateFarmCommand : IRequest<Guid>
+    public class UpdateFarmCommand : IRequest<FullSiteResponse>
     {
         public Guid Id { get; set; }
         public SiteEditRequest Site {  get; set; }
 
     }
 
-    public class UpdateFarmCommandHandler : IRequestHandler<UpdateFarmCommand, Guid>
+    public class UpdateFarmCommandHandler : IRequestHandler<UpdateFarmCommand, FullSiteResponse>
     {
 
         private readonly ISQLRepository<SiteContext, Site> _sites;
@@ -36,9 +36,14 @@ namespace Service.FarmSite.Commands.Farms
 
         
 
-        public async Task<Guid> Handle(UpdateFarmCommand request, CancellationToken cancellationToken)
+        public async Task<FullSiteResponse> Handle(UpdateFarmCommand request, CancellationToken cancellationToken)
         {
             var item = await _sites.GetOne(e => e.Id == request.Id);
+
+            if(item == null)
+            {
+                throw new NotFoundException("Site not exist");
+            }
 
             _mapper.Map(request.Site, item);
 
@@ -46,7 +51,7 @@ namespace Service.FarmSite.Commands.Farms
             await _sites.UpdateAsync(item);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<FullSiteResponse>(item);
         }
     }
 }
