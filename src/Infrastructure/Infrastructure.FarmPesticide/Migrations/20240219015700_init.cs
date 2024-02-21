@@ -12,15 +12,17 @@ namespace Infrastructure.Pesticide.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "PesticideInfos",
+                name: "RefPesticideInfos",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "varchar(150)", nullable: false),
-                    Description = table.Column<string>(type: "varchar(150)", nullable: true),
-                    Details = table.Column<string>(type: "varchar(150)", nullable: true),
-                    Notes = table.Column<string>(type: "varchar(150)", nullable: true),
-                    Resources = table.Column<string>(type: "varchar(150)", nullable: true),
+                    Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    Description = table.Column<string>(type: "text", maxLength: 2147483647, nullable: true),
+                    Manufactory = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
+                    ManufactureDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Property = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
+                    Notes = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
+                    Resources = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -28,7 +30,7 @@ namespace Infrastructure.Pesticide.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PesticideInfos", x => x.Id);
+                    table.PrimaryKey("PK_RefPesticideInfos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -36,13 +38,9 @@ namespace Infrastructure.Pesticide.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "varchar(150)", nullable: false),
-                    SiteCode = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    SiteCode = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    AvatarImg = table.Column<string>(type: "varchar(150)", nullable: true),
-                    LogoImg = table.Column<string>(type: "varchar(150)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
@@ -57,11 +55,12 @@ namespace Infrastructure.Pesticide.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SiteId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "varchar(150)", nullable: false),
-                    Description = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    Description = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
                     IsConsumable = table.Column<bool>(type: "boolean", nullable: false),
-                    MeasureUnit = table.Column<string>(name: "Measure Unit", type: "varchar(150)", nullable: false),
-                    Notes = table.Column<string>(type: "varchar(150)", nullable: false),
+                    MeasureUnit = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
+                    Notes = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
+                    Resource = table.Column<string>(type: "text", maxLength: 2147483647, nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -74,7 +73,8 @@ namespace Infrastructure.Pesticide.Migrations
                         name: "FK_BaseComponent_Sites_SiteId",
                         column: x => x.SiteId,
                         principalTable: "Sites",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,7 +84,7 @@ namespace Infrastructure.Pesticide.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "numeric", nullable: true),
                     Stock = table.Column<int>(type: "integer", nullable: false),
-                    PesticideInfoId = table.Column<Guid>(type: "uuid", nullable: true)
+                    ReferenceId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,9 +96,9 @@ namespace Infrastructure.Pesticide.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FarmPesticides_PesticideInfos_PesticideInfoId",
-                        column: x => x.PesticideInfoId,
-                        principalTable: "PesticideInfos",
+                        name: "FK_FarmPesticides_RefPesticideInfos_ReferenceId",
+                        column: x => x.ReferenceId,
+                        principalTable: "RefPesticideInfos",
                         principalColumn: "Id");
                 });
 
@@ -108,10 +108,10 @@ namespace Infrastructure.Pesticide.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ComponentId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     Value = table.Column<double>(type: "double precision", nullable: false),
                     Require = table.Column<double>(type: "double precision", nullable: false),
-                    Unit = table.Column<string>(type: "varchar(150)", nullable: false),
+                    Unit = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -127,52 +127,19 @@ namespace Infrastructure.Pesticide.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "UsedRecords",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ActivityId = table.Column<Guid>(type: "uuid", nullable: false),
-                    AdditionType = table.Column<int>(type: "integer", nullable: false),
-                    ComponentId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Instructions = table.Column<string>(type: "varchar(150)", nullable: false),
-                    Resources = table.Column<string>(type: "varchar(150)", nullable: false),
-                    UseValue = table.Column<double>(type: "double precision", nullable: false),
-                    Unit = table.Column<string>(type: "varchar(150)", nullable: false),
-                    Notes = table.Column<string>(type: "varchar(150)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UsedRecords", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UsedRecords_BaseComponent_ComponentId",
-                        column: x => x.ComponentId,
-                        principalTable: "BaseComponent",
-                        principalColumn: "Id");
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_BaseComponent_SiteId",
                 table: "BaseComponent",
                 column: "SiteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FarmPesticides_PesticideInfoId",
+                name: "IX_FarmPesticides_ReferenceId",
                 table: "FarmPesticides",
-                column: "PesticideInfoId");
+                column: "ReferenceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Properties_ComponentId",
                 table: "Properties",
-                column: "ComponentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UsedRecords_ComponentId",
-                table: "UsedRecords",
                 column: "ComponentId");
         }
 
@@ -186,10 +153,7 @@ namespace Infrastructure.Pesticide.Migrations
                 name: "Properties");
 
             migrationBuilder.DropTable(
-                name: "UsedRecords");
-
-            migrationBuilder.DropTable(
-                name: "PesticideInfos");
+                name: "RefPesticideInfos");
 
             migrationBuilder.DropTable(
                 name: "BaseComponent");

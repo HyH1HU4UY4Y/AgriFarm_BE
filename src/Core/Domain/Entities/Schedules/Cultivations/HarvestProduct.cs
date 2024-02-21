@@ -3,6 +3,7 @@ using SharedDomain.Entities.Base;
 using SharedDomain.Entities.FarmComponents;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,27 @@ namespace SharedDomain.Entities.Schedules.Cultivations
         public double? TotalQuantity { get; set; } = 0;
         public double? Quantity { get; set; } = 0;
         public string Unit { get; set; }
-        public string Traceability { get; private set; }
+        private string _traceability;
+
+        public string? Traceability {
+            get => _traceability;
+            private set
+            {
+                _traceability = value;
+
+            }
+        }
+        [NotMapped]
+        public (string? provider, string type, string data) TraceItem 
+        { 
+            get => !string.IsNullOrWhiteSpace(_traceability) ?
+                JsonConvert.DeserializeObject<(string provider, string type, string data)>(_traceability)!
+                : new();
+            set {
+                value.provider = string.IsNullOrWhiteSpace(value.provider) ? "none": value.provider;
+                _traceability = JsonConvert.SerializeObject(value);
+            } 
+        }
 
 
         public Guid SeedId { get; set; }
@@ -31,10 +52,5 @@ namespace SharedDomain.Entities.Schedules.Cultivations
         public Guid SiteId { get; set; }
         public Site Site { get; set; }
 
-        public void SetTraceability((string provider, string type, string data) traceability)
-            => JsonConvert.SerializeObject(traceability);
-
-        public string GetTraceData()
-            => JsonConvert.DeserializeObject<(string provider, string type, string data)>(Traceability).data;
     }
 }

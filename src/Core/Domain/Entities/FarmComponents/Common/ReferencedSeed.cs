@@ -18,11 +18,13 @@ namespace SharedDomain.Entities.FarmComponents.Common
         public string? Manufactory { get; set; }
         public DateTime? ManufactureDate { get; set; }
         private string? _property;
-        public string? Property { get; set; }
+        public string? Property { get => _property; set=>_property = value; }
         [NotMapped]
         public List<PropertyValue> Properties
         {
-            get => JsonConvert.DeserializeObject<List<PropertyValue>>(_property!)??new();
+            get => !string.IsNullOrWhiteSpace(_property)?
+                JsonConvert.DeserializeObject<List<PropertyValue>>(_property)!
+                : new();
             set => _property = JsonConvert.SerializeObject(value);
         }
 

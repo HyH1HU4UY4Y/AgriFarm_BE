@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharedApplication.Persistence.Configs;
 
 namespace Infrastructure.Soil.Config
 {
@@ -13,16 +14,7 @@ namespace Infrastructure.Soil.Config
     {
         public void Configure(EntityTypeBuilder<Site> builder)
         {
-            builder
-                .Ignore(e => e.PaymentDetail)
-                .Ignore(e => e.Intro)
-                .Ignore(e => e.Capitals)
-                .Ignore(e => e.Subscripts)
-                .Ignore(e => e.AvatarImg)
-                .Ignore(e => e.LogoImg)
-                .Ignore(e => e.CreatedDate)
-                .Ignore(e => e.LastModify)
-                ;
+            builder.ExtractSite();
 
 
         }

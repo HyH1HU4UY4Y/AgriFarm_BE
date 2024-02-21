@@ -73,7 +73,8 @@ namespace Infrastructure.Seed.Migrations
                         name: "FK_BaseComponent_Sites_SiteId",
                         column: x => x.SiteId,
                         principalTable: "Sites",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

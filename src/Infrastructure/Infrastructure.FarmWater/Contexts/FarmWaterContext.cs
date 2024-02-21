@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Infrastructure.Water.Config;
+using Microsoft.EntityFrameworkCore;
 using SharedApplication.Persistence;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Entities.FarmComponents.Others;
@@ -17,7 +18,7 @@ namespace Infrastructure.Water.Contexts
         {
         }
 
-        public DbSet<FarmSoil> FarmLands { get; set; }
+        public DbSet<FarmWater> FarmWater { get; set; }
         public DbSet<Site> Sites { get; set; }
         //public DbSet<Activity> Activities { get; set; }
         public DbSet<ComponentProperty> Properties { get; set; }
@@ -39,9 +40,10 @@ namespace Infrastructure.Water.Contexts
             //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ActivityConfig).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);*/
 
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(WaterConfig).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);
             modelBuilder.Ignore<ComponentDocument>();
             modelBuilder.Ignore<Activity>();
-
 
             modelBuilder.Entity<BaseComponent>().UseTpcMappingStrategy();
             modelBuilder.Ignore<BaseComponent>();

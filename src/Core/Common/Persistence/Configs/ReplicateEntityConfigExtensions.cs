@@ -30,6 +30,43 @@ namespace SharedApplication.Persistence.Configs
 
             return builder;
         }
+
+        public static EntityTypeBuilder<BaseComponent> ExtractComponent(this EntityTypeBuilder<BaseComponent> builder)
+        {
+            builder
+                .Ignore(e => e.Description)
+                .Ignore(e => e.Documents)
+                .Ignore(e => e.Notes)
+                .Ignore(e => e.Properties)
+                .Ignore(e => e.States)
+                .Ignore(e => e.Resource)
+                .Ignore(e => e.Unit)
+                ;
+
+            return builder;
+        }
+
+        public static EntityTypeBuilder<FarmSoil> ExtractSoil(this EntityTypeBuilder<FarmSoil> builder)
+        {
+            builder
+                .Ignore(e => e.Acreage)
+                .Ignore(e => e.Position)
+                ;
+
+            return builder;
+        }
+
+        public static EntityTypeBuilder<FarmSeed> ExtractSeed(this EntityTypeBuilder<FarmSeed> builder)
+        {
+            builder
+                .Ignore(e => e.Reference)
+                .Ignore(e => e.ReferenceId)
+                .Ignore(e => e.Stock)
+                .Ignore(e => e.UnitPrice)
+                ;
+
+            return builder;
+        }
         
 
 

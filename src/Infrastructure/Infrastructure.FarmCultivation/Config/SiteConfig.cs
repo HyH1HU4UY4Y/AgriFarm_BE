@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharedApplication.Persistence.Configs;
 
-namespace Infrastructure.Equipment.Config
+namespace Infrastructure.FarmCultivation.Config
 {
     public class SiteConfig : IEntityTypeConfiguration<Site>
     {

@@ -26,6 +26,7 @@ namespace Infrastructure.Seed
                     .AddSQLRepo<SeedlingContext, FarmSeed>()
                     .AddSQLRepo<SeedlingContext, ReferencedSeed>()
                     .AddSQLRepo<SeedlingContext, ComponentState>()
+                    .AddSQLRepo<SeedlingContext, ComponentProperty>()
                     ;
 
 
@@ -47,6 +48,15 @@ namespace Infrastructure.Seed
                     Name = "site01",
                     IsActive = true,
                     SiteCode = "site021.abc",
+
+                });
+                
+                db.Sites.Add(new()
+                {
+                    Id = new Guid(TempData.FarmId2),
+                    Name = "site02",
+                    IsActive = true,
+                    SiteCode = "site032.xyz",
 
                 });
 
@@ -128,7 +138,7 @@ namespace Infrastructure.Seed
                         
                         Unit = "kg",
                         UnitPrice = 200000,
-                        SiteId = new Guid(TempData.FarmId),
+                        SiteId = new Guid(TempData.FarmId2),
                         Properties = new ComponentProperty[]
                         {
                             new()

@@ -15,7 +15,7 @@ namespace Infrastructure.FarmScheduling.Config
         {
             builder
                 .Ignore(e => e.PaymentDetail)
-                .Ignore(e => e.Intro)
+                .Ignore(e => e.Description)
                 .Ignore(e => e.Capitals)
                 .Ignore(e => e.LogoImg)
                 .Ignore(e => e.Subscripts);

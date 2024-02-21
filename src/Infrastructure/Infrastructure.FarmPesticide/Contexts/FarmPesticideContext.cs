@@ -16,12 +16,12 @@ namespace Infrastructure.Pesticide.Contexts
         }
 
         public DbSet<FarmPesticide> FarmPesticides { get; set; }
-        public DbSet<ReferencedPesticide> PesticideInfos { get; set; }
+        public DbSet<ReferencedPesticide> RefPesticideInfos { get; set; }
         public DbSet<Site> Sites { get; set; }
         //public DbSet<Activity> Activities { get; set; }
         public DbSet<ComponentProperty> Properties { get; set; }
         //public DbSet<ComponentState> States { get; set; }
-        public DbSet<ConsumeCultivation> UsedRecords { get; set; }
+        //public DbSet<ConsumeCultivation> UsedRecords { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -32,7 +32,7 @@ namespace Infrastructure.Pesticide.Contexts
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ReferencedPesticide>().ToTable(nameof(PesticideInfos));
+            modelBuilder.Entity<ReferencedPesticide>().ToTable(nameof(RefPesticideInfos));
             modelBuilder.Entity<FarmPesticide>().ToTable(nameof(FarmPesticides));
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);
@@ -41,7 +41,7 @@ namespace Infrastructure.Pesticide.Contexts
             modelBuilder.Ignore<ComponentState>();
 
             //modelBuilder.Entity<BaseComponent>().UseTpcMappingStrategy();
-            modelBuilder.Entity<AdditionOfActivity>().UseTpcMappingStrategy();
+            //modelBuilder.Entity<AdditionOfActivity>().UseTpcMappingStrategy();
             //modelBuilder.Ignore<BaseComponent>();
         }
     }

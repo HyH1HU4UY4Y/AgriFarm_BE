@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.FarmSite.Migrations
 {
     [DbContext(typeof(SiteContext))]
-    [Migration("20240124064703_init")]
+    [Migration("20240215082340_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace Infrastructure.FarmSite.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.CapitalState", b =>
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Others.CapitalState", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,7 +41,8 @@ namespace Infrastructure.FarmSite.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -59,7 +60,7 @@ namespace Infrastructure.FarmSite.Migrations
                     b.ToTable("CapitalStates");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.ComponentDocument", b =>
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Others.ComponentDocument", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -90,7 +91,7 @@ namespace Infrastructure.FarmSite.Migrations
                     b.ToTable("ComponentDocuments");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Document", b =>
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Others.Document", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -104,7 +105,8 @@ namespace Infrastructure.FarmSite.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -114,14 +116,16 @@ namespace Infrastructure.FarmSite.Migrations
 
                     b.Property<string>("Resource")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<Guid>("SiteId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.HasKey("Id");
 
@@ -136,8 +140,12 @@ namespace Infrastructure.FarmSite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<double?>("Acreage")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("AvatarImg")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone");
@@ -145,8 +153,9 @@ namespace Infrastructure.FarmSite.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Intro")
-                        .HasColumnType("varchar(150)");
+                    b.Property<string>("Description")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -158,18 +167,26 @@ namespace Infrastructure.FarmSite.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("LogoImg")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("PaymentDetail")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("Position")
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("text");
 
                     b.Property<string>("SiteCode")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.HasKey("Id");
 
@@ -216,7 +233,7 @@ namespace Infrastructure.FarmSite.Migrations
                     b.ToTable("SubscriptonBills");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.CapitalState", b =>
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Others.CapitalState", b =>
                 {
                     b.HasOne("SharedDomain.Entities.FarmComponents.Site", "Site")
                         .WithMany("Capitals")
@@ -226,9 +243,9 @@ namespace Infrastructure.FarmSite.Migrations
                     b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.ComponentDocument", b =>
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Others.ComponentDocument", b =>
                 {
-                    b.HasOne("SharedDomain.Entities.FarmComponents.Document", "Document")
+                    b.HasOne("SharedDomain.Entities.FarmComponents.Others.Document", "Document")
                         .WithMany("Components")
                         .HasForeignKey("DocumentId")
                         .IsRequired();
@@ -236,7 +253,7 @@ namespace Infrastructure.FarmSite.Migrations
                     b.Navigation("Document");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Document", b =>
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Others.Document", b =>
                 {
                     b.HasOne("SharedDomain.Entities.FarmComponents.Site", "Site")
                         .WithMany()
@@ -256,7 +273,7 @@ namespace Infrastructure.FarmSite.Migrations
                     b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Document", b =>
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Others.Document", b =>
                 {
                     b.Navigation("Components");
                 });

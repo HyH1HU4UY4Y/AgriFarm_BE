@@ -8,13 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using SharedApplication.Persistence.Configs;
 
-namespace Infrastructure.Equipment.Config
+namespace Infrastructure.FarmCultivation.Config
 {
-    public class SiteConfig : IEntityTypeConfiguration<Site>
+    public class SeedConfig : IEntityTypeConfiguration<FarmSeed>
     {
-        public void Configure(EntityTypeBuilder<Site> builder)
+        public void Configure(EntityTypeBuilder<FarmSeed> builder)
         {
-            builder.ExtractSite();
+            builder.ExtractSeed();
+            builder.ToTable("SeedInfos");
 
 
         }

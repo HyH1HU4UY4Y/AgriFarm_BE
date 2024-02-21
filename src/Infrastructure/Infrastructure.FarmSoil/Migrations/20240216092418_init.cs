@@ -32,7 +32,7 @@ namespace Infrastructure.Soil.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Position = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    Position = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
                     Acreage = table.Column<double>(type: "double precision", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -40,10 +40,11 @@ namespace Infrastructure.Soil.Migrations
                     DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     SiteId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
                     IsConsumable = table.Column<bool>(type: "boolean", nullable: false),
-                    MeasureUnit = table.Column<string>(name: "Measure Unit", type: "text", nullable: true),
-                    Notes = table.Column<string>(type: "text", nullable: true)
+                    MeasureUnit = table.Column<string>(type: "text", nullable: true),
+                    Notes = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
+                    Resource = table.Column<string>(type: "text", maxLength: 2147483647, nullable: true)
                 },
                 constraints: table =>
                 {
