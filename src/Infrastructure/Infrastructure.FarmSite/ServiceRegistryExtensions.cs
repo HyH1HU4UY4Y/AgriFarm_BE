@@ -33,13 +33,22 @@ namespace Infrastructure.FarmSite
             var db = scope.ServiceProvider.GetRequiredService<SiteContext>(); 
 
             db.Database.EnsureCreated();
-            if(!db.Sites.Any(e=>e.Id.ToString() == TempData.FarmId)) {
+            if(!db.Sites.Any(e=>e.Id.ToString() == TempData.FarmId || e.Id.ToString() == TempData.FarmId2)) {
                 db.Sites.Add(new()
                 {
                     Id = new Guid(TempData.FarmId),
                     Name = "site01",
                     IsActive = true,
                     SiteCode = "site021.abc",
+                    
+                });
+
+                db.Sites.Add(new()
+                {
+                    Id = new Guid(TempData.FarmId2),
+                    Name = "site02",
+                    IsActive = true,
+                    SiteCode = "site032.xyz",
                     
                 });
 

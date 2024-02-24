@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Pesticide.Config
 {
-    public class ConsumeDetailConfig : IEntityTypeConfiguration<AdditionOfActivity>
+    /*public class ConsumeDetailConfig : IEntityTypeConfiguration<AdditionOfActivity>
     {
         public void Configure(EntityTypeBuilder<AdditionOfActivity> builder)
         {
@@ -20,5 +20,5 @@ namespace Infrastructure.Pesticide.Config
                 //.Ignore(e => e.)
                 ;
         }
-    }
+    }*/
 }

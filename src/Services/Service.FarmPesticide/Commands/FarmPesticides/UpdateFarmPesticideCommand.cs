@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Infrastructure.Pesticide.Contexts;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Service.Pesticide.DTOs;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Exceptions;
@@ -8,13 +9,13 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Pesticide.Commands.FarmPesticides
 {
-    public class UpdateFarmPesticideCommand : IRequest<Guid>
+    public class UpdateFarmPesticideCommand : IRequest<PesticideResponse>
     {
         public Guid Id { get; set; }
-        public PesticideRequest Pesticide { get; set; }
+        public PesticideInfoRequest Pesticide { get; set; }
     }
 
-    public class UpdateFarmPesticideCommandHandler : IRequestHandler<UpdateFarmPesticideCommand, Guid>
+    public class UpdateFarmPesticideCommandHandler : IRequestHandler<UpdateFarmPesticideCommand, PesticideResponse>
     {
         private ISQLRepository<FarmPesticideContext, FarmPesticide> _pesticides;
         private IUnitOfWork<FarmPesticideContext> _unit;
@@ -32,9 +33,10 @@ namespace Service.Pesticide.Commands.FarmPesticides
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(UpdateFarmPesticideCommand request, CancellationToken cancellationToken)
+        public async Task<PesticideResponse> Handle(UpdateFarmPesticideCommand request, CancellationToken cancellationToken)
         {
-            var item = await _pesticides.GetOne(e => e.Id == request.Id);
+            var item = await _pesticides.GetOne(e => e.Id == request.Id,
+                                                ls => ls.Include(x=>x.Properties));
 
             if (item == null)
             {
@@ -47,7 +49,7 @@ namespace Service.Pesticide.Commands.FarmPesticides
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<PesticideResponse>(item);
         }
     }
 }

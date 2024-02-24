@@ -26,19 +26,6 @@ services:
           agri.network:
             ipv4_address: 10.38.0.14
 
-    rabbitmq:
-        image: rabbitmq:3-management
-        container_name: 'Farm-RBMsgBus'
-        ports:
-            - 5672:5672
-            - 15672:15672
-        
-        networks:
-            agri.network:
-                ipv4_address: 10.38.0.12
-        environment:
-            - RABBITMQ_DEFAULT_USER=farmer
-            - RABBITMQ_DEFAULT_PASS=farmer
 
     service.registration:
         environment:
@@ -54,3 +41,38 @@ services:
         environment:
             - ASPNETCORE_ENVIRONMENT=Testing
             - ASPNETCORE_URLS=http://+:80
+    
+    service.soil:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80
+
+    service.seed:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80
+
+    service.pesticide:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80
+
+    service.fertilize:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80
+
+    service.equipment:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80
+
+    service.water:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80
+
+    service.cultivation:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80 

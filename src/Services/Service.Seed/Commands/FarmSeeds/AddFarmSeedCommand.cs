@@ -10,12 +10,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Service.Seed.Commands.FarmSeeds
 {
-    public class AddFarmSeedCommand : IRequest<Guid>
+    public class AddFarmSeedCommand : IRequest<SeedResponse>
     {
-        public SeedRequest Seed { get; set; }
+        public SeedCreateRequest Seed { get; set; }
+        public Guid SiteId { get; set; }
     }
 
-    public class AddFarmSeedCommandHandler : IRequestHandler<AddFarmSeedCommand, Guid>
+    public class AddFarmSeedCommandHandler : IRequestHandler<AddFarmSeedCommand, SeedResponse>
     {
         private ISQLRepository<SeedlingContext, FarmSeed> _seeds;
         private IUnitOfWork<SeedlingContext> _unit;
@@ -33,20 +34,21 @@ namespace Service.Seed.Commands.FarmSeeds
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(AddFarmSeedCommand request, CancellationToken cancellationToken)
+        public async Task<SeedResponse> Handle(AddFarmSeedCommand request, CancellationToken cancellationToken)
         {
             /*TODO:
-                - check for super admin
+                //- check for super admin
                 - check integrated with ref seed info
             */
 
             var item = _mapper.Map<FarmSeed>(request.Seed);
+            item.SiteId = request.SiteId;
 
             await _seeds.AddAsync(item);
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<SeedResponse>(item);
         }
     }
 }

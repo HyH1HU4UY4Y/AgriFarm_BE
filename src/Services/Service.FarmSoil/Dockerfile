@@ -6,17 +6,23 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["src/Services/Service.FarmSoil/Service.FarmSoil.csproj", "src/Services/Service.FarmSoil/"]
-RUN dotnet restore "src/Services/Service.FarmSoil/Service.FarmSoil.csproj"
+COPY ["src/Services/Service.FarmSoil/Service.Soil.csproj", "src/Services/Service.FarmSoil/"]
+COPY ["src/Core/Common/SharedApplication.csproj", "src/Core/Common/"]
+COPY ["src/Core/Domain/SharedDomain.csproj", "src/Core/Domain/"]
+COPY ["src/Core/EventBus/EventBus.csproj", "src/Core/EventBus/"]
+COPY ["src/Infrastructure/Infrastructure.FarmSoil/Infrastructure.Soil.csproj", "src/Infrastructure/Infrastructure.FarmSoil/"]
+RUN dotnet restore "./src/Services/Service.FarmSoil/./Service.Soil.csproj"
 COPY . .
 WORKDIR "/src/src/Services/Service.FarmSoil"
-RUN dotnet build "Service.FarmSoil.csproj" -c Release -o /app/build
+RUN dotnet build "./Service.Soil.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Service.FarmSoil.csproj" -c Release -o /app/publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./Service.Soil.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Service.FarmSoil.dll"]
+ENTRYPOINT ["dotnet", "Service.Soil.dll"]

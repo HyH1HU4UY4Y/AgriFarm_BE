@@ -22,12 +22,12 @@ namespace Infrastructure.Fertilize.Contexts
 
 
         public DbSet<FarmFertilize> FarmFertilizes { get; set; }
-        public DbSet<ReferencedFertilize> FertilizeInfos { get; set; }
+        public DbSet<ReferencedFertilize> RefFertilizeInfos { get; set; }
         public DbSet<Site> Sites { get; set; }
         //public DbSet<Activity> Activities { get; set; }
         public DbSet<ComponentProperty> Properties { get; set; }
         //public DbSet<ComponentState> States { get; set; }
-        public DbSet<ConsumeCultivation> UsedRecords { get; set; }
+        //public DbSet<ConsumeCultivation> UsedRecords { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -38,7 +38,7 @@ namespace Infrastructure.Fertilize.Contexts
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ReferencedFertilize>().ToTable(nameof(FertilizeInfos));
+            modelBuilder.Entity<ReferencedFertilize>().ToTable(nameof(RefFertilizeInfos));
             modelBuilder.Entity<FarmFertilize>().ToTable(nameof(FarmFertilizes));
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);
@@ -47,7 +47,7 @@ namespace Infrastructure.Fertilize.Contexts
             modelBuilder.Ignore<ComponentDocument>();
 
             //modelBuilder.Entity<BaseComponent>().UseTpcMappingStrategy();
-            modelBuilder.Entity<AdditionOfActivity>().UseTpcMappingStrategy();
+            //modelBuilder.Entity<AdditionOfActivity>().UseTpcMappingStrategy();
             //modelBuilder.Ignore<BaseComponent>();
         }
     }

@@ -223,8 +223,9 @@ namespace Infrastructure.Seed.Migrations
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.BaseComponent", b =>
                 {
                     b.HasOne("SharedDomain.Entities.FarmComponents.Site", "Site")
-                        .WithMany("Components")
+                        .WithMany()
                         .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Site");
@@ -263,11 +264,6 @@ namespace Infrastructure.Seed.Migrations
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Common.ReferencedSeed", b =>
                 {
                     b.Navigation("InUse");
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Site", b =>
-                {
-                    b.Navigation("Components");
                 });
 #pragma warning restore 612, 618
         }

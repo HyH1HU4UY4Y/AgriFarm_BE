@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Infrastructure.Fertilize.Contexts;
 using MediatR;
+using Service.Fertilize.DTOs;
 using SharedDomain.Entities.FarmComponents.Common;
 using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;

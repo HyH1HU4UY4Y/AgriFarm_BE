@@ -7,12 +7,12 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Fertilize.Commands.RefFertilizes
 {
-    public class AddRefFertilizeCommand : IRequest<Guid>
+    public class AddRefFertilizeCommand : IRequest<RefFertilizeResponse>
     {
         public RefFertilizeRequest Fertilize { get; set; }
     }
 
-    public class AddRefFertilizeCommandHandler : IRequestHandler<AddRefFertilizeCommand, Guid>
+    public class AddRefFertilizeCommandHandler : IRequestHandler<AddRefFertilizeCommand, RefFertilizeResponse>
     {
         private ISQLRepository<FarmFertilizeContext, ReferencedFertilize> _fertilizes;
         private IUnitOfWork<FarmFertilizeContext> _unit;
@@ -30,7 +30,7 @@ namespace Service.Fertilize.Commands.RefFertilizes
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(AddRefFertilizeCommand request, CancellationToken cancellationToken)
+        public async Task<RefFertilizeResponse> Handle(AddRefFertilizeCommand request, CancellationToken cancellationToken)
         {
             /*TODO:
                 - check for each bussiness role
@@ -38,12 +38,13 @@ namespace Service.Fertilize.Commands.RefFertilizes
             */
 
             var item = _mapper.Map<ReferencedFertilize>(request.Fertilize);
+            
 
             await _fertilizes.AddAsync(item);
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<RefFertilizeResponse>(item);
         }
     }
 }

@@ -16,7 +16,11 @@ namespace Service.FarmSite.Mapper
             CreateMap<CreateSubscriptBillCommand, Subscripton>().ReverseMap();
             CreateMap<AddCapitalStateCommand, CapitalState>().ReverseMap();
 
+            CreateMap<SiteEditRequest, Site>().ReverseMap();
+            CreateMap<SiteCreateRequest, Site>().ReverseMap();
+
             CreateMap<Site, SiteResponse>().ReverseMap();
+            CreateMap<Site, FullSiteResponse>().ReverseMap();
         }
     }
 }

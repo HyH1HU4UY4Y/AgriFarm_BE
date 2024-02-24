@@ -10,7 +10,7 @@ namespace Service.FarmSite.Commands.Farms
 {
     public class CreateNewFarmCommand : IRequest<Guid>
     {
-        public SiteRequest Site { get; set; }
+        public SiteCreateRequest Site { get; set; }
         public bool IsActive { get; set; } = true;
     }
 

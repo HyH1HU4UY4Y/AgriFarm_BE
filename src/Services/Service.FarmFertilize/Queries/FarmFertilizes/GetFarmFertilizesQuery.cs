@@ -13,6 +13,7 @@ namespace Service.Fertilize.Queries.FarmFertilizes
     public class GetFarmFertilizesQuery : IRequest<PagedList<FertilizeResponse>>
     {
         public PaginationRequest Pagination { get; set; } = new();
+        public Guid SiteId { get; set; }
     }
 
     public class GetFarmFertilizesQueryHandler : IRequestHandler<GetFarmFertilizesQuery, PagedList<FertilizeResponse>>
@@ -36,7 +37,8 @@ namespace Service.Fertilize.Queries.FarmFertilizes
 
         public async Task<PagedList<FertilizeResponse>> Handle(GetFarmFertilizesQuery request, CancellationToken cancellationToken)
         {
-            var items = await _fertilizes.GetMany(null, ls => ls.Include(x => x.Properties));
+            var items = await _fertilizes.GetMany(e=>e.SiteId == request.SiteId, 
+                                                ls => ls.Include(x => x.Properties));
 
 
 

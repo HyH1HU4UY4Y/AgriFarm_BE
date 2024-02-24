@@ -36,7 +36,7 @@ namespace Service.Seed.Queries.FarmSeeds
 
         public async Task<SeedResponse> Handle(GetFarmSeedByIdQuery request, CancellationToken cancellationToken)
         {
-            var item = _seeds.GetOne(e => e.Id == request.Id, ls => ls.Include(x => x.Properties));
+            var item = await _seeds.GetOne(e => e.Id == request.Id, ls => ls.Include(x => x.Properties));
 
             if (item == null)
             {

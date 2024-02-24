@@ -6,17 +6,23 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["src/Services/Service.FarmFertilize/Service.FarmFertilize.csproj", "src/Services/Service.FarmFertilize/"]
-RUN dotnet restore "src/Services/Service.FarmFertilize/Service.FarmFertilize.csproj"
+COPY ["src/Services/Service.FarmFertilize/Service.Fertilize.csproj", "src/Services/Service.FarmFertilize/"]
+COPY ["src/Core/Common/SharedApplication.csproj", "src/Core/Common/"]
+COPY ["src/Core/Domain/SharedDomain.csproj", "src/Core/Domain/"]
+COPY ["src/Core/EventBus/EventBus.csproj", "src/Core/EventBus/"]
+COPY ["src/Infrastructure/Infrastructure.FarmFertilize/Infrastructure.Fertilize.csproj", "src/Infrastructure/Infrastructure.FarmFertilize/"]
+RUN dotnet restore "./src/Services/Service.FarmFertilize/./Service.Fertilize.csproj"
 COPY . .
 WORKDIR "/src/src/Services/Service.FarmFertilize"
-RUN dotnet build "Service.FarmFertilize.csproj" -c Release -o /app/build
+RUN dotnet build "./Service.Fertilize.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Service.FarmFertilize.csproj" -c Release -o /app/publish 
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./Service.Fertilize.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Service.FarmFertilize.dll"]
+ENTRYPOINT ["dotnet", "Service.Fertilize.dll"]

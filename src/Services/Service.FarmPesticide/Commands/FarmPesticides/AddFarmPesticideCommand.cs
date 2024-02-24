@@ -10,12 +10,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Service.Pesticide.Commands.FarmPesticides
 {
-    public class AddFarmPesticideCommand : IRequest<Guid>
+    public class AddFarmPesticideCommand : IRequest<PesticideResponse>
     {
-        public PesticideRequest Pesticide { get; set; }
+        public PesticideCreateRequest Pesticide { get; set; }
+        public Guid SiteId { get; set; }
     }
 
-    public class AddFarmPesticideCommandHandler : IRequestHandler<AddFarmPesticideCommand, Guid>
+    public class AddFarmPesticideCommandHandler : IRequestHandler<AddFarmPesticideCommand, PesticideResponse>
     {
         private ISQLRepository<FarmPesticideContext, FarmPesticide> _pesticides;
         private IUnitOfWork<FarmPesticideContext> _unit;
@@ -33,20 +34,21 @@ namespace Service.Pesticide.Commands.FarmPesticides
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(AddFarmPesticideCommand request, CancellationToken cancellationToken)
+        public async Task<PesticideResponse> Handle(AddFarmPesticideCommand request, CancellationToken cancellationToken)
         {
             /*TODO:
-                - check for super admin
+                //- check for super admin
                 - check integrated with ref Pesticide info
             */
 
             var item = _mapper.Map<FarmPesticide>(request.Pesticide);
+            item.SiteId = request.SiteId;
 
             await _pesticides.AddAsync(item);
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<PesticideResponse>(item);
         }
     }
 }

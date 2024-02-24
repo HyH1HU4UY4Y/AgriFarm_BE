@@ -13,6 +13,7 @@ namespace Service.Pesticide.Queries.FarmPesticides
     public class GetFarmPesticidesQuery : IRequest<PagedList<PesticideResponse>>
     {
         public PaginationRequest Pagination { get; set; } = new();
+        public Guid SiteId {  get; set; }
     }
 
     public class GetFarmPesticidesQueryHandler : IRequestHandler<GetFarmPesticidesQuery, PagedList<PesticideResponse>>
@@ -36,7 +37,9 @@ namespace Service.Pesticide.Queries.FarmPesticides
 
         public async Task<PagedList<PesticideResponse>> Handle(GetFarmPesticidesQuery request, CancellationToken cancellationToken)
         {
-            var items = await _pesticides.GetMany(null, ls => ls.Include(x => x.Properties));
+            var items = await _pesticides.GetMany(
+                            e => e.SiteId == request.SiteId, 
+                            ls => ls.Include(x => x.Properties));
 
 
 

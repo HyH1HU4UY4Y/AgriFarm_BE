@@ -5,7 +5,9 @@ using EventBus.Messages;
 using Infrastructure.Soil.Contexts;
 using MassTransit;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Service.Soil.DTOs;
 using SharedDomain.Defaults;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Exceptions;
@@ -13,17 +15,13 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Soil.Command
 {
-    public class UpdateLandCommand: IRequest<Guid>
+    public class UpdateLandCommand: IRequest<LandResponse>
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public double Acreage { get; set; }
-        public string Unit { get; set; }
-        public Dictionary<double, double> Positions { get; set; }
+        public LandRequest Land { get; set; }
     }
 
-    public class UpdateLandCommandHandler : IRequestHandler<UpdateLandCommand, Guid>
+    public class UpdateLandCommandHandler : IRequestHandler<UpdateLandCommand, LandResponse>
     {
         private ISQLRepository<FarmSoilContext, FarmSoil> _lands;
         private IUnitOfWork<FarmSoilContext> _unit;
@@ -44,22 +42,24 @@ namespace Service.Soil.Command
             _bus = bus;
         }
 
-        public async Task<Guid> Handle(UpdateLandCommand request, CancellationToken cancellationToken)
+        public async Task<LandResponse> Handle(UpdateLandCommand request, CancellationToken cancellationToken)
         {
             
-            var item = await _lands.GetOne(e=>e.Id == request.Id);
+            var item = await _lands.GetOne(e=>e.Id == request.Id,
+                ls => ls.Include(x=>x.Site)
+                );
 
             if(item == null)
             {
-                throw new NotFoundException("Land is not exist");
+                throw new NotFoundException("Land not exist");
             }
 
-            _mapper.Map(request, item);
+            _mapper.Map(request.Land, item);
             await _lands.UpdateAsync(item);
             await _unit.SaveChangesAsync(cancellationToken);
             
 
-            return item.Id;
+            return _mapper.Map<LandResponse>(item);
         }
     }
 

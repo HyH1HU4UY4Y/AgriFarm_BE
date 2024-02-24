@@ -35,12 +35,8 @@ namespace Infrastructure.Equipment.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
 
                     b.Property<bool>("IsConsumable")
                         .HasColumnType("boolean");
@@ -53,19 +49,24 @@ namespace Infrastructure.Equipment.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
+
+                    b.Property<string>("Resource")
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("text");
 
                     b.Property<Guid>("SiteId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)")
-                        .HasColumnName("Measure Unit");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)")
+                        .HasColumnName("MeasureUnit");
 
                     b.HasKey("Id");
 
@@ -73,9 +74,7 @@ namespace Infrastructure.Equipment.Migrations
 
                     b.ToTable("BaseComponent");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("BaseComponent");
-
-                    b.UseTphMappingStrategy();
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.ComponentProperty", b =>
@@ -101,14 +100,16 @@ namespace Infrastructure.Equipment.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<double>("Require")
                         .HasColumnType("double precision");
 
                     b.Property<string>("Unit")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<double>("Value")
                         .HasColumnType("double precision");
@@ -120,52 +121,11 @@ namespace Infrastructure.Equipment.Migrations
                     b.ToTable("Properties");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.ComponentState", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("ActivityId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ComponentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Data")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ComponentId");
-
-                    b.ToTable("States");
-                });
-
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Site", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<string>("AvatarImg")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
@@ -176,19 +136,15 @@ namespace Infrastructure.Equipment.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("LogoImg")
-                        .HasColumnType("varchar(150)");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("SiteCode")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.HasKey("Id");
 
@@ -202,14 +158,15 @@ namespace Infrastructure.Equipment.Migrations
                     b.Property<decimal?>("UnitPrice")
                         .HasColumnType("numeric");
 
-                    b.HasDiscriminator().HasValue("FarmEquipment");
+                    b.ToTable("FarmEquipments", (string)null);
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.BaseComponent", b =>
                 {
                     b.HasOne("SharedDomain.Entities.FarmComponents.Site", "Site")
-                        .WithMany("Components")
+                        .WithMany()
                         .HasForeignKey("SiteId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Site");
@@ -225,26 +182,18 @@ namespace Infrastructure.Equipment.Migrations
                     b.Navigation("Component");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.ComponentState", b =>
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmEquipment", b =>
                 {
-                    b.HasOne("SharedDomain.Entities.FarmComponents.BaseComponent", "Component")
-                        .WithMany("States")
-                        .HasForeignKey("ComponentId")
+                    b.HasOne("SharedDomain.Entities.FarmComponents.BaseComponent", null)
+                        .WithOne()
+                        .HasForeignKey("SharedDomain.Entities.FarmComponents.FarmEquipment", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Component");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.BaseComponent", b =>
                 {
                     b.Navigation("Properties");
-
-                    b.Navigation("States");
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Site", b =>
-                {
-                    b.Navigation("Components");
                 });
 #pragma warning restore 612, 618
         }

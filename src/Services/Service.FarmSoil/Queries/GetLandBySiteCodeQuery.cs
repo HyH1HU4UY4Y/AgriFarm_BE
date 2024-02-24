@@ -13,7 +13,7 @@ namespace Service.Soil.Queries
     public class GetLandBySiteCodeQuery: IRequest<LandResponse>
     {
         public Guid Id { get; set; }
-        public string SiteCode { get; set; }
+        public Guid SiteId { get; set; }
     }
 
     public class GetLandBySiteCodeQueryHandler : IRequestHandler<GetLandBySiteCodeQuery, LandResponse>
@@ -36,7 +36,8 @@ namespace Service.Soil.Queries
         public async Task<LandResponse> Handle(GetLandBySiteCodeQuery request, CancellationToken cancellationToken)
         {
             var items = await _lands.GetOne(
-                e => e.Site.SiteCode == request.SiteCode, ls => ls.Include(x => x.Site)
+                e => e.SiteId == request.SiteId
+                //, ls => ls.Include(x => x.Site)
                 );
 
             if(items == null)
