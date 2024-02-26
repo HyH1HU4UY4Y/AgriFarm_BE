@@ -9,7 +9,6 @@ namespace SharedDomain.Entities.ChecklistGlobalGAP
         public int Status { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public ICollection<ChecklistItemResponse>? ChecklistItemResponses { get; set; }
-        public ChecklistMaster ChecklistMaster { get; set; }
+        public ChecklistMaster? ChecklistMaster { get; set; }
     }
 }

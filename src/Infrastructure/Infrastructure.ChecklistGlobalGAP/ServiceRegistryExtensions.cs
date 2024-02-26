@@ -17,7 +17,9 @@ namespace Infrastructure.ChecklistGlobalGAP
 
             services
                 .AddSQLRepo<ChecklistGlobalGAPContext, ChecklistMaster > ()
-                .AddSQLRepo<ChecklistGlobalGAPContext, ChecklistItem > ();
+                .AddSQLRepo<ChecklistGlobalGAPContext, ChecklistItem > ()
+                .AddSQLRepo<ChecklistGlobalGAPContext, ChecklistMapping>()
+                .AddSQLRepo<ChecklistGlobalGAPContext, ChecklistItemResponse> ();
 
 
             return services;

@@ -8,6 +8,7 @@ using Infrastructure.ChecklistGlobalGAP;
 using SharedApplication.Persistence;
 using Infrastructure.ChecklistGlobalGAP.Context;
 using System.Text.Json.Serialization;
+using SharedApplication.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddInfras(builder.Configuration);
 builder.Services.AddSharedApplication<Program>();
 builder.Services.AddJWTAuthorization();
 builder.Services.AddGlobalErrorMiddleware();
+builder.Services.AddDefaultVersioning();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
