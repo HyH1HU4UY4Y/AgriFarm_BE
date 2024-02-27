@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SharedApplication.Persistence.Configs;
 using SharedDomain.Entities.FarmComponents;
 using System;
 using System.Collections.Generic;
@@ -13,16 +14,9 @@ namespace Infrastructure.Supply.Config
     {
         public void Configure(EntityTypeBuilder<BaseComponent> builder)
         {
-            builder
-                .Ignore(e => e.Properties)
-                .Ignore(e => e.Notes)
-                .Ignore(e => e.Description)
-                .Ignore(e => e.CreatedDate)
-                .Ignore(e => e.LastModify)
-                .Ignore(e => e.Documents)
-                .Ignore(e => e.Resource)
-                .Ignore(e => e.Unit)
-                ;
+            builder.ExtractComponent()
+                    .Ignore(e => e.IsConsumable);
+
             builder.UseTphMappingStrategy()
                 .HasDiscriminator<string>("Type")
                 .HasValue<FarmSoil>(nameof(FarmSoil).Substring(4))
@@ -38,10 +32,7 @@ namespace Infrastructure.Supply.Config
     {
         public void Configure(EntityTypeBuilder<FarmSoil> builder)
         {
-            builder
-                .Ignore(e => e.Acreage)
-                .Ignore(e => e.Position)
-                ;
+            builder.ExtractSoil();
 
             builder.UseTphMappingStrategy();
         }
@@ -50,15 +41,8 @@ namespace Infrastructure.Supply.Config
     {
         public void Configure(EntityTypeBuilder<FarmWater> builder)
         {
-            builder
-                .Ignore(e => e.Properties)
-                .Ignore(e => e.Notes)
-                .Ignore(e => e.Description)
-                .Ignore(e => e.CreatedDate)
-                .Ignore(e => e.LastModify)
-                .Ignore(e => e.Documents)
-                .Ignore(e => e.Unit)
-                ;
+            /*builder.Ex
+                ;*/
 
             builder.UseTphMappingStrategy();
         }

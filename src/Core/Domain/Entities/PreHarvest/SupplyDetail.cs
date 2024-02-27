@@ -30,14 +30,16 @@ namespace SharedDomain.Entities.PreHarvest
 
         [NotMapped]
         public List<string> Resources {
-            get => JsonConvert.DeserializeObject<List<string>>(_resource)?? new(); 
+            get => string.IsNullOrWhiteSpace(_resource)? 
+                JsonConvert.DeserializeObject<List<string>>(_resource)!
+                : new(); 
             set => _resource = JsonConvert.SerializeObject(value); 
         }
         public decimal UnitPrice { get; set; }
         public double Quantity { get; set; }
         public string Unit {  get; set; }
-        public bool IsLimitTime { get; set; } = false;
-        public DateTime? ExpiredIn { get; set; }
+        public DateTime? ValidFrom { get; set; } = null;
+        public DateTime? ValidTo { get; set; } = null;
 
     }
 }

@@ -31,9 +31,6 @@ namespace Infrastructure.Supply.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<bool>("IsConsumable")
-                        .HasColumnType("boolean");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -128,13 +125,7 @@ namespace Infrastructure.Supply.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime?>("ExpiredIn")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsLimitTime")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastModify")
@@ -160,6 +151,12 @@ namespace Infrastructure.Supply.Migrations
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("numeric");
+
+                    b.Property<DateTime?>("ValidFrom")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("ValidTo")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 

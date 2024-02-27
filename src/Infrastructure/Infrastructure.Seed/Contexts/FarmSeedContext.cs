@@ -14,9 +14,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Seed.Contexts
 {
-    public class SeedlingContext : MultiSiteDbContext
+    public class FarmSeedContext : MultiSiteDbContext
     {
-        public SeedlingContext(DbContextOptions options) : base(options)
+        public FarmSeedContext(DbContextOptions options) : base(options)
         {
         }
 
