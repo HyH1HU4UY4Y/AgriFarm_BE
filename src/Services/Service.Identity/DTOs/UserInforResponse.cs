@@ -12,6 +12,7 @@ namespace Service.Identity.DTOs
         public string Email { get; set; }
         public string SiteId { get; set; }
         public string SiteCode { get; set; }
+        public string SiteName { get; set; }
         public string Role { get; set; }
     }
 }
