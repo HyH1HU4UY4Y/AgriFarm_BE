@@ -6,11 +6,11 @@ namespace Service.Supply.DTOs
     {
         public Guid Id { get; set; }
         public SupplierResponse Supplier { get; set; }
-        [JsonProperty("itemId")]
-        public Guid ComponentId { get; set; }
         public decimal UnitPrice { get; set; }
         public int Quantity { get; set; }
         public string Unit { get; set; }
-        public string ExpiredIn { get; set; }
+        public DateTime? ValidFrom { get; set; } = null;
+        public DateTime? ValidTo { get; set; } = null;
+        public DateTime CreatedDate {  get; set; }
     }
 }

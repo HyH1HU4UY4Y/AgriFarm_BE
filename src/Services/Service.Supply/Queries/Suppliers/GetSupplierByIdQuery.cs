@@ -3,6 +3,7 @@ using Infrastructure.Supply.Contexts;
 using MediatR;
 using Service.Supply.DTOs;
 using SharedDomain.Entities.PreHarvest;
+using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
 
 namespace Service.Supply.Queries.Suppliers
@@ -34,6 +35,11 @@ namespace Service.Supply.Queries.Suppliers
         public async Task<SupplierInfoResponse> Handle(GetSupplierByIdQuery request, CancellationToken cancellationToken)
         {
             var rs = await _suppliers.GetOne(e => e.Id == request.Id);
+
+            if (rs == null)
+            {
+                throw new NotFoundException();
+            }
 
             return _mapper.Map<SupplierInfoResponse>(rs);
         }

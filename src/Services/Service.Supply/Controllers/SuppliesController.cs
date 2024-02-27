@@ -1,9 +1,12 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Supply.Commands.Supplies;
 using Service.Supply.DTOs;
 using Service.Supply.Queries.Supplies;
+using SharedApplication.Authorize;
 using SharedApplication.Pagination;
 using SharedDomain.Common;
 using System.ComponentModel.DataAnnotations;
@@ -12,8 +15,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Service.Supply.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     [ApiController]
+    [Authorize]
     public class SuppliesController : ControllerBase
     {
         private IMediator _mediator;
@@ -24,11 +29,20 @@ namespace Service.Supply.Controllers
         }
 
         [HttpGet("get-by")]
-        public async Task<IActionResult> Get([Required][FromQuery]Guid itemId)
+        public async Task<IActionResult> Get(
+            [Required][FromQuery]Guid itemId,
+            [FromQuery] Guid? siteId = null,
+            [FromHeader] int? pageNumber = null, [FromHeader] int? pageSize = null
+            )
         {
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
+
+            PaginationRequest page = new(pageNumber, pageSize);
+
             var items = await _mediator.Send(new GetItemSupplyDetailsQuery
             {
                 ItemId = itemId,
+                Pagination = page
             });
 
             Response.AddPaginationHeader(items.MetaData);
@@ -42,16 +56,16 @@ namespace Service.Supply.Controllers
 
 
         
-        [HttpPost("add-contract")]
-        public async Task<IActionResult> Post([FromBody] NewContractRequest request)
+        /*[HttpPost("add-contract")]
+        public async Task<IActionResult> Post([FromBody] NewSupplyRequest request)
         {
-            var cmd = new AddNewContractCommand {
+            var cmd = new CreateSupplyDetailCommand {
                 
             };
             var rs = await _mediator.Send(cmd);
 
             return StatusCode(201, rs);
-        }
+        }*/
 
         
         /*[HttpPut("put")]
