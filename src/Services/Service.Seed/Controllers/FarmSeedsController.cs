@@ -31,7 +31,8 @@ namespace Service.Seed.Controllers
 
 
         [HttpGet("get")]
-        public async Task<IActionResult> Get([FromQuery] Guid? id = null,
+        public async Task<IActionResult> Get(
+            [FromQuery] Guid? id = null,
             [FromQuery]Guid? siteId = null,
             [FromHeader]int? pageNumber = null, [FromHeader] int? pageSize = null
             )
@@ -94,6 +95,34 @@ namespace Service.Seed.Controllers
             {
                 Data = rs,
                 Status = 201
+            });
+        }
+
+        [HttpPost("supply")]
+        public async Task<IActionResult> Supply(
+            [FromQuery][Required] Guid id,
+            [FromBody] SupplyRequest request,
+            [FromQuery] Guid? siteId = null
+            )
+        {
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
+
+            if (identity == SystemIdentity.Supervisor && siteId == null)
+            {
+                return NotFound();
+            }
+
+            var rs = await _mediator.Send(new SupplySeedCommand
+            {
+                Id = id,
+                Details = request,
+                SiteId = identity == SystemIdentity.Supervisor ? siteId.Value : sId
+            });
+
+            return StatusCode(200, new DefaultResponse<SeedResponse>
+            {
+                Data = rs,
+                Status = 200
             });
         }
 

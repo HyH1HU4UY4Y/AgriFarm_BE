@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Service.Soil.DTOs
+namespace Service.Equipment.DTOs
 {
     public class SupplyContractRequest
     {

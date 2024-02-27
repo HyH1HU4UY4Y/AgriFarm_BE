@@ -16,15 +16,15 @@ namespace Service.Seed.Commands.RefSeeds
 
     public class AddRefSeedCommandHandler : IRequestHandler<AddRefSeedCommand, RefSeedResponse>
     {
-        private ISQLRepository<SeedlingContext, ReferencedSeed> _seeds;
-        private IUnitOfWork<SeedlingContext> _unit;
+        private ISQLRepository<FarmSeedContext, ReferencedSeed> _seeds;
+        private IUnitOfWork<FarmSeedContext> _unit;
         private IMapper _mapper;
         private ILogger<AddRefSeedCommandHandler> _logger;
 
-        public AddRefSeedCommandHandler(ISQLRepository<SeedlingContext, ReferencedSeed> seeds,
+        public AddRefSeedCommandHandler(ISQLRepository<FarmSeedContext, ReferencedSeed> seeds,
             IMapper mapper,
             ILogger<AddRefSeedCommandHandler> logger,
-            IUnitOfWork<SeedlingContext> unit)
+            IUnitOfWork<FarmSeedContext> unit)
         {
             _seeds = seeds;
             _mapper = mapper;

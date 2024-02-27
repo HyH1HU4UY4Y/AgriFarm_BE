@@ -10,6 +10,7 @@ namespace Service.Pesticide.Mapper
         public MapperProfile() {
             CreateMap<PropertyValue, ComponentProperty>().ReverseMap();
 
+            //CreateMap<SupplyRequest, FarmPesticide>().ReverseMap();
             CreateMap<PesticideCreateRequest, FarmPesticide>().ReverseMap();
             CreateMap<PesticideInfoRequest, FarmPesticide>().ReverseMap();
             CreateMap<FarmPesticide, PesticideResponse>().ReverseMap();

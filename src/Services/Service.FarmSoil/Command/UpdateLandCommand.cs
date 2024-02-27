@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
 using EventBus.Defaults;
-using EventBus.Events;
-using EventBus.Messages;
+using EventBus.Utils;
 using Infrastructure.Soil.Contexts;
 using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using Service.Soil.DTOs;
-using SharedDomain.Defaults;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
@@ -46,8 +43,8 @@ namespace Service.Soil.Command
         {
             
             var item = await _lands.GetOne(e=>e.Id == request.Id,
-                ls => ls.Include(x=>x.Site)
-                );
+                                            ls => ls.Include(x=>x.Site)
+                                            );
 
             if(item == null)
             {
@@ -57,7 +54,8 @@ namespace Service.Soil.Command
             _mapper.Map(request.Land, item);
             await _lands.UpdateAsync(item);
             await _unit.SaveChangesAsync(cancellationToken);
-            
+
+            await _bus.ReplicateSoil(item, EventState.Modify);
 
             return _mapper.Map<LandResponse>(item);
         }

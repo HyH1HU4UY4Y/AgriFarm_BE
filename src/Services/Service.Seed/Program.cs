@@ -40,7 +40,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.EnsureDataInit<SeedlingContext>().Wait();
+app.EnsureDataInit<FarmSeedContext>().Wait();
 app.UseGlobalErrorMiddleware();
 app.SeedData();
 

@@ -9,10 +9,11 @@ namespace Service.Soil.DTOs
     {
         [Required]
         public string Name { get; set; }
-        public string Description { get; set; } = "";
+        public string Description { get; set; } = "not set";
         [Range(1,double.PositiveInfinity)]
         public double Acreage { get; set; }
-        [JsonProperty("measureUnit")]
+        [Required]
+        [JsonProperty("defaultUnit")]
         public string Unit {  get; set; }
         
     }
