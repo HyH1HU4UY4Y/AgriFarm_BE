@@ -1,7 +1,7 @@
 ﻿using EventBus;
 using EventBus.Defaults;
 using EventBus.Events;
-using EventBus.Messages;
+using EventBus.Events.Messages;
 using Infrastructure.FarmSite.Contexts;
 using MassTransit;
 using MediatR;

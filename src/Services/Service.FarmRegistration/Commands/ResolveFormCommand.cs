@@ -1,5 +1,4 @@
-﻿using SharedApplication.CQRS;
-using AutoMapper;
+﻿using AutoMapper;
 using Infrastructure.FarmRegistry.Contexts;
 using MediatR;
 using SharedDomain.Defaults;
@@ -9,9 +8,9 @@ using System.ComponentModel.DataAnnotations;
 using SharedDomain.Exceptions;
 using MassTransit;
 using EventBus;
-using EventBus.Messages;
 using EventBus.Defaults;
 using EventBus.Events;
+using EventBus.Events.Messages;
 
 namespace Service.FarmRegistry.Commands
 {

@@ -15,11 +15,18 @@ namespace EventBus.Defaults
         //replicate data queues section
         public const string UserReplicationQueue = nameof(UserReplicationQueue);
         public const string FarmReplicationQueue = nameof(FarmReplicationQueue);
-        public const string LandReplicationQueue = nameof(LandReplicationQueue);
+        public const string SoilReplicationQueue = nameof(SoilReplicationQueue);
         public const string EquipmentReplicationQueue = nameof(EquipmentReplicationQueue);
         public const string SeedReplicationQueue = nameof(SeedReplicationQueue);
         public const string FertilizeReplicationQueue = nameof(FertilizeReplicationQueue);
         public const string PesticideReplicationQueue = nameof(PesticideReplicationQueue);
         public const string WaterReplicationQueue = nameof(WaterReplicationQueue);
+
+        //supply
+        public const string PesticideSupplyingQueue = nameof(PesticideSupplyingQueue);
+        public const string FertilizeSupplyingQueue = nameof(FertilizeSupplyingQueue);
+        public const string SeedSupplyingQueue = nameof(SeedSupplyingQueue);
+        public const string EquipmentSupplyingQueue = nameof(EquipmentSupplyingQueue);
+        public const string LandSupplyingQueue = nameof(LandSupplyingQueue);
     }
 }

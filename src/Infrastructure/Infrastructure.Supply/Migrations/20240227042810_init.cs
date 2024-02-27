@@ -18,7 +18,6 @@ namespace Infrastructure.Supply.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SiteId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
-                    IsConsumable = table.Column<bool>(type: "boolean", nullable: false),
                     Type = table.Column<string>(type: "text", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
@@ -63,8 +62,8 @@ namespace Infrastructure.Supply.Migrations
                     UnitPrice = table.Column<decimal>(type: "numeric", nullable: false),
                     Quantity = table.Column<double>(type: "double precision", nullable: false),
                     Unit = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
-                    IsLimitTime = table.Column<bool>(type: "boolean", nullable: false),
-                    ExpiredIn = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ValidFrom = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ValidTo = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),

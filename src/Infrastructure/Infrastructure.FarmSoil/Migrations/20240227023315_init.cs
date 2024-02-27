@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Infrastructure.Equipment.Migrations
+namespace Infrastructure.Soil.Migrations
 {
     /// <inheritdoc />
     public partial class init : Migration
@@ -28,47 +28,32 @@ namespace Infrastructure.Equipment.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BaseComponent",
+                name: "Lands",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    SiteId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
-                    Description = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
-                    IsConsumable = table.Column<bool>(type: "boolean", nullable: false),
-                    MeasureUnit = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
-                    Notes = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
-                    Resource = table.Column<string>(type: "text", maxLength: 2147483647, nullable: true),
+                    Position = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
+                    Acreage = table.Column<double>(type: "double precision", nullable: false),
+                    ExpiredIn = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    SiteId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
+                    IsConsumable = table.Column<bool>(type: "boolean", nullable: false),
+                    MeasureUnit = table.Column<string>(type: "text", nullable: true),
+                    Notes = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: true),
+                    Resource = table.Column<string>(type: "text", maxLength: 2147483647, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BaseComponent", x => x.Id);
+                    table.PrimaryKey("PK_Lands", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BaseComponent_Sites_SiteId",
+                        name: "FK_Lands_Sites_SiteId",
                         column: x => x.SiteId,
                         principalTable: "Sites",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FarmEquipments",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "numeric", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FarmEquipments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FarmEquipments_BaseComponent_Id",
-                        column: x => x.Id,
-                        principalTable: "BaseComponent",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -83,6 +68,7 @@ namespace Infrastructure.Equipment.Migrations
                     Value = table.Column<double>(type: "double precision", nullable: false),
                     Require = table.Column<double>(type: "double precision", nullable: false),
                     Unit = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    FarmSoilId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -92,34 +78,63 @@ namespace Infrastructure.Equipment.Migrations
                 {
                     table.PrimaryKey("PK_Properties", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Properties_BaseComponent_ComponentId",
-                        column: x => x.ComponentId,
-                        principalTable: "BaseComponent",
+                        name: "FK_Properties_Lands_FarmSoilId",
+                        column: x => x.FarmSoilId,
+                        principalTable: "Lands",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "States",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ComponentId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ActivityId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Data = table.Column<string>(type: "character varying(8000)", maxLength: 8000, nullable: false),
+                    FarmSoilId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastModify = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_States", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_States_Lands_FarmSoilId",
+                        column: x => x.FarmSoilId,
+                        principalTable: "Lands",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BaseComponent_SiteId",
-                table: "BaseComponent",
+                name: "IX_Lands_SiteId",
+                table: "Lands",
                 column: "SiteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Properties_ComponentId",
+                name: "IX_Properties_FarmSoilId",
                 table: "Properties",
-                column: "ComponentId");
+                column: "FarmSoilId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_States_FarmSoilId",
+                table: "States",
+                column: "FarmSoilId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FarmEquipments");
-
-            migrationBuilder.DropTable(
                 name: "Properties");
 
             migrationBuilder.DropTable(
-                name: "BaseComponent");
+                name: "States");
+
+            migrationBuilder.DropTable(
+                name: "Lands");
 
             migrationBuilder.DropTable(
                 name: "Sites");

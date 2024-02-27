@@ -155,6 +155,9 @@ namespace Infrastructure.Equipment.Migrations
                 {
                     b.HasBaseType("SharedDomain.Entities.FarmComponents.BaseComponent");
 
+                    b.Property<DateTime?>("ExpiredIn")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<decimal?>("UnitPrice")
                         .HasColumnType("numeric");
 

@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using EventBus.Defaults;
+using EventBus.Utils;
 using Infrastructure.Seed.Contexts;
+using MassTransit;
 using MediatR;
 using Newtonsoft.Json;
 using Service.Seed.DTOs;
@@ -18,20 +21,23 @@ namespace Service.Seed.Commands.FarmSeeds
 
     public class AddFarmSeedCommandHandler : IRequestHandler<AddFarmSeedCommand, SeedResponse>
     {
-        private ISQLRepository<SeedlingContext, FarmSeed> _seeds;
-        private IUnitOfWork<SeedlingContext> _unit;
+        private ISQLRepository<FarmSeedContext, FarmSeed> _seeds;
+        private IUnitOfWork<FarmSeedContext> _unit;
         private IMapper _mapper;
         private ILogger<AddFarmSeedCommandHandler> _logger;
+        private IBus _bus;
 
-        public AddFarmSeedCommandHandler(ISQLRepository<SeedlingContext, FarmSeed> seeds,
+        public AddFarmSeedCommandHandler(ISQLRepository<FarmSeedContext, FarmSeed> seeds,
             IMapper mapper,
             ILogger<AddFarmSeedCommandHandler> logger,
-            IUnitOfWork<SeedlingContext> unit)
+            IUnitOfWork<FarmSeedContext> unit,
+            IBus bus)
         {
             _seeds = seeds;
             _mapper = mapper;
             _logger = logger;
             _unit = unit;
+            _bus = bus;
         }
 
         public async Task<SeedResponse> Handle(AddFarmSeedCommand request, CancellationToken cancellationToken)
@@ -47,6 +53,8 @@ namespace Service.Seed.Commands.FarmSeeds
             await _seeds.AddAsync(item);
 
             await _unit.SaveChangesAsync(cancellationToken);
+
+            await _bus.ReplicateSeed(item, EventState.Add);
 
             return _mapper.Map<SeedResponse>(item);
         }

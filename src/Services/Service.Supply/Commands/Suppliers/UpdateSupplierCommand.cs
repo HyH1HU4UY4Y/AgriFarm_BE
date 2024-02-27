@@ -9,13 +9,13 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Supply.Commands.Suppliers
 {
-    public class UpdateSupplierCommand : IRequest<Guid>
+    public class UpdateSupplierCommand : IRequest<SupplierInfoResponse>
     {
         public Guid Id { get; set; }
         public SupplierRequest Supplier { get; set; }
     }
 
-    public class UpdateSupplierCommandHandler : IRequestHandler<UpdateSupplierCommand, Guid>
+    public class UpdateSupplierCommandHandler : IRequestHandler<UpdateSupplierCommand, SupplierInfoResponse>
     {
         private ISQLRepository<SupplyContext, Supplier> _suppliers;
         private IUnitOfWork<SupplyContext> _unit;
@@ -33,28 +33,20 @@ namespace Service.Supply.Commands.Suppliers
             _mapper = mapper;
         }
 
-        public async Task<Guid> Handle(UpdateSupplierCommand request, CancellationToken cancellationToken)
+        public async Task<SupplierInfoResponse> Handle(UpdateSupplierCommand request, CancellationToken cancellationToken)
         {
-            /*
-                TODO: Process siteId from http 
-            */
-
-
+           
             var item = await _suppliers.GetOne(e => e.Id == request.Id);
             if (item == null)
             {
                 throw new NotFoundException();
             }
 
-            //temp
-            item.CreatedByFarmId = new Guid(TempData.FarmId);
-
             _mapper.Map(request.Supplier, item);
             await _suppliers.UpdateAsync(item);
             await _unit.SaveChangesAsync(cancellationToken);
 
-
-            return item.Id;
+            return _mapper.Map<SupplierInfoResponse>(item);
         }
     }
 

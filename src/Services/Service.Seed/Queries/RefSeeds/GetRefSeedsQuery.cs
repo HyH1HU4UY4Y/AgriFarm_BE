@@ -19,15 +19,15 @@ namespace Service.Seed.Queries.RefSeeds
     public class GetRefSeedsQueryHandler : IRequestHandler<GetRefSeedsQuery, PagedList<RefSeedResponse>>
     {
 
-        private ISQLRepository<SeedlingContext, ReferencedSeed> _seeds;
-        private IUnitOfWork<SeedlingContext> _unit;
+        private ISQLRepository<FarmSeedContext, ReferencedSeed> _seeds;
+        private IUnitOfWork<FarmSeedContext> _unit;
         private IMapper _mapper;
         private ILogger<GetRefSeedsQueryHandler> _logger;
 
-        public GetRefSeedsQueryHandler(ISQLRepository<SeedlingContext, ReferencedSeed> seeds,
+        public GetRefSeedsQueryHandler(ISQLRepository<FarmSeedContext, ReferencedSeed> seeds,
             IMapper mapper,
             ILogger<GetRefSeedsQueryHandler> logger,
-            IUnitOfWork<SeedlingContext> unit)
+            IUnitOfWork<FarmSeedContext> unit)
         {
             _seeds = seeds;
             _mapper = mapper;

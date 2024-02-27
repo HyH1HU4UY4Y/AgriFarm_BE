@@ -41,6 +41,8 @@ namespace SharedApplication.Persistence.Configs
                 .Ignore(e => e.States)
                 .Ignore(e => e.Resource)
                 .Ignore(e => e.Unit)
+                .Ignore(e => e.CreatedDate)
+                .Ignore(e => e.LastModify)
                 ;
 
             return builder;
@@ -51,6 +53,7 @@ namespace SharedApplication.Persistence.Configs
             builder
                 .Ignore(e => e.Acreage)
                 .Ignore(e => e.Position)
+                .Ignore(e => e.ExpiredIn)
                 ;
 
             return builder;
@@ -67,7 +70,17 @@ namespace SharedApplication.Persistence.Configs
 
             return builder;
         }
-        
+
+
+        public static EntityTypeBuilder<FarmEquipment> ExtractEquipment(this EntityTypeBuilder<FarmEquipment> builder)
+        {
+            builder
+                .Ignore(e => e.UnitPrice)
+                .Ignore(e => e.ExpiredIn)
+                ;
+
+            return builder;
+        }
 
 
 

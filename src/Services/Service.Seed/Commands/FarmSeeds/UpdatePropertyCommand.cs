@@ -18,17 +18,17 @@ namespace Service.Seed.Commands.FarmSeeds
 
     public class UpdatePropertyCommandHandler : IRequestHandler<UpdatePropertyCommand, SeedResponse>
     {
-        private ISQLRepository<SeedlingContext, FarmSeed> _seeds;
-        private ISQLRepository<SeedlingContext, ComponentProperty> _properties;
-        private IUnitOfWork<SeedlingContext> _unit;
+        private ISQLRepository<FarmSeedContext, FarmSeed> _seeds;
+        private ISQLRepository<FarmSeedContext, ComponentProperty> _properties;
+        private IUnitOfWork<FarmSeedContext> _unit;
         private IMapper _mapper;
         private ILogger<UpdatePropertyCommandHandler> _logger;
 
-        public UpdatePropertyCommandHandler(ISQLRepository<SeedlingContext, FarmSeed> seeds,
+        public UpdatePropertyCommandHandler(ISQLRepository<FarmSeedContext, FarmSeed> seeds,
             IMapper mapper,
             ILogger<UpdatePropertyCommandHandler> logger,
-            IUnitOfWork<SeedlingContext> unit,
-            ISQLRepository<SeedlingContext, ComponentProperty> properties)
+            IUnitOfWork<FarmSeedContext> unit,
+            ISQLRepository<FarmSeedContext, ComponentProperty> properties)
         {
             _seeds = seeds;
             _mapper = mapper;

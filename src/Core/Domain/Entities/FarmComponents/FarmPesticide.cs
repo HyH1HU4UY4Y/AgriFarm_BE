@@ -15,7 +15,7 @@ namespace SharedDomain.Entities.FarmComponents
             IsConsumable = true;
         }
         public decimal? UnitPrice { get; set; }
-        public int Stock { get; set; }
+        public int Stock { get; set; } = 0;
         public Guid? ReferenceId { get; set; }
         public ReferencedPesticide? Reference { get; set; }
     }

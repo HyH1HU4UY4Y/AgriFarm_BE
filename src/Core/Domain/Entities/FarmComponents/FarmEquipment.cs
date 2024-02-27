@@ -8,6 +8,11 @@ namespace SharedDomain.Entities.FarmComponents
 {
     public class FarmEquipment: BaseComponent
     {
+        public FarmEquipment() {
+            Unit = "item";
+        }
         public decimal? UnitPrice { get; set; }
+
+        public DateTime? ExpiredIn { get; set; }
     }
 }

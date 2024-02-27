@@ -10,13 +10,13 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Supply.Commands.Supplies
 {
-    public class AddNewContractCommand : IRequest<Guid>
+    public class CreateSupplyDetailCommand : IRequest<Guid>
     {
-        public Guid? SiteId { get; set; }
-        public NewContractRequest Contract { get; set; }
+        public Guid SiteId { get; set; }
+        public NewSupplyRequest Detail { get; set; }
     }
 
-    public class AddNewContractCommandHandler : IRequestHandler<AddNewContractCommand, Guid>
+    public class AddNewContractCommandHandler : IRequestHandler<CreateSupplyDetailCommand, Guid>
     {
         private ISQLRepository<SupplyContext, SupplyDetail> _details;
         private ISQLRepository<SupplyContext, BaseComponent> _components;
@@ -37,23 +37,12 @@ namespace Service.Supply.Commands.Supplies
             _components = components;
         }
 
-        public async Task<Guid> Handle(AddNewContractCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateSupplyDetailCommand request, CancellationToken cancellationToken)
         {
             
+            var item = _mapper.Map<SupplyDetail>(request.Detail);
 
-            if (_components.GetOne(e => e.Id == request.Contract.ComponentId) == null)
-            {
-                throw new BadRequestException("Item not exist.");
-            }
-
-            var item = _mapper.Map<SupplyDetail>(request.Contract);
-
-            //TODO: process for farm identity and super admin
-            if (request.SiteId == null)
-            {
-                //TODO: replace here
-                item.SiteId = new Guid(TempData.FarmId);
-            }
+            item.SiteId = request.SiteId;
 
             var rs = await _details.AddAsync(item);
 

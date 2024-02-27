@@ -38,7 +38,6 @@ namespace Service.Supply.Commands.Suppliers
                 throw new NotFoundException();
             }
 
-            _mapper.Map(request, item);
             await _suppliers.SoftDeleteAsync(item);
             await _unit.SaveChangesAsync(cancellationToken);
 

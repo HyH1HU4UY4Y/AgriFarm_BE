@@ -1,5 +1,6 @@
-﻿using EventBus.Defaults;
-using EventBus.Messages;
+﻿using AutoMapper;
+using EventBus.Defaults;
+using EventBus.Events.Messages;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using SharedDomain.Entities.Base;
@@ -15,46 +16,64 @@ namespace EventBus.Utils
 {
     public static class ReplicationConsumerHelperExtensions
     {
-        public static async Task ProcessReplicate<TDbContext, TEntity>(this ISQLRepository<TDbContext, TEntity> repository, IntegrationEventMessage<TEntity> message)
-            where TDbContext : DbContext where TEntity : IBaseEntity<Guid>
+        public static async Task ProcessReplicate<TDbContext, TEntity>(this ISQLRepository<TDbContext, TEntity> repository, TEntity data, EventState state, IMapper? mapper = null)
+            where TDbContext : DbContext where TEntity : class, IBaseEntity<Guid>
         {
-            switch (message.State)
+            TEntity entity = null;
+            if (state != EventState.Add)
+            {
+                entity = repository.GetOne(e => e.Id == data.Id).Result!;
+            }
+
+            switch (state)
             {
                 case EventState.Add:
-                    await repository.AddAsync(message.Data);
+                    await repository.AddAsync(data);
                     break;
                 case EventState.Modify:
-                    await repository.UpdateAsync(message.Data);
+                    if (mapper != null && entity != null)
+                    {
+                        mapper.Map(data, entity);
+                        await repository.UpdateAsync(entity);
+                    }
+                    else throw new Exception();
                     break;
                 case EventState.SoftDelete:
-                    await repository.SoftDeleteAsync(message.Data);
+                    await repository.SoftDeleteAsync(entity);
                     break;
                 case EventState.RawDelete:
-                    await repository.SoftDeleteAsync(message.Data);
+                    await repository.RawDeleteAsync(entity);
                     break;
                 default:
                     break;
 
             }
 
-
         }
-        public static async Task ProcessComponentReplicate<TDbContext, TComponent>(this ISQLRepository<TDbContext, BaseComponent> repository, IntegrationEventMessage<TComponent> message)
+
+        public static void ProcessComponentReplicate<TDbContext, TComponent>(this ISQLRepository<TDbContext, BaseComponent> repository, TComponent data, EventState state)
             where TDbContext : DbContext where TComponent: BaseComponent
         {
-            switch (message.State)
+            TComponent component = null;
+            if(state != EventState.Add)
+            {
+                component = (TComponent?)repository.GetOne(e => e.Id == data.Id).Result!;
+            }
+
+            switch (state)
             {
                 case EventState.Add:
-                    await repository.AddAsync(message.Data);
+                    repository.AddAsync(data);
                     break;
                 case EventState.Modify:
-                    await repository.UpdateAsync(message.Data);
+                    component.Name = data.Name;
+                    repository.UpdateAsync(component);
                     break;
                 case EventState.SoftDelete:
-                    await repository.SoftDeleteAsync(message.Data);
+                    repository.SoftDeleteAsync(component);
                     break;
                 case EventState.RawDelete:
-                    await repository.SoftDeleteAsync(message.Data);
+                    repository.RawDeleteAsync(component);
                     break;
                 default:
                     break;

@@ -20,13 +20,13 @@ namespace Infrastructure.Seed
         {
             services
                 .AddMultiTenant(configuration)
-                .AddDefaultSQLDB<SeedlingContext>(configuration);
+                .AddDefaultSQLDB<FarmSeedContext>(configuration);
 
-            services.AddSQLRepo<SeedlingContext, Site>()
-                    .AddSQLRepo<SeedlingContext, FarmSeed>()
-                    .AddSQLRepo<SeedlingContext, ReferencedSeed>()
-                    .AddSQLRepo<SeedlingContext, ComponentState>()
-                    .AddSQLRepo<SeedlingContext, ComponentProperty>()
+            services.AddSQLRepo<FarmSeedContext, Site>()
+                    .AddSQLRepo<FarmSeedContext, FarmSeed>()
+                    .AddSQLRepo<FarmSeedContext, ReferencedSeed>()
+                    .AddSQLRepo<FarmSeedContext, ComponentState>()
+                    .AddSQLRepo<FarmSeedContext, ComponentProperty>()
                     ;
 
 
@@ -36,7 +36,7 @@ namespace Infrastructure.Seed
         public static IApplicationBuilder SeedData(this IApplicationBuilder app)
         {
             using var scope = app.ApplicationServices.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<SeedlingContext>();
+            var db = scope.ServiceProvider.GetRequiredService<FarmSeedContext>();
 
             db.Database.EnsureCreated();
             if (!db.Sites.Any(e => e.Id.ToString() == TempData.FarmId))

@@ -92,7 +92,7 @@ namespace Service.Identity.Controllers
             return NoContent();
 
         }
-
+/*
         [HttpPut("change-password")]
         public async Task<IActionResult> ChangePassword([FromBody]string value)
         {
@@ -100,7 +100,7 @@ namespace Service.Identity.Controllers
 
             return NoContent();
         }
-
+*/
         
     }
 }

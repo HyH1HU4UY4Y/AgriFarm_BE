@@ -13,6 +13,7 @@ namespace Service.Supply.DTOs
         public string? Phone { get; set; }
         [EmailAddress]
         public string? Email { get; set; }
+        [Required]
         [StringLength(500)]
         public string? Address { get; set; }
         [StringLength(5000)]

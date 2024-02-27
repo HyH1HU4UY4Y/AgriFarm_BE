@@ -76,8 +76,6 @@ namespace Service.Equipment.Controllers
             });
         }
 
-
-
         [HttpPost("post")]
         public async Task<IActionResult> Post(
             [FromBody] EquipmentRequest request,
@@ -103,6 +101,33 @@ namespace Service.Equipment.Controllers
             });
         }
 
+        [HttpPost("add-contract")]
+        public async Task<IActionResult> Supply(
+            [FromQuery][Required] Guid id,
+            [FromBody] SupplyContractRequest request,
+            [FromQuery] Guid? siteId = null
+            )
+        {
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
+
+            if (identity == SystemIdentity.Supervisor && siteId == null)
+            {
+                return StatusCode(404);
+            }
+
+            var rs = await _mediator.Send(new MakeEquipmentContractCommand
+            {
+                Id = id,
+                Details = request,
+                SiteId = identity == SystemIdentity.Supervisor ? siteId.Value : sId
+            });
+
+            return StatusCode(200, new DefaultResponse<EquipmentResponse>
+            {
+                Data = rs,
+                Status = 200
+            });
+        }
 
         [HttpPut("put")]
         public async Task<IActionResult> Put([FromQuery][Required]Guid id, [FromBody] EquipmentRequest request)

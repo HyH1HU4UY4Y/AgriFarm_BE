@@ -30,5 +30,7 @@ namespace SharedDomain.Entities.FarmComponents
 
         public double Acreage { get; set; }
 
+        public DateTime? ExpiredIn { get; set; }
+
     }
 }
