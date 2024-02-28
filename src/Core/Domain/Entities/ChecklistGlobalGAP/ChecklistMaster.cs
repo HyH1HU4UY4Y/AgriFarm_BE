@@ -8,6 +8,7 @@ namespace SharedDomain.Entities.ChecklistGlobalGAP
         public string? Name { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Version { get; set; }
+        public bool isDraft { get; set; } = true;
         public ICollection<ChecklistItem>? ChecklistItems { get; set; }
     }
 }

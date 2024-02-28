@@ -7,8 +7,25 @@ namespace Service.ChecklistGlobalGAP.DTOs
         public int statusCode { get; set; }
         public List<string>? message { get; set; }
     }
+
+    public class Pagination
+    {
+        public int perPage { get; set; } = 10;
+        public int pageId { get; set; } = 1;
+        public int totalRecord { get; set; } = 0;
+    }
+
     public class ChecklistGlobalGAPGetListResponse : ResponseStatus
     {
-        public List<ChecklistMapping> data { get; set; } = new List<ChecklistMapping>();
+        public List<ChecklistMappingDTO> data { get; set; } = new List<ChecklistMappingDTO>();
+        public Pagination Pagination { get; set; } = new Pagination();
+    }
+    public class ChecklistGlobalGAPAddListResponse : ResponseStatus
+    {
+        public ChecklistMapping? data { get; set; }
+    }
+    public class ChecklistGlobalGAPCreateResponse : ResponseStatus
+    {
+        public ChecklistMaster? data { get; set; }
     }
 }

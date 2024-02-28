@@ -9,6 +9,7 @@ namespace Service.ChecklistGlobalGAP.Mapper
         public MapProfile()
         {
             CreateMap<ChecklistMapping, ChecklistMappingDTO>().ReverseMap();
+            CreateMap<ChecklistMaster, ChecklistMasterDTO>().ReverseMap();
         }
     }
 }

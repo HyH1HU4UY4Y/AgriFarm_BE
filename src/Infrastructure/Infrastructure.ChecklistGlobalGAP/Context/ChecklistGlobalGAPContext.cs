@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SharedApplication.Persistence;
 using SharedDomain.Entities.ChecklistGlobalGAP;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Infrastructure.ChecklistGlobalGAP.Context
 {
@@ -25,6 +26,7 @@ namespace Infrastructure.ChecklistGlobalGAP.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ChecklistMaster>().Property(t => t.Version).ValueGeneratedOnAdd();
             base.OnModelCreating(modelBuilder);
 
         }
