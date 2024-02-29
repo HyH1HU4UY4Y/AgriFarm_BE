@@ -162,5 +162,89 @@ namespace Service.ChecklistGlobalGAP.Controllers
             }
             return Ok(response);
         }
+        [HttpPost("add-item-response")]
+        public async Task<IActionResult> AddItemResponse([FromBody] ChecklistGlobalGAPCreateResponseRequest request)
+        {
+            ChecklistGlobalGAPAddItemResponse response = new ChecklistGlobalGAPAddItemResponse();
+            try
+            {
+                var rs = await _mediator.Send(new CreateResponseChecklistGlobalGAPCommand
+                {
+                    checklistItemResponses = request
+                });
+                if (rs == null)
+                {
+                    response.statusCode = NoContent().StatusCode;
+                    response.message = new List<string>
+                    {
+                        "Insert fail!"
+                    };
+                }
+                else
+                {
+                    response.statusCode = Ok().StatusCode;
+                }
+            } catch
+            {
+                response.statusCode = NoContent().StatusCode;
+                response.message = new List<string>
+                {
+                    "Insert fail!"
+                };
+            }
+            return Ok(response);
+        }
+        [HttpDelete("delete-list")]
+        public async Task<IActionResult> DeleteList([FromQuery] Guid id)
+        {
+            ChecklistGlobalGAPDeleteListResponse response = new ChecklistGlobalGAPDeleteListResponse();
+            try
+            {
+                var rs = await _mediator.Send(new DeleteListChecklistGlobalGAPCommand
+                {
+                    checklistMappingId = id
+                });
+                if (!rs)
+                {
+                    response.statusCode = NoContent().StatusCode;
+                    response.message = new List<string>
+                    {
+                        "Delete fail!"
+                    };
+                } else
+                {
+                    response.statusCode = Ok().StatusCode;
+                }
+            } catch
+            {
+                response.statusCode = NoContent().StatusCode;
+                response.message = new List<string>
+                {
+                    "Delete fail!"
+                };
+            }
+            return Ok(response);
+        }
+        [HttpGet("get-checklist")]
+        public async Task<IActionResult> GetChecklist([FromQuery] Guid id)
+        {
+            ChecklistGlobalGAPGetChecklistResponse response = new ChecklistGlobalGAPGetChecklistResponse();
+            var rs = await _mediator.Send(new GetContentChecklistGlobalGAPQuery
+            {
+                checklistMappingId = id
+            });
+            if (rs == null)
+            {
+                response.statusCode = NoContent().StatusCode;
+                response.message = new List<string> {
+                    "Data not found!"
+                };
+            } else
+            {
+                response.statusCode = Ok().StatusCode;
+                response.data = rs;
+            }
+            return Ok(response);
+        }
     }
 }

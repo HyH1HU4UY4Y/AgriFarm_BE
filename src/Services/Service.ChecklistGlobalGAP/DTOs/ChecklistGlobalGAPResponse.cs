@@ -28,4 +28,10 @@ namespace Service.ChecklistGlobalGAP.DTOs
     {
         public ChecklistMaster? data { get; set; }
     }
+    public class ChecklistGlobalGAPAddItemResponse : ResponseStatus { }
+    public class ChecklistGlobalGAPDeleteListResponse : ResponseStatus { }
+    public class ChecklistGlobalGAPGetChecklistResponse : ResponseStatus
+    {
+        public ChecklistMappingDTO? data { get; set; }
+    }
 }

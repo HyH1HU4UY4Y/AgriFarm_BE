@@ -31,4 +31,17 @@ namespace Service.ChecklistGlobalGAP.DTOs
         public bool isDraft { get; set; } = true;
         public List<ChecklistItemDef>? checklistItems { get; set; }
     }
+    public class ChecklistItemResponseContent
+    {
+        public Guid checklistItemId { get; set; }
+        public int level { get; set; }
+        public int result { get; set; }
+        public string? note { get; set; }
+        public string? attachment { get; set; }
+    }
+    public class ChecklistGlobalGAPCreateResponseRequest
+    {
+        public Guid checklistMappingId { get; set; }
+        public List<ChecklistItemResponseContent>? checklistItemResponses { get; set; }
+    }
 }

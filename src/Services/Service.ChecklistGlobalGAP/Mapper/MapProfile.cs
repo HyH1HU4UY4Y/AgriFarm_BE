@@ -10,6 +10,7 @@ namespace Service.ChecklistGlobalGAP.Mapper
         {
             CreateMap<ChecklistMapping, ChecklistMappingDTO>().ReverseMap();
             CreateMap<ChecklistMaster, ChecklistMasterDTO>().ReverseMap();
+            CreateMap<ChecklistItemResponse, ChecklistItemResponseDTO>().ReverseMap();
         }
     }
 }
