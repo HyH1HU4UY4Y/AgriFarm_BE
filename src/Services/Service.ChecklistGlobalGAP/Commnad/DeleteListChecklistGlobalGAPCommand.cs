@@ -35,7 +35,7 @@ namespace Service.ChecklistGlobalGAP.Commnad
                 {
                     return false;
                 }
-                await _repo.RawDeleteAsync(rs);
+                await _repo.SoftDeleteAsync(rs);
                 await _context.SaveChangesAsync(cancellationToken);
                 return true;
             } catch (Exception ex)
