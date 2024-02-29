@@ -155,6 +155,22 @@
           "Port": 80
         }
       ]
+    },
+
+    //Service.Disease
+
+    {
+      "UpstreamPathTemplate": "/api/v1/disease/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/api/v1/disease/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.38.0.18",
+          "Port": 80
+        }
+      ]
     }
 
 

@@ -84,3 +84,13 @@ services:
         environment:
             - ASPNETCORE_ENVIRONMENT=Testing
             - ASPNETCORE_URLS=http://+:80
+
+    service.disease:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80
+
+    service.riskassessment:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80
