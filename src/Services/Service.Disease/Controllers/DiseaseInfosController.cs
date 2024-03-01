@@ -1,10 +1,12 @@
-﻿using Azure.Core;
+﻿using Asp.Versioning;
+using Azure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Disease.Commands;
 using Service.Disease.DTOs;
 using Service.Disease.Queries;
+using SharedDomain.Defaults;
 using Pagination = Service.Disease.DTOs.Pagination;
 using PaginationDefault = SharedDomain.Defaults.Pagination;
 
@@ -12,8 +14,10 @@ using PaginationDefault = SharedDomain.Defaults.Pagination;
 
 namespace Service.Disease.Controllers
 {
-    [Route("api/disease/disease-info/")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/disease/disease-info/")]
+    [ApiVersion("1.0")]
+    [Authorize(Roles = Roles.SuperAdmin)]
     public class DiseaseInfosController : ControllerBase
     {
         private IMediator _mediator;

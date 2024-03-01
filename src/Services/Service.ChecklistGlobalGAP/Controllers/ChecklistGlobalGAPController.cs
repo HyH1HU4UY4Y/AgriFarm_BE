@@ -1,16 +1,18 @@
 ﻿using Asp.Versioning;
 using Infrastructure.ChecklistGlobalGAP.Context;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.ChecklistGlobalGAP.Commnad;
 using Service.ChecklistGlobalGAP.DTOs;
 using Service.ChecklistGlobalGAP.Queries;
 using SharedDomain.Entities.ChecklistGlobalGAP;
 using PaginationDefault = SharedDomain.Defaults.Pagination;
+using Pagination = Service.ChecklistGlobalGAP.DTOs.Pagination;
+using SharedDomain.Defaults;
 
 namespace Service.ChecklistGlobalGAP.Controllers
 {
-    // [Authorize]
     [Route("api/v{version:apiVersion}/checklist-global-GAP")]
     [ApiVersion("1.0")]
     [ApiController]
@@ -25,6 +27,7 @@ namespace Service.ChecklistGlobalGAP.Controllers
         }
 
         [HttpGet("get-list")]
+        [Authorize(Roles = Roles.Manager)]
         public async Task<IActionResult> GetList([FromQuery] ChecklistGlobalGAPGetListRequest request)
         {
             ChecklistGlobalGAPGetListResponse response = new ChecklistGlobalGAPGetListResponse();
@@ -68,6 +71,7 @@ namespace Service.ChecklistGlobalGAP.Controllers
             return Ok(response);
         }
         [HttpPost("add-list")]
+        [Authorize(Roles = Roles.Manager)]
         public async Task<IActionResult> AddList([FromBody] ChecklistGlobalGAPAddListRequest request)
         {
             ChecklistGlobalGAPAddListResponse response = new ChecklistGlobalGAPAddListResponse();
@@ -103,6 +107,7 @@ namespace Service.ChecklistGlobalGAP.Controllers
             return Ok(response);
         }
         [HttpPost("create-checklist")]
+        [Authorize(Roles = Roles.SuperAdmin)]
         public async Task<IActionResult> CreateCheckList([FromBody] ChecklistGlobalGAPCreateRequest request)
         {
             ChecklistGlobalGAPCreateResponse response = new ChecklistGlobalGAPCreateResponse();
@@ -163,6 +168,7 @@ namespace Service.ChecklistGlobalGAP.Controllers
             return Ok(response);
         }
         [HttpPost("add-item-response")]
+        [Authorize(Roles = Roles.Manager)]
         public async Task<IActionResult> AddItemResponse([FromBody] ChecklistGlobalGAPCreateResponseRequest request)
         {
             ChecklistGlobalGAPAddItemResponse response = new ChecklistGlobalGAPAddItemResponse();
@@ -195,6 +201,7 @@ namespace Service.ChecklistGlobalGAP.Controllers
             return Ok(response);
         }
         [HttpDelete("delete-list")]
+        [Authorize(Roles = Roles.Manager)]
         public async Task<IActionResult> DeleteList([FromQuery] Guid id)
         {
             ChecklistGlobalGAPDeleteListResponse response = new ChecklistGlobalGAPDeleteListResponse();
@@ -226,6 +233,7 @@ namespace Service.ChecklistGlobalGAP.Controllers
             return Ok(response);
         }
         [HttpGet("get-checklist")]
+        [Authorize(Roles = Roles.Manager)]
         public async Task<IActionResult> GetChecklist([FromQuery] Guid id)
         {
             ChecklistGlobalGAPGetChecklistResponse response = new ChecklistGlobalGAPGetChecklistResponse();

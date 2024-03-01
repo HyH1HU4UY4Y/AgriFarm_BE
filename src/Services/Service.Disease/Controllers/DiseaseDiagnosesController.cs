@@ -6,11 +6,17 @@ using Service.Disease.DTOs;
 using Service.Disease.Queries;
 using System.Data;
 using PaginationDefault = SharedDomain.Defaults.Pagination;
+using Pagination = Service.Disease.DTOs.Pagination;
+using Microsoft.AspNetCore.Authorization;
+using SharedDomain.Defaults;
+using Asp.Versioning;
 
 namespace Service.Disease.Controllers
 {
-    [Route("api/disease/disease-diagnoses/")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/disease/disease-diagnoses/")]
+    [ApiVersion("1.0")]
+    [Authorize]
     public class DiseaseDiagnosesController : ControllerBase
     {
         private IMediator _mediator;
@@ -20,6 +26,7 @@ namespace Service.Disease.Controllers
             _mediator = mediator;
         }
         [HttpGet("get")]
+        [Authorize(Roles = Roles.SuperAdmin)]
         public async Task<IActionResult> Get([FromQuery] DiseaseDiagnosesRequest request)
         {
             DiseaseDiagnosesResponse response = new DiseaseDiagnosesResponse();
@@ -69,6 +76,7 @@ namespace Service.Disease.Controllers
             return Ok(response);
         }
         [HttpGet("get-by-id")]
+        [Authorize(Roles = Roles.SuperAdmin)]
         public async Task<IActionResult> GetById([FromQuery] Guid id)
         {
             // Get by id
@@ -91,6 +99,7 @@ namespace Service.Disease.Controllers
             return Ok(response);
         }
         [HttpPut("edit-status-feedback")]
+        [Authorize(Roles = Roles.SuperAdmin)]
         public async Task<IActionResult> UpdateStatusFeedBack([FromBody] DiseaseDiagnosesUpdateRequest request)
         {
             DiseaseDiagnosesUpdateResponse response = new DiseaseDiagnosesUpdateResponse();
@@ -161,6 +170,7 @@ namespace Service.Disease.Controllers
             return Ok(response);
         }
         [HttpGet("download")]
+        [Authorize(Roles = Roles.SuperAdmin)]
         public async Task<IActionResult> DownloadExcelFile([FromQuery] DiseaseDiagnosesRequest request)
         {
             DiseaseDiagnosesExportResponse response = new DiseaseDiagnosesExportResponse();
