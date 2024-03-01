@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using EventBus.Defaults;
+using EventBus.Utils;
 using Infrastructure.Equipment.Contexts;
+using MassTransit;
 using MediatR;
 using Service.Equipment.DTOs;
 using SharedDomain.Entities.FarmComponents;
@@ -21,16 +24,19 @@ namespace Service.Equipment.Commands
         private IUnitOfWork<FarmEquipmentContext> _unit;
         private IMapper _mapper;
         private ILogger<AddEquipmentCommandHandler> _logger;
+        private IBus _bus;
 
         public AddEquipmentCommandHandler(ISQLRepository<FarmEquipmentContext, FarmEquipment> equipments,
             IMapper mapper,
             ILogger<AddEquipmentCommandHandler> logger,
-            IUnitOfWork<FarmEquipmentContext> unit)
+            IUnitOfWork<FarmEquipmentContext> unit,
+            IBus bus)
         {
             _equipments = equipments;
             _mapper = mapper;
             _logger = logger;
             _unit = unit;
+            _bus = bus;
         }
 
         public async Task<EquipmentResponse> Handle(AddEquipmentCommand request, CancellationToken cancellationToken)
@@ -47,6 +53,7 @@ namespace Service.Equipment.Commands
 
             await _unit.SaveChangesAsync(cancellationToken);
 
+            await _bus.ReplicateEquipment(item, EventState.Add);
             return _mapper.Map<EquipmentResponse>(item);
         }
     }

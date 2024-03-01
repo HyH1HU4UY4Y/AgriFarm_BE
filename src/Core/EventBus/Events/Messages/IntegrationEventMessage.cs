@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.Messages
+namespace EventBus.Events.Messages
 {
     public class IntegrationEventMessage<T>
     {
-        public IntegrationEventMessage(T @event, EventState state) { 
-            this.Data = @event;
-            this.State = state;
+        public IntegrationEventMessage(T @event, EventState state)
+        {
+            Data = @event;
+            State = state;
         }
         public Guid Id { get; private set; } = Guid.NewGuid();
         public DateTime CreatedAt { get; private set; } = DateTime.Now;

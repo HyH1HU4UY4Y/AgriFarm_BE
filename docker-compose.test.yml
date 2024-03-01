@@ -1,7 +1,9 @@
 version: "3.8"
 
 services:
+
     Nsqldb:
+        image: postgres:latest
         container_name: "Npgsql_Db"
         ports:
           - '5432:5432'
@@ -15,6 +17,7 @@ services:
         
 
     pgadmin:
+        image: dpage/pgadmin4
         container_name: pgadmin
         environment:
           - PGADMIN_DEFAULT_EMAIL=admin@system.vn
@@ -76,3 +79,18 @@ services:
         environment:
             - ASPNETCORE_ENVIRONMENT=Testing
             - ASPNETCORE_URLS=http://+:80 
+
+    service.supplycontract:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80
+
+    service.disease:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80
+
+    service.riskassessment:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80

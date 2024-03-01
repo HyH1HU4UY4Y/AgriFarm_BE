@@ -11,15 +11,8 @@ namespace Service.Seed.DTOs
         [MaxLength(8000)]
         public string? Description { get; set; }
         [Required]
-        [Range(1, 10)]
-        public int Stock { get; set; }
-        [Required]
-        [Range (0, double.PositiveInfinity)]
-        public decimal UnitPrice { get; set; }
-        [Required]
-        [JsonProperty("measureUnit")]
+        [JsonProperty("defaultUnit")]
         public string Unit { get; set; }
-        
         [MaxLength(8000)]
         public string? Notes { get; set; }
         public Guid? ReferenceId { get; set; }

@@ -1,13 +1,26 @@
-﻿namespace Service.Soil.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Service.Soil.DTOs
 {
     public class SupplyContractRequest
     {
-        public Guid? SupplierId { get; set; }
-        public string SupplierName { get; set; }
-        public string? Content { get; set; }
+        public string? Content { get; set; } = "none";
         public string? Resource { get; set; }
+        [Required]
+        [Range(0, double.PositiveInfinity)]
         public decimal Price { get; set; }
-        public bool IsLimitTime { get; set; } = false;
-        public DateTime? ExpiredIn { get; set; }
+        [Required]
+        public SupplierRequest Supplier { get; set; }
+        public DateTime? ValidFrom { get; set; } = null;
+        public DateTime? ValidTo { get; set; } = null;
+
+    }
+
+    public class SupplierRequest
+    {
+        public Guid? Id { get; set; } = Guid.Empty;
+        [Required]
+        public string Name { get; set; }
+        public string Address { get; set; }
     }
 }

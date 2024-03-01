@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Supply.Config;
 using Microsoft.EntityFrameworkCore;
 using SharedApplication.Persistence;
+using SharedApplication.Persistence.Configs;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Entities.FarmComponents.Others;
 using SharedDomain.Entities.PreHarvest;
@@ -78,17 +79,14 @@ namespace Infrastructure.Supply.Contexts
                         .Ignore(e=>e.ReferenceId)
                         .Ignore(e=>e.Reference)
                         ;
-            modelBuilder.Entity<FarmEquipment>()
-                        .Ignore(e=>e.UnitPrice)
+            modelBuilder.Entity<FarmEquipment>().ExtractEquipment()
                         ;
             modelBuilder.Entity<FarmWater>()
                         .Ignore(e=>e.Acreage)
                         .Ignore(e=>e.FromSource)
                         .Ignore(e=>e.Position)
                         ;
-            modelBuilder.Entity<FarmSoil>()
-                        .Ignore(e=>e.Acreage)
-                        .Ignore(e=>e.Position)
+            modelBuilder.Entity<FarmSoil>().ExtractSoil()
                         ;
 
         }

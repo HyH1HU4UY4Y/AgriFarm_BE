@@ -96,6 +96,34 @@ namespace Service.Fertilize.Controllers
             });
         }
 
+        [HttpPost("supply")]
+        public async Task<IActionResult> Supply(
+            [FromQuery][Required] Guid id,
+            [FromBody] SupplyRequest request,
+            [FromQuery] Guid? siteId = null
+            )
+        {
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
+
+            if (identity == SystemIdentity.Supervisor && siteId == null)
+            {
+                return NotFound();
+            }
+
+            var rs = await _mediator.Send(new SupplyFertilizeCommand
+            {
+                Id = id,
+                Details = request,
+                SiteId = identity == SystemIdentity.Supervisor ? siteId.Value : sId
+            });
+
+            return StatusCode(200, new DefaultResponse<FertilizeResponse>
+            {
+                Data = rs,
+                Status = 200
+            });
+        }
+
         [HttpPut("put")]
         public async Task<IActionResult> Put([Required][FromQuery] Guid id, 
             [FromBody] FertilizeInfoRequest request)

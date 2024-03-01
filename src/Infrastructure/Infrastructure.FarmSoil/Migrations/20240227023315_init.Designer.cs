@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Soil.Migrations
 {
     [DbContext(typeof(FarmSoilContext))]
-    [Migration("20240216092418_init")]
+    [Migration("20240227023315_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -129,6 +129,9 @@ namespace Infrastructure.Soil.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(8000)
                         .HasColumnType("character varying(8000)");
+
+                    b.Property<DateTime?>("ExpiredIn")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("IsConsumable")
                         .HasColumnType("boolean");

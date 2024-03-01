@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using EventBus.Defaults;
+using EventBus.Utils;
 using Infrastructure.Pesticide.Contexts;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Service.Pesticide.DTOs;
@@ -21,16 +24,19 @@ namespace Service.Pesticide.Commands.FarmPesticides
         private IUnitOfWork<FarmPesticideContext> _unit;
         private IMapper _mapper;
         private ILogger<UpdateFarmPesticideCommandHandler> _logger;
+        private IBus _bus;
 
         public UpdateFarmPesticideCommandHandler(ISQLRepository<FarmPesticideContext, FarmPesticide> pesticides,
             IMapper mapper,
             ILogger<UpdateFarmPesticideCommandHandler> logger,
-            IUnitOfWork<FarmPesticideContext> unit)
+            IUnitOfWork<FarmPesticideContext> unit,
+            IBus bus)
         {
             _pesticides = pesticides;
             _mapper = mapper;
             _logger = logger;
             _unit = unit;
+            _bus = bus;
         }
 
         public async Task<PesticideResponse> Handle(UpdateFarmPesticideCommand request, CancellationToken cancellationToken)
@@ -48,6 +54,8 @@ namespace Service.Pesticide.Commands.FarmPesticides
             await _pesticides.UpdateAsync(item);
 
             await _unit.SaveChangesAsync(cancellationToken);
+
+            await _bus.ReplicatePesticide(item, EventState.Modify);
 
             return _mapper.Map<PesticideResponse>(item);
         }

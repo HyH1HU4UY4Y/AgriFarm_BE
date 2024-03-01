@@ -2,18 +2,14 @@
 using EventBus;
 using EventBus.Defaults;
 using EventBus.Events;
-using EventBus.Messages;
+using EventBus.Events.Messages;
+using EventBus.Utils;
 using Infrastructure.Soil.Contexts;
 using MassTransit;
 using MediatR;
-using Newtonsoft.Json;
 using Service.Soil.DTOs;
-using Service.Soil.Queries;
-using SharedDomain.Defaults;
 using SharedDomain.Entities.FarmComponents;
-using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
-using System.ComponentModel.DataAnnotations;
 
 namespace Service.Soil.Command
 {
@@ -21,7 +17,6 @@ namespace Service.Soil.Command
     {
         public Guid SiteId { get; set; }
         public LandRequest Land { get; set; }
-        public SupplyContractRequest? SupplyContract { get; set; }
         public List<PositionPoint> Positions { get; set; } = new();
     }
 
@@ -64,30 +59,7 @@ namespace Service.Soil.Command
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-
-            if(request.SupplyContract!=null)
-            {
-                await _bus.SendToEndpoint(new IntegrationEventMessage<NewSupplyContractEvent>(
-                    new()
-                    {
-                        ComponentId = item.Id,
-                        ComponentName = item.Name,
-                        IsConsumable = item.IsConsumable,
-                        IsLimitTime = request.SupplyContract.IsLimitTime,
-                        ExpiredIn = request.SupplyContract.ExpiredIn,
-                        Quantity = item.Acreage,
-                        SiteId = item.SiteId,
-                        SupplierId = request.SupplyContract.SupplierId,
-                        SupplierName = request.SupplyContract.SupplierName,
-                        Unit = request.Land.Unit,
-                        UnitPrice = request.SupplyContract.Price,
-                        Content = request.SupplyContract.Content,
-                        Resource = request.SupplyContract.Resource
-                    },
-                    EventState.Add
-                ), EventQueue.SupplyContractQueue);
-            }
-            
+            await _bus.ReplicateSoil(item, EventState.Add);            
 
             return _mapper.Map<LandResponse>(item);
         }

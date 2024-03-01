@@ -3,6 +3,7 @@ using SharedApplication.Middleware;
 using SharedApplication.Persistence;
 using SharedApplication.CORS;
 using SharedApplication.Authorize;
+using EventBus;
 
 using Infrastructure.Equipment;
 using Infrastructure.Equipment.Contexts;
@@ -20,6 +21,13 @@ builder.Services.AddSharedApplication<Program>();
 builder.Services.AddJWTAuthorization();
 builder.Services.AddGlobalErrorMiddleware();
 builder.Services.AddDefaultVersioning();
+
+builder.Services.AddDefaultEventBusExtension<Program>(
+    builder.Configuration,
+    (config, context) =>
+    {
+
+    });
 
 
 builder.Services.AddControllers()

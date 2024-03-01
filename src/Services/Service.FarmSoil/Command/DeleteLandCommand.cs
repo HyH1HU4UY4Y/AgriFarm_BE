@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using EventBus.Defaults;
+using EventBus.Utils;
 using Infrastructure.Soil.Contexts;
 using MassTransit;
 using MediatR;
@@ -47,6 +49,7 @@ namespace Service.Soil.Command
             await _lands.SoftDeleteAsync(item);
             await _unit.SaveChangesAsync(cancellationToken);
 
+            await _bus.ReplicateSoil(item, EventState.SoftDelete);
 
             return item.Id;
         }

@@ -127,6 +127,9 @@ namespace Infrastructure.Soil.Migrations
                         .HasMaxLength(8000)
                         .HasColumnType("character varying(8000)");
 
+                    b.Property<DateTime?>("ExpiredIn")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<bool>("IsConsumable")
                         .HasColumnType("boolean");
 

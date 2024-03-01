@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using EventBus.Defaults;
+using EventBus.Utils;
 using Infrastructure.Fertilize.Contexts;
+using MassTransit;
 using MediatR;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Exceptions;
@@ -18,16 +21,19 @@ namespace Service.Fertilize.Commands.FarmFertilizes
         private IUnitOfWork<FarmFertilizeContext> _unit;
         private IMapper _mapper;
         private ILogger<RemoveFarmFertilizeCommandHandler> _logger;
+        private IBus _bus;
 
         public RemoveFarmFertilizeCommandHandler(ISQLRepository<FarmFertilizeContext, FarmFertilize> fertilizes,
             IMapper mapper,
             ILogger<RemoveFarmFertilizeCommandHandler> logger,
-            IUnitOfWork<FarmFertilizeContext> unit)
+            IUnitOfWork<FarmFertilizeContext> unit,
+            IBus bus)
         {
             _fertilizes = fertilizes;
             _mapper = mapper;
             _logger = logger;
             _unit = unit;
+            _bus = bus;
         }
 
         public async Task<Guid> Handle(RemoveFarmFertilizeCommand request, CancellationToken cancellationToken)
@@ -47,6 +53,9 @@ namespace Service.Fertilize.Commands.FarmFertilizes
             await _fertilizes.SoftDeleteAsync(item);
 
             await _unit.SaveChangesAsync(cancellationToken);
+
+
+            await _bus.ReplicateFertilize(item, EventState.SoftDelete);
 
             return item.Id;
         }

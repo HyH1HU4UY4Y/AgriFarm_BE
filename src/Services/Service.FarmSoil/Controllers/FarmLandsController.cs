@@ -36,7 +36,7 @@ namespace Service.Soil.Controllers
             _mediator = mediator;
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpGet("measures")]
         public async Task<IActionResult> GetMeasureUnit()
         {
@@ -117,36 +117,8 @@ namespace Service.Soil.Controllers
             
         }
 
-        [HttpPost("supply")]
-        public async Task<IActionResult> Post(
-            [FromBody] FullLandRequest request,
-            [FromQuery] Guid? siteId = null
-            )
-        {
-            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
-
-            if(identity == SystemIdentity.Supervisor && siteId == null)
-            {
-                return StatusCode(404);
-            }
-
-            var rs = await _mediator.Send(new AddNewLandCommand
-            {
-                Land = request.Land,
-                SupplyContract = request.Supply,
-                Positions = request.Positions,
-                SiteId = identity == SystemIdentity.Supervisor ? siteId!.Value : sId
-            });
-
-            return StatusCode(201, new DefaultResponse<LandResponse>
-            {
-                Data = rs,
-                Status = 201
-            });
-        }
-
         [HttpPost("post")]
-        public async Task<IActionResult> QuickPost(
+        public async Task<IActionResult> Post(
             [FromBody] LandRequest request,
             [FromQuery] Guid? siteId = null
             )
@@ -171,7 +143,35 @@ namespace Service.Soil.Controllers
             });
         }
 
-        [HttpPost("add-position")]
+        [HttpPost("add-contract")]
+        public async Task<IActionResult> Supply(
+            [FromQuery][Required] Guid id,
+            [FromBody] SupplyContractRequest request,
+            [FromQuery] Guid? siteId = null
+            )
+        {
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
+
+            if (identity == SystemIdentity.Supervisor && siteId == null)
+            {
+                return StatusCode(404);
+            }
+
+            var rs = await _mediator.Send(new MakeLandContractCommand
+            {
+                Id = id,
+                Details = request,
+                SiteId = identity == SystemIdentity.Supervisor ? siteId.Value : sId
+            });
+
+            return StatusCode(200, new DefaultResponse<LandResponse>
+            {
+                Data = rs,
+                Status = 200
+            });
+        }
+
+        [HttpPost("set-position")]
         public async Task<IActionResult> AddPosition(
             [FromQuery][Required] Guid landId,
             [FromBody] List<PositionPoint> request,
@@ -200,8 +200,6 @@ namespace Service.Soil.Controllers
         }
 
         
-
-
         [HttpPut("put")]
         public async Task<IActionResult> Put(
             [FromQuery][Required]Guid id, 

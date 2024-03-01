@@ -1,5 +1,5 @@
 ﻿using EventBus.Events;
-using EventBus.Messages;
+using EventBus.Events.Messages;
 using Infrastructure.Identity.Contexts;
 using MassTransit;
 using MediatR;

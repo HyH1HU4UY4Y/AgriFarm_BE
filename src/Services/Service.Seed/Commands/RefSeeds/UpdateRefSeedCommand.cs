@@ -18,15 +18,15 @@ namespace Service.Seed.Commands.RefSeeds
 
     public class UpdateRefSeedCommandHandler : IRequestHandler<UpdateRefSeedCommand, RefSeedResponse>
     {
-        private ISQLRepository<SeedlingContext, ReferencedSeed> _seeds;
-        private IUnitOfWork<SeedlingContext> _unit;
+        private ISQLRepository<FarmSeedContext, ReferencedSeed> _seeds;
+        private IUnitOfWork<FarmSeedContext> _unit;
         private IMapper _mapper;
         private ILogger<UpdateRefSeedCommandHandler> _logger;
 
-        public UpdateRefSeedCommandHandler(ISQLRepository<SeedlingContext, ReferencedSeed> seeds,
+        public UpdateRefSeedCommandHandler(ISQLRepository<FarmSeedContext, ReferencedSeed> seeds,
             IMapper mapper,
             ILogger<UpdateRefSeedCommandHandler> logger,
-            IUnitOfWork<SeedlingContext> unit)
+            IUnitOfWork<FarmSeedContext> unit)
         {
             _seeds = seeds;
             _mapper = mapper;

@@ -4,6 +4,7 @@ using MediatR;
 using Service.Supply.Commands;
 using Service.Supply.DTOs;
 using SharedApplication.Pagination;
+using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Entities.PreHarvest;
 using SharedDomain.Repositories.Base;
 
@@ -12,6 +13,7 @@ namespace Service.Supply.Queries.Suppliers
     public class GetAllSupplierQuery : IRequest<PagedList<SupplierResponse>>
     {
         public PaginationRequest Pagination { get; set; } = new();
+        public Guid SiteId { get; set; }
     }
 
     public class GetAllSupplierQueryHandler : IRequestHandler<GetAllSupplierQuery, PagedList<SupplierResponse>>
@@ -35,7 +37,7 @@ namespace Service.Supply.Queries.Suppliers
 
         public async Task<PagedList<SupplierResponse>> Handle(GetAllSupplierQuery request, CancellationToken cancellationToken)
         {
-            var rs = await _suppliers.GetMany();
+            var rs = await _suppliers.GetMany(e=>e.CreatedByFarmId == request.SiteId);
 
             return PagedList<SupplierResponse>.ToPagedList(
                     _mapper.Map<List<SupplierResponse>>(rs),

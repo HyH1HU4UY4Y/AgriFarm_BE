@@ -64,8 +64,9 @@ namespace Service.Identity.Commands.Auth
                     FullName = $"{user.Info.FirstName} {user.Info.LastName}",
                     SiteId =  user.Roles.Any(e=>e == Roles.SuperAdmin) ? "root": user.Info.SiteId.ToString()!,
                     SiteCode = user.Roles.Any(e=>e == Roles.SuperAdmin) ? "root": site.SiteCode,
+                    SiteName = user.Roles.Any(e => e == Roles.SuperAdmin) ? "root" : site.Name,
                     Role = user.Roles.Any(r => r == Roles.SuperAdmin)?Roles.SuperAdmin: user.Roles.First()
-
+                    
                 }
             );
             //throw new NotImplementedException();

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Supply.Migrations
 {
     [DbContext(typeof(SupplyContext))]
-    [Migration("20240205061144_init")]
+    [Migration("20240227042810_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -33,9 +33,6 @@ namespace Infrastructure.Supply.Migrations
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("IsConsumable")
-                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -131,13 +128,7 @@ namespace Infrastructure.Supply.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime?>("ExpiredIn")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsLimitTime")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("LastModify")
@@ -163,6 +154,12 @@ namespace Infrastructure.Supply.Migrations
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("numeric");
+
+                    b.Property<DateTime?>("ValidFrom")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("ValidTo")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 

@@ -2,7 +2,7 @@
   "Routes": [
     {
       "UpstreamPathTemplate": "/api/{version}/risk/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
       "DownstreamScheme": "http",
       "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
@@ -15,7 +15,7 @@
     },
     {
       "UpstreamPathTemplate": "/api/{version}/user/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
       "DownstreamScheme": "http",
       "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
@@ -28,7 +28,7 @@
     },
     {
       "UpstreamPathTemplate": "/api/{version}/register/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
       "DownstreamScheme": "http",
       "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
@@ -41,7 +41,7 @@
     },
     {
       "UpstreamPathTemplate": "/api/{version}/farm/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
       "DownstreamScheme": "http",
       "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
@@ -54,7 +54,7 @@
     },
     {
       "UpstreamPathTemplate": "/api/{version}/soil/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
       "DownstreamScheme": "http",
       "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
@@ -67,7 +67,7 @@
     },
     {
       "UpstreamPathTemplate": "/api/{version}/seed/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
       "DownstreamScheme": "http",
       "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
@@ -80,7 +80,7 @@
     },
     {
       "UpstreamPathTemplate": "/api/{version}/ppp/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
       "DownstreamScheme": "http",
       "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
@@ -93,7 +93,7 @@
     },
     {
       "UpstreamPathTemplate": "/api/{version}/fert/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
       "DownstreamScheme": "http",
       "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
@@ -106,7 +106,7 @@
     },
     {
       "UpstreamPathTemplate": "/api/{version}/equip/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
       "DownstreamScheme": "http",
       "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
@@ -119,7 +119,7 @@
     },
     {
       "UpstreamPathTemplate": "/api/{version}/water/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
       "DownstreamScheme": "http",
       "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
@@ -132,13 +132,42 @@
     },
     {
       "UpstreamPathTemplate": "/api/{version}/cult/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Detete" ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
       "DownstreamScheme": "http",
       "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
       "DownstreamHostAndPorts": [
         {
           "Host": "10.38.0.16",
+          "Port": 80
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/{version}/sup/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.38.0.17",
+          "Port": 80
+        }
+      ]
+    },
+
+    //Service.Disease
+
+    {
+      "UpstreamPathTemplate": "/api/v1/disease/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/api/v1/disease/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.38.0.18",
           "Port": 80
         }
       ]
