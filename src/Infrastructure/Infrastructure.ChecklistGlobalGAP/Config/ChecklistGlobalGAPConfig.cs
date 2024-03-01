@@ -13,7 +13,6 @@ namespace Infrastructure.ChecklistGlobalGAP.Config
     {
         public void Configure(EntityTypeBuilder<ChecklistMaster> builder)
         {
-            //builder.Property(e=>e.Id).HasColumnName("plant_disease_id");
         }
     }
 }
