@@ -142,8 +142,23 @@
           "Port": 7087
         }
       ]
+    },
+
+    //Service.Disease
+
+    {
+      "UpstreamPathTemplate": "/api/v1/disease/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/v1/disease/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7201
+        }
+      ]
     }
-    
 
   ]
 

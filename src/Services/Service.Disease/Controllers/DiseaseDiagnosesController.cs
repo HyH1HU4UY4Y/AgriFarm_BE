@@ -1,15 +1,19 @@
-﻿using ClosedXML.Excel;
+﻿using Asp.Versioning;
+using ClosedXML.Excel;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Disease.Commands;
 using Service.Disease.DTOs;
 using Service.Disease.Queries;
+using SharedDomain.Defaults;
 using System.Data;
 using PaginationDefault = SharedDomain.Defaults.Pagination;
 
 namespace Service.Disease.Controllers
 {
-    [Route("api/disease/disease-diagnoses/")]
+    [Route("api/v{version:apiVersion}/disease/disease-diagnoses/")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class DiseaseDiagnosesController : ControllerBase
     {
@@ -20,6 +24,7 @@ namespace Service.Disease.Controllers
             _mediator = mediator;
         }
         [HttpGet("get")]
+        [Authorize(Roles = Roles.SuperAdmin)]
         public async Task<IActionResult> Get([FromQuery] DiseaseDiagnosesRequest request)
         {
             DiseaseDiagnosesResponse response = new DiseaseDiagnosesResponse();
@@ -51,7 +56,7 @@ namespace Service.Disease.Controllers
                     getAllDataFlag = false
                 });
                 response.data = rsSearch;
-                response.Pagination = new Pagination
+                response.Pagination = new DTOs.Pagination
                 {
                     totalRecord = rsAll.Count(),
                     perPage = request.perPage,
@@ -69,6 +74,7 @@ namespace Service.Disease.Controllers
             return Ok(response);
         }
         [HttpGet("get-by-id")]
+        [Authorize(Roles = Roles.SuperAdmin)]
         public async Task<IActionResult> GetById([FromQuery] Guid id)
         {
             // Get by id
@@ -123,6 +129,7 @@ namespace Service.Disease.Controllers
             return Ok(response);
         }
         [HttpPost("add")]
+        [Authorize]
         public async Task<IActionResult> InsertStatusFeedBack([FromBody] DiseaseDiagnosesInsertRequest request)
         {
             DiseaseDiagnosesInsertResponse response = new DiseaseDiagnosesInsertResponse();
@@ -161,6 +168,7 @@ namespace Service.Disease.Controllers
             return Ok(response);
         }
         [HttpGet("download")]
+        [Authorize(Roles = Roles.SuperAdmin)]
         public async Task<IActionResult> DownloadExcelFile([FromQuery] DiseaseDiagnosesRequest request)
         {
             DiseaseDiagnosesExportResponse response = new DiseaseDiagnosesExportResponse();
@@ -215,6 +223,7 @@ namespace Service.Disease.Controllers
         }
 
         [HttpPut("update-feedback-content")]
+        [Authorize]
         public async Task<IActionResult> UpdateFeedBack([FromBody] FeedbackUpdateRequest request)
         {
             FeedbackUpdateResponse response = new FeedbackUpdateResponse();
