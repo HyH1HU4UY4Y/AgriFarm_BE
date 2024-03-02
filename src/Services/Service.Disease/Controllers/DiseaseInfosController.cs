@@ -14,10 +14,10 @@ using PaginationDefault = SharedDomain.Defaults.Pagination;
 
 namespace Service.Disease.Controllers
 {
-    [Route("api/v{version:apiVersion}/disease/disease-info/")]
-    [Authorize(Roles = Roles.SuperAdmin)]
-    [ApiVersion("1.0")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/disease/disease-info/")]
+    [ApiVersion("1.0")]
+    [Authorize(Roles = Roles.SuperAdmin)]
     public class DiseaseInfosController : ControllerBase
     {
         private IMediator _mediator;

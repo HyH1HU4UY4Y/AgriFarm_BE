@@ -1,20 +1,22 @@
-﻿using Asp.Versioning;
-using ClosedXML.Excel;
+﻿using ClosedXML.Excel;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Disease.Commands;
 using Service.Disease.DTOs;
 using Service.Disease.Queries;
-using SharedDomain.Defaults;
 using System.Data;
 using PaginationDefault = SharedDomain.Defaults.Pagination;
+using Pagination = Service.Disease.DTOs.Pagination;
+using Microsoft.AspNetCore.Authorization;
+using SharedDomain.Defaults;
+using Asp.Versioning;
 
 namespace Service.Disease.Controllers
 {
+    [ApiController]
     [Route("api/v{version:apiVersion}/disease/disease-diagnoses/")]
     [ApiVersion("1.0")]
-    [ApiController]
+    [Authorize]
     public class DiseaseDiagnosesController : ControllerBase
     {
         private IMediator _mediator;
@@ -56,7 +58,7 @@ namespace Service.Disease.Controllers
                     getAllDataFlag = false
                 });
                 response.data = rsSearch;
-                response.Pagination = new DTOs.Pagination
+                response.Pagination = new Pagination
                 {
                     totalRecord = rsAll.Count(),
                     perPage = request.perPage,
@@ -97,6 +99,7 @@ namespace Service.Disease.Controllers
             return Ok(response);
         }
         [HttpPut("edit-status-feedback")]
+        [Authorize(Roles = Roles.SuperAdmin)]
         public async Task<IActionResult> UpdateStatusFeedBack([FromBody] DiseaseDiagnosesUpdateRequest request)
         {
             DiseaseDiagnosesUpdateResponse response = new DiseaseDiagnosesUpdateResponse();
@@ -129,7 +132,6 @@ namespace Service.Disease.Controllers
             return Ok(response);
         }
         [HttpPost("add")]
-        [Authorize]
         public async Task<IActionResult> InsertStatusFeedBack([FromBody] DiseaseDiagnosesInsertRequest request)
         {
             DiseaseDiagnosesInsertResponse response = new DiseaseDiagnosesInsertResponse();
@@ -223,7 +225,6 @@ namespace Service.Disease.Controllers
         }
 
         [HttpPut("update-feedback-content")]
-        [Authorize]
         public async Task<IActionResult> UpdateFeedBack([FromBody] FeedbackUpdateRequest request)
         {
             FeedbackUpdateResponse response = new FeedbackUpdateResponse();
