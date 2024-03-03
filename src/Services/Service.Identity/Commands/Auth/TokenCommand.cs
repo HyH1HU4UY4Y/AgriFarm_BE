@@ -59,6 +59,7 @@ namespace Service.Identity.Commands.Auth
 
                 token,
                 new() {
+                    Id = user.Info.Id,
                     UserName = user.Info.UserName,
                     Email = user.Info.Email,
                     FullName = $"{user.Info.FirstName} {user.Info.LastName}",
