@@ -14,17 +14,17 @@ namespace Service.Identity.Queries
         public Guid Id { get; set; }
     }
 
-    public class GetSupplierByIdQueryHandler : IRequestHandler<GetCertificateByIdQuery, CertificateDetailResponse>
+    public class GetCertificateByIdQueryHandler : IRequestHandler<GetCertificateByIdQuery, CertificateDetailResponse>
     {
 
         private ISQLRepository<IdentityContext, Certificate> _certificates;
         private IUnitOfWork<IdentityContext> _unit;
-        private ILogger<GetSupplierByIdQueryHandler> _logger;
+        private ILogger<GetCertificateByIdQueryHandler> _logger;
         private IMapper _mapper;
 
-        public GetSupplierByIdQueryHandler(ISQLRepository<IdentityContext, Certificate> certificates,
+        public GetCertificateByIdQueryHandler(ISQLRepository<IdentityContext, Certificate> certificates,
             IUnitOfWork<IdentityContext> unit,
-            ILogger<GetSupplierByIdQueryHandler> logger,
+            ILogger<GetCertificateByIdQueryHandler> logger,
             IMapper mapper)
         {
             _certificates = certificates;
