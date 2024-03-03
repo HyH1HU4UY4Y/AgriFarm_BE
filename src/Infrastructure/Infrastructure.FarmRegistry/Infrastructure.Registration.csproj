@@ -11,8 +11,4 @@
     <ProjectReference Include="..\..\Core\Domain\SharedDomain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>

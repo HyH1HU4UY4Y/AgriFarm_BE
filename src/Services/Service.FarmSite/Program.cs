@@ -28,7 +28,7 @@ builder.Services.AddDefaultEventBusExtension<Program>(
     builder.Configuration,
     (config, context) =>
 {
-    //config.AddReceiveEndpoint<FarmRegistedSuccessConsumer>(EventQueue.RegistFarmQueue, context);
+    config.AddReceiveEndpoint<FarmRegistedSuccessConsumer>(EventQueue.RegistFarmQueue, context);
 });
 
 

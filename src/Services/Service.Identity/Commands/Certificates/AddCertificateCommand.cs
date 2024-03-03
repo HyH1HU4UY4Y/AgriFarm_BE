@@ -8,13 +8,13 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Identity.Commands.Certificates
 {
-    public class AddCertificateCommand: IRequest<CertificateResponse>
+    public class AddCertificateCommand: IRequest<CertificateDetailResponse>
     {
         public Guid UserId { get; set; }
         public CertificateRequest Certificate { get; set; }
     }
 
-    public class AddCertificateCommandHandler : IRequestHandler<AddCertificateCommand, CertificateResponse>
+    public class AddCertificateCommandHandler : IRequestHandler<AddCertificateCommand, CertificateDetailResponse>
     {
         private ISQLRepository<IdentityContext, Certificate> _certs;
         private IUnitOfWork<IdentityContext> _unitOfWork;
@@ -32,14 +32,17 @@ namespace Service.Identity.Commands.Certificates
             _logger = logger;
         }
 
-        public async Task<CertificateResponse> Handle(AddCertificateCommand request, CancellationToken cancellationToken)
+        public async Task<CertificateDetailResponse> Handle(AddCertificateCommand request, CancellationToken cancellationToken)
         {
             var cer = _mapper.Map<Certificate>(request.Certificate);
-            var rs = await _certs.AddAsync(cer);
+            cer.MemberId = request.UserId;
+            
+            
+            await _certs.AddAsync(cer);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return _mapper.Map<CertificateResponse>(rs);
+            return _mapper.Map<CertificateDetailResponse>(cer);
         }
     }
 
