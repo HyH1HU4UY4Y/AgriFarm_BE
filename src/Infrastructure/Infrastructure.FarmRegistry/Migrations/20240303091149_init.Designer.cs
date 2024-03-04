@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Registration.Migrations
 {
     [DbContext(typeof(RegistrationContext))]
-    [Migration("20240120080426_init")]
+    [Migration("20240303091149_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -25,6 +25,36 @@ namespace Infrastructure.Registration.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Site", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("SiteCode")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SiteInfos");
+                });
+
             modelBuilder.Entity("SharedDomain.Entities.Subscribe.FarmRegistration", b =>
                 {
                     b.Property<Guid>("Id")
@@ -33,7 +63,7 @@ namespace Infrastructure.Registration.Migrations
 
                     b.Property<string>("Address")
                         .HasMaxLength(5000)
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("character varying(5000)");
 
                     b.Property<decimal>("Cost")
                         .HasColumnType("numeric");
@@ -46,11 +76,13 @@ namespace Infrastructure.Registration.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<int?>("IsApprove")
                         .HasColumnType("integer");
@@ -63,22 +95,26 @@ namespace Infrastructure.Registration.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("PaymentDetail")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("SiteCode")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("SiteName")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<Guid>("SolutionId")
                         .HasColumnType("uuid");
@@ -92,15 +128,15 @@ namespace Infrastructure.Registration.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("02f16f00-4d51-45c6-adea-f53638bad2ba"),
+                            Id = new Guid("28e01676-47ff-4ae4-b6da-670d42cc3c73"),
                             Address = "USA",
                             Cost = 10m,
-                            CreatedDate = new DateTime(2024, 1, 20, 15, 4, 25, 886, DateTimeKind.Local).AddTicks(2719),
+                            CreatedDate = new DateTime(2024, 3, 3, 16, 11, 49, 282, DateTimeKind.Local).AddTicks(684),
                             Email = "owner01@test.com",
                             FirstName = "User",
                             IsApprove = 0,
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 20, 15, 4, 25, 886, DateTimeKind.Local).AddTicks(2727),
+                            LastModify = new DateTime(2024, 3, 3, 16, 11, 49, 282, DateTimeKind.Local).AddTicks(698),
                             LastName = "Owner 01",
                             PaymentDetail = "test detail",
                             Phone = "0132302225",
@@ -124,7 +160,7 @@ namespace Infrastructure.Registration.Migrations
 
                     b.Property<string>("Description")
                         .HasMaxLength(5000)
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("character varying(5000)");
 
                     b.Property<long?>("DurationInMonth")
                         .HasColumnType("bigint");
@@ -136,7 +172,8 @@ namespace Infrastructure.Registration.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
@@ -148,37 +185,77 @@ namespace Infrastructure.Registration.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("45aa6629-5e67-4c70-aa9c-eed4e82e7da6"),
-                            CreatedDate = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1405),
+                            Id = new Guid("e43d372f-1ad5-46bd-b950-a95419211c0e"),
+                            CreatedDate = new DateTime(2024, 3, 3, 16, 11, 49, 283, DateTimeKind.Local).AddTicks(5163),
                             Description = "This is cheapest solution",
                             DurationInMonth = 6L,
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1410),
+                            LastModify = new DateTime(2024, 3, 3, 16, 11, 49, 283, DateTimeKind.Local).AddTicks(5169),
                             Name = "Solution 1",
                             Price = 10m
                         },
                         new
                         {
-                            Id = new Guid("af09cd31-97fd-466b-bb4d-7666d953724a"),
-                            CreatedDate = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1430),
+                            Id = new Guid("a9f2a93d-987a-446c-b5c4-ae3dcb16cd29"),
+                            CreatedDate = new DateTime(2024, 3, 3, 16, 11, 49, 283, DateTimeKind.Local).AddTicks(5185),
                             Description = "This is medium solution",
                             DurationInMonth = 12L,
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1430),
+                            LastModify = new DateTime(2024, 3, 3, 16, 11, 49, 283, DateTimeKind.Local).AddTicks(5187),
                             Name = "Solution 2",
                             Price = 100m
                         },
                         new
                         {
-                            Id = new Guid("28eb1cab-70d3-4282-917d-feafb145a5e9"),
-                            CreatedDate = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1432),
+                            Id = new Guid("b24b90ea-4d1e-434a-a22d-9f8df08cfcd5"),
+                            CreatedDate = new DateTime(2024, 3, 3, 16, 11, 49, 283, DateTimeKind.Local).AddTicks(5189),
                             Description = "This is vip solution",
                             DurationInMonth = 24L,
                             IsDeleted = false,
-                            LastModify = new DateTime(2024, 1, 20, 15, 4, 25, 887, DateTimeKind.Local).AddTicks(1433),
+                            LastModify = new DateTime(2024, 3, 3, 16, 11, 49, 283, DateTimeKind.Local).AddTicks(5190),
                             Name = "Solution 3",
                             Price = 1000m
                         });
+                });
+
+            modelBuilder.Entity("SharedDomain.Entities.Users.MinimalUserInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AvatarImg")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("FullName")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastModify")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid?>("SiteId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SiteId");
+
+                    b.ToTable("UserInfos");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.Subscribe.FarmRegistration", b =>
@@ -189,6 +266,15 @@ namespace Infrastructure.Registration.Migrations
                         .IsRequired();
 
                     b.Navigation("Solution");
+                });
+
+            modelBuilder.Entity("SharedDomain.Entities.Users.MinimalUserInfo", b =>
+                {
+                    b.HasOne("SharedDomain.Entities.FarmComponents.Site", "Site")
+                        .WithMany()
+                        .HasForeignKey("SiteId");
+
+                    b.Navigation("Site");
                 });
 #pragma warning restore 612, 618
         }
