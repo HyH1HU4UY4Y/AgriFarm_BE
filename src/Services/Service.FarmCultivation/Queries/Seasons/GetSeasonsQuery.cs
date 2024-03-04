@@ -2,6 +2,7 @@
 using Infrastructure.FarmCultivation.Contexts;
 using MediatR;
 using Service.FarmCultivation.DTOs;
+using Service.FarmCultivation.DTOs.Seasons;
 using SharedApplication.Pagination;
 using SharedDomain.Entities.Schedules;
 using SharedDomain.Repositories.Base;
@@ -11,6 +12,7 @@ namespace Service.FarmCultivation.Queries.Seasons
     public class GetSeasonsQuery : IRequest<PagedList<SeasonDetailResponse>>
     {
         public PaginationRequest Pagination { get; set; }
+        public Guid SiteId { get; set; }
     }
 
     public class GetSeasonsQueryHandler : IRequestHandler<GetSeasonsQuery, PagedList<SeasonDetailResponse>>

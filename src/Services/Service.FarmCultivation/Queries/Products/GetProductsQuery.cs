@@ -6,28 +6,30 @@ using Service.FarmCultivation.DTOs.Products;
 using SharedApplication.Pagination;
 using SharedDomain.Entities.Schedules;
 using SharedDomain.Entities.Schedules.Cultivations;
+using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
 
 namespace Service.FarmCultivation.Queries.Products
 {
-    public class GetHarvestProductsQuery : IRequest<PagedList<HarvestProductResponse>>
+    public class GetProductsQuery : IRequest<PagedList<ProductResponse>>
     {
         public Guid SeasonId { get; set; }
+        public Guid SiteId { get; set; }
         public PaginationRequest Pagination { get; set; } = new();
     }
 
-    public class GetHarvestProductsQueryHandler : IRequestHandler<GetHarvestProductsQuery, PagedList<HarvestProductResponse>>
+    public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, PagedList<ProductResponse>>
     {
         private ISQLRepository<CultivationContext, HarvestProduct> _products;
         private ISQLRepository<CultivationContext, CultivationSeason> _seasons;
         private IMapper _mapper;
         private IUnitOfWork<CultivationContext> _unit;
-        private ILogger<GetHarvestProductsQueryHandler> _logger;
+        private ILogger<GetProductsQueryHandler> _logger;
 
-        public GetHarvestProductsQueryHandler(ISQLRepository<CultivationContext, HarvestProduct> products,
+        public GetProductsQueryHandler(ISQLRepository<CultivationContext, HarvestProduct> products,
             IMapper mapper,
             IUnitOfWork<CultivationContext> unit,
-            ILogger<GetHarvestProductsQueryHandler> logger,
+            ILogger<GetProductsQueryHandler> logger,
             ISQLRepository<CultivationContext, CultivationSeason> seasons)
         {
             _products = products;
@@ -37,18 +39,23 @@ namespace Service.FarmCultivation.Queries.Products
             _seasons = seasons;
         }
 
-        public async Task<PagedList<HarvestProductResponse>> Handle(GetHarvestProductsQuery request, CancellationToken cancellationToken)
+        public async Task<PagedList<ProductResponse>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
         {
 
+            var season = await _seasons.GetOne(e => e.Id == request.SeasonId && e.SiteId == request.SiteId);
+            if(season == null)
+            {
+                throw new NotFoundException();
+            }
 
             var items = await _products.GetMany(e => e.SeasonId == request.SeasonId,
-                                                //&& !e.Season.IsDeleted,
                                                 ls => ls.Include(x => x.Season)
-                                                    .Include(x => x.Land));
+                                                    .Include(x => x.Land)
+                                                    .Include(x=>x.Seed));
 
 
-            return PagedList<HarvestProductResponse>.ToPagedList(
-                    _mapper.Map<List<HarvestProductResponse>>(items),
+            return PagedList<ProductResponse>.ToPagedList(
+                    _mapper.Map<List<ProductResponse>>(items),
                     request.Pagination.PageNumber,
                     request.Pagination.PageSize
                 );
