@@ -10,6 +10,7 @@
     <ProjectReference Include="..\..\Core\Common\SharedApplication.csproj" />
     <ProjectReference Include="..\..\Core\Domain\SharedDomain.csproj" />
     <ProjectReference Include="..\..\Core\EventBus\EventBus.csproj" />
+    <ProjectReference Include="..\Infrastructure.Common.Replication\Infrastructure.Common.Replication.csproj" />
   </ItemGroup>
 
 </Project>

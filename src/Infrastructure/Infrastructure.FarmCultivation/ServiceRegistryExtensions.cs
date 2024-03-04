@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using SharedDomain.Defaults;
 using SharedDomain.Entities.Schedules.Cultivations;
 using SharedApplication.Times;
+using Infrastructure.Common.Replication;
 
 namespace Infrastructure.FarmCultivation
 {
@@ -27,11 +28,22 @@ namespace Infrastructure.FarmCultivation
                     //.AddSQLRepo<CultivationContext, Activity>()
                     //.AddSQLRepo<CultivationContext, AdditionOfActivity>()
                     //.AddSQLRepo<CultivationContext, BaseComponent>()
+                    .AddSQLRepo<CultivationContext, BaseComponent>()
                     .AddSQLRepo<CultivationContext, FarmSoil>()
                     .AddSQLRepo<CultivationContext, FarmSeed>()
                     ;
 
+            services.AddMediatrHandlersExplicitly();
 
+            return services;
+        }
+
+        public static IServiceCollection AddMediatrHandlersExplicitly(this IServiceCollection services)
+        {
+            services
+                .AddComponentReplicateCommand<FarmSoil, CultivationContext>()
+                .AddComponentReplicateCommand<FarmSeed, CultivationContext>()
+                ;
 
             return services;
         }
@@ -42,26 +54,8 @@ namespace Infrastructure.FarmCultivation
             var db = scope.ServiceProvider.GetRequiredService<CultivationContext>();
 
             db.Database.EnsureCreated();
-            if (!db.Sites.Any(e => e.Id.ToString() == TempData.FarmId))
+            if (!db.Seasons.Any())
             {
-
-                db.Sites.Add(new()
-                {
-                    Id = new Guid(TempData.FarmId),
-                    Name = "site01",
-                    IsActive = true,
-                    SiteCode = "site021.abc",
-
-                });
-
-                db.Sites.Add(new()
-                {
-                    Id = new Guid(TempData.FarmId2),
-                    Name = "site02",
-                    IsActive = true,
-                    SiteCode = "site032.xyz",
-
-                });
 
                 var lands = new FarmSoil[]
                 {

@@ -16,7 +16,7 @@ namespace Infrastructure.FarmCultivation.Contexts
         }
 
 
-        public DbSet<Site> Sites { get; set; }
+        //public DbSet<Site> Sites { get; set; }
         public DbSet<CultivationSeason> Seasons { get; set; }
         //public DbSet<Activity> Activities { get; set; }
         public DbSet<HarvestProduct> Products { get; set; }
@@ -36,19 +36,21 @@ namespace Infrastructure.FarmCultivation.Contexts
             base.OnModelCreating(modelBuilder);
             //modelBuilder.Entity<AdditionOfActivity>().UseTpcMappingStrategy();
 
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SeedConfig).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(LandConfig).Assembly);
+
             modelBuilder.Entity<BaseComponent>()
-                .ExtractComponent()
-                .UseTpcMappingStrategy();
+                .UseTpcMappingStrategy()
+                .ExtractComponent();
+            modelBuilder.Ignore<Site>();
             modelBuilder.Ignore<AdditionOfActivity>();
             modelBuilder.Ignore<ComponentDocument>();
             modelBuilder.Ignore<Activity>();
-            modelBuilder.Ignore<BaseComponent>();
+            //modelBuilder.Ignore<BaseComponent>();
             modelBuilder.Ignore<ComponentProperty>();
             modelBuilder.Ignore<ComponentState>();
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(LandConfig).Assembly);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SeedConfig).Assembly);
+            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);
 
 
         }

@@ -14,7 +14,8 @@ namespace Infrastructure.FarmCultivation.Config
     {
         public void Configure(EntityTypeBuilder<FarmSoil> builder)
         {
-            builder.ExtractSoil();
+            builder.ExtractSoil()
+                ;
             builder.ToTable("Locations");
 
 

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.FarmCultivation.Migrations
 {
     [DbContext(typeof(CultivationContext))]
-    [Migration("20240221030837_init")]
+    [Migration("20240304171401_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -25,118 +25,16 @@ namespace Infrastructure.FarmCultivation.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmSeed", b =>
+            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.BaseComponent", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(8000)
-                        .HasColumnType("character varying(8000)");
 
                     b.Property<bool>("IsConsumable")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Notes")
-                        .HasMaxLength(8000)
-                        .HasColumnType("character varying(8000)");
-
-                    b.Property<string>("Resource")
-                        .HasMaxLength(2147483647)
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("SiteId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Unit")
-                        .HasColumnType("text")
-                        .HasColumnName("MeasureUnit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SiteId");
-
-                    b.ToTable("SeedInfos", (string)null);
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmSoil", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(8000)
-                        .HasColumnType("character varying(8000)");
-
-                    b.Property<bool>("IsConsumable")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Notes")
-                        .HasMaxLength(8000)
-                        .HasColumnType("character varying(8000)");
-
-                    b.Property<string>("Resource")
-                        .HasMaxLength(2147483647)
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("SiteId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Unit")
-                        .HasColumnType("text")
-                        .HasColumnName("MeasureUnit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SiteId");
-
-                    b.ToTable("Locations", (string)null);
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Site", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsDeleted")
@@ -147,14 +45,14 @@ namespace Infrastructure.FarmCultivation.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("character varying(300)");
 
-                    b.Property<string>("SiteCode")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("character varying(300)");
+                    b.Property<Guid>("SiteId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sites");
+                    b.ToTable("BaseComponent");
+
+                    b.UseTpcMappingStrategy();
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.Schedules.CultivationSeason", b =>
@@ -195,8 +93,6 @@ namespace Infrastructure.FarmCultivation.Migrations
                         .HasColumnType("character varying(300)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SiteId");
 
                     b.ToTable("Seasons");
                 });
@@ -250,7 +146,6 @@ namespace Infrastructure.FarmCultivation.Migrations
                         .HasColumnType("character varying(300)");
 
                     b.Property<string>("Unit")
-                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("character varying(300)");
 
@@ -262,41 +157,21 @@ namespace Infrastructure.FarmCultivation.Migrations
 
                     b.HasIndex("SeedId");
 
-                    b.HasIndex("SiteId");
-
                     b.ToTable("Products");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmSeed", b =>
                 {
-                    b.HasOne("SharedDomain.Entities.FarmComponents.Site", "Site")
-                        .WithMany()
-                        .HasForeignKey("SiteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasBaseType("SharedDomain.Entities.FarmComponents.BaseComponent");
 
-                    b.Navigation("Site");
+                    b.ToTable("SeedInfos", (string)null);
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.FarmSoil", b =>
                 {
-                    b.HasOne("SharedDomain.Entities.FarmComponents.Site", "Site")
-                        .WithMany()
-                        .HasForeignKey("SiteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasBaseType("SharedDomain.Entities.FarmComponents.BaseComponent");
 
-                    b.Navigation("Site");
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.CultivationSeason", b =>
-                {
-                    b.HasOne("SharedDomain.Entities.FarmComponents.Site", "Site")
-                        .WithMany()
-                        .HasForeignKey("SiteId")
-                        .IsRequired();
-
-                    b.Navigation("Site");
+                    b.ToTable("Locations", (string)null);
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.Schedules.Cultivations.HarvestProduct", b =>
@@ -316,18 +191,11 @@ namespace Infrastructure.FarmCultivation.Migrations
                         .HasForeignKey("SeedId")
                         .IsRequired();
 
-                    b.HasOne("SharedDomain.Entities.FarmComponents.Site", "Site")
-                        .WithMany()
-                        .HasForeignKey("SiteId")
-                        .IsRequired();
-
                     b.Navigation("Land");
 
                     b.Navigation("Season");
 
                     b.Navigation("Seed");
-
-                    b.Navigation("Site");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.Schedules.CultivationSeason", b =>

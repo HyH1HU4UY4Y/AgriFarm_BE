@@ -35,8 +35,8 @@ namespace Infrastructure.FarmRegistry
         public static IServiceCollection AddMediatrHandlersExplicitly(this IServiceCollection services)
         {
             services
-                .AddReplicateCommand<MinimalUserInfo, RegistrationContext>()
-                .AddReplicateCommand<Site, RegistrationContext>();
+                .AddEntityReplicateCommand<MinimalUserInfo, RegistrationContext>()
+                .AddEntityReplicateCommand<Site, RegistrationContext>();
 
             return services;
         }
