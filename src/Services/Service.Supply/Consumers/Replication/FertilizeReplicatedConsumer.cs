@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using EventBus.Events.Messages;
-using Infrastructure.Supply.Commands.Base;
+using Infrastructure.Common.Replication.Commands;
 using MassTransit;
 using MediatR;
 using SharedDomain.Entities.FarmComponents;
