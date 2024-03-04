@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using EventBus.Defaults;
+using EventBus.Utils;
 using Infrastructure.Identity.Contexts;
+using MassTransit;
 using MediatR;
 using Service.Identity.DTOs;
 using SharedApplication.Authorize.Contracts;
@@ -26,16 +29,18 @@ namespace Service.Identity.Commands.Users
         private IUnitOfWork<IdentityContext> _unitOfWork;
         private IMapper _mapper;
         private ILogger<CreateMemberCommandHandler> _logger;
+        private IBus _bus;
 
         public CreateMemberCommandHandler(IIdentityService identity,
             IMapper mapper, ISQLRepository<IdentityContext, Site> sites,
-            IUnitOfWork<IdentityContext> unitOfWork, ILogger<CreateMemberCommandHandler> logger)
+            IUnitOfWork<IdentityContext> unitOfWork, ILogger<CreateMemberCommandHandler> logger, IBus bus)
         {
             _identity = identity;
             _mapper = mapper;
             _sites = sites;
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _bus = bus;
         }
 
         public async Task<UserResponse> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
@@ -56,6 +61,8 @@ namespace Service.Identity.Commands.Users
 
             var rs = _mapper.Map<UserResponse>(user);
             rs.Role = request.AccountType.ToString();
+
+            await _bus.ReplicateUser(user, EventState.Add);
 
             return rs;
         }
