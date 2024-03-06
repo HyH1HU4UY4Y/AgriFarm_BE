@@ -1,20 +1,11 @@
-﻿using Infrastructure.Payment.Utils;
-using Infrastructure.Payment.VnPay.Config;
+﻿using Infrastructure.Payment.VnPay.Config;
 using Infrastructure.Payment.VnPay.Response;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Configuration;
 using Service.Payment.Commands;
-using Service.Payment.Commands.MerchantCommands;
-using Service.Payment.DTOs.MerchantDTOs;
 using Service.Payment.DTOs.PaymentDTOs;
-using Service.Payment.Queries.MerchantQueries;
-using Service.Payment.Queries.Payment;
-using System;
 using Mapster;
-using Humanizer.Configuration;
 using Asp.Versioning;
 
 namespace Service.Payment.Controllers
@@ -61,7 +52,7 @@ namespace Service.Payment.Controllers
             }
             else
             {
-                return Redirect("http://localhost:3000/vi/error");
+                return Redirect("https://devfarm.vercel.app/en/error");
             }
         }
 
@@ -86,7 +77,7 @@ namespace Service.Payment.Controllers
                     CreatedBy = request.CreatedBy!,
                     Signature = request.Signature
 
-    });
+                });
                 if (rs == null)
                 {
                     response.statusCode = NoContent().StatusCode;
@@ -113,113 +104,6 @@ namespace Service.Payment.Controllers
             return Ok(response);
         }
 
-       /* [HttpPut("set-active")]
-        public async Task<IActionResult> SetActiveMerchant([FromBody] MerchantSetActiveRequest request)
-        {
-            MerchantSetActiveResponse response = new MerchantSetActiveResponse();
-            try
-            {
-                var rs = await _mediator.Send(new SetActiveMerchantCommand
-                {
-                    Id = request.Id,
-                    IsActive = request.IsActive
-                });
-                if (rs == null)
-                {
-                    response.statusCode = NoContent().StatusCode;
-                    response.message = new List<string>
-                    {
-                        "Invalid id!"
-                    };
-                }
-                else
-                {
-                    response.statusCode = Ok().StatusCode;
-                }
-            }
-            catch (Exception)
-            {
-                response.statusCode = NoContent().StatusCode;
-                response.message = new List<string>
-                {
-                    "Update fail!"
-                };
-            }
-            return Ok(response);
-        }
-
-        [HttpPut("edit")]
-        public async Task<IActionResult> UpdateMerchant([FromBody] MerchantUpdateRequest request)
-        {
-            MerchantUpdateResponse response = new MerchantUpdateResponse();
-            try
-            {
-                var rs = await _mediator.Send(new UpdateMerchantCommand
-                {
-                    Id = request.Id,
-                    MerchantName = request.MerchantName!,
-                    MerchantWebLink = request.MerchantWebLink!,
-                    MerchantReturnUrl = request.MerchantReturnUrl!,
-                    MerchantIpnUrl = request.MerchantIpnUrl!,
-                    SecretKey = request.SecretKey!,
-                    UpdatedBy = request.UpdatedBy
-                });
-                if (rs == null)
-                {
-                    response.statusCode = NoContent().StatusCode;
-                    response.message = new List<string>
-                    {
-                        "Invalid id!"
-                    };
-                }
-                else
-                {
-                    response.statusCode = Ok().StatusCode;
-                }
-            }
-            catch (Exception)
-            {
-                response.statusCode = NoContent().StatusCode;
-                response.message = new List<string>
-                {
-                    "Update fail!"
-                };
-            }
-            return Ok(response);
-        }
-
-        [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteDisease([FromQuery] Guid id)
-        {
-            MerchantDeleteResponse response = new MerchantDeleteResponse();
-            try
-            {
-                var rs = await _mediator.Send(new DeleteMerchantCommand
-                {
-                    Id = id,
-                });
-                if (rs == null)
-                {
-                    response.statusCode = NoContent().StatusCode;
-                    response.message = new List<string>
-                    {
-                        "Invalid id!"
-                    };
-                }
-                else
-                {
-                    response.statusCode = Ok().StatusCode;
-                }
-            }
-            catch (Exception)
-            {
-                response.statusCode = NoContent().StatusCode;
-                response.message = new List<string>
-                {
-                    "Delete fail!"
-                };
-            }
-            return Ok(response);
-        }*/
+       
     }
 }
