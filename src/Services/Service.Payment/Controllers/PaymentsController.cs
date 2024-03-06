@@ -130,7 +130,7 @@ namespace Service.Payment.Controllers
 
             if (returnUrl.EndsWith("/"))
                 returnUrl = returnUrl.Remove(returnUrl.Length - 1, 1);
-            return Redirect("https://localhost:7218/api/Merchants/get"); 
+            return Redirect("http://localhost:3000/login"); 
                 /*Redirect($"{returnUrl}?{returnModel.ToQueryString()}"); NoContent();*/
         }
 
