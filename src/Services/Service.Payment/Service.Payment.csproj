@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTOs\PaymentNotificationDTOs\**" />
+    <Content Remove="DTOs\PaymentNotificationDTOs\**" />
+    <EmbeddedResource Remove="DTOs\PaymentNotificationDTOs\**" />
+    <None Remove="DTOs\PaymentNotificationDTOs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Hangfire.PostgreSql" Version="1.20.5" />
     <PackageReference Include="Mapster" Version="6.5.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
@@ -22,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Commands\PaymentCommands\" />
-    <Folder Include="DTOs\PaymentNotificationDTOs\" />
   </ItemGroup>
 
 </Project>

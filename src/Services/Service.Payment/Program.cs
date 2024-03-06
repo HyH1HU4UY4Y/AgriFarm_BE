@@ -16,6 +16,7 @@ using Service.Payment.Commands.MerchantCommands;
 using Service.Payment.Interface;
 using Service.Payment.Services;
 using Hangfire;
+using SharedApplication.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,7 @@ builder.Services.AddSharedApplication<Program>();
 builder.Services.AddJWTAuthorization();
 builder.Services.AddGlobalErrorMiddleware();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddDefaultVersioning();
 
 
 builder.Services.AddControllers();
