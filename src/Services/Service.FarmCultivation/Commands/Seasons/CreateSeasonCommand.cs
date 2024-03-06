@@ -2,18 +2,21 @@
 using Infrastructure.FarmCultivation.Contexts;
 using MediatR;
 using Service.FarmCultivation.DTOs;
+using Service.FarmCultivation.DTOs.Seasons;
+using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Entities.Schedules;
 using SharedDomain.Repositories.Base;
 
 
 namespace Service.FarmCultivation.Queries.Seasons
 {
-    public class CreateSeasonCommand : IRequest<Guid>
+    public class CreateSeasonCommand : IRequest<SeasonDetailResponse>
     {
-        public SeasonRequest Season { get; set; }
+        public SeasonCreateRequest Season { get; set; }
+        public Guid SiteId { get; set; }
     }
 
-    public class CreateSeasonCommandHandler : IRequestHandler<CreateSeasonCommand, Guid>
+    public class CreateSeasonCommandHandler : IRequestHandler<CreateSeasonCommand, SeasonDetailResponse>
     {
         private ISQLRepository<CultivationContext, CultivationSeason> _seasons;
         private IMapper _mapper;
@@ -31,9 +34,29 @@ namespace Service.FarmCultivation.Queries.Seasons
             _logger = logger;
         }
 
-        public Task<Guid> Handle(CreateSeasonCommand request, CancellationToken cancellationToken)
+        public async Task<SeasonDetailResponse> Handle(CreateSeasonCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+
+            var item = _mapper.Map<CultivationSeason>(request.Season);
+            item.SiteId = request.SiteId;
+
+            if(item.Products.Any())
+            {
+                foreach (var p in item.Products)
+                {
+                    p.SiteId = request.SiteId;
+                    p.Name = $"{p.Seed.Name} ({p.Land.Name})";
+                    p.SeedId = p.Seed.Id;
+                    p.LandId = p.Land.Id;
+                    p.Seed = null;
+                    p.Land = null;
+                }
+            }
+            
+            await _seasons.AddAsync(item);
+            await _unit.SaveChangesAsync(cancellationToken);
+
+            return _mapper.Map<SeasonDetailResponse>(item);
         }
     }
 }

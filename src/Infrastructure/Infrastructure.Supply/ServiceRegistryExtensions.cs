@@ -8,12 +8,8 @@ using SharedDomain.Entities.PreHarvest;
 using Infrastructure.Supply.Contexts;
 using Microsoft.AspNetCore.Builder;
 using SharedDomain.Repositories.Base;
-using Infrastructure.Supply.Commands.Base;
-
-
-using MediatR;
 using SharedDomain.Defaults;
-using System.Reflection;
+using Infrastructure.Common.Replication;
 
 namespace Infrastructure.Supply
 {
@@ -40,12 +36,13 @@ namespace Infrastructure.Supply
         public static IServiceCollection AddMediatrHandlersExplicitly(this IServiceCollection services)
         {
             services
-                .AddTransient<IRequestHandler<SaveComponentCommand<FarmSoil>, Guid>, SaveComponentCommandHandler<FarmSoil>>()
-                .AddTransient<IRequestHandler<SaveComponentCommand<FarmSeed>, Guid>, SaveComponentCommandHandler<FarmSeed>>()
-                .AddTransient<IRequestHandler<SaveComponentCommand<FarmEquipment>, Guid>, SaveComponentCommandHandler<FarmEquipment>>()
-                .AddTransient<IRequestHandler<SaveComponentCommand<FarmWater>, Guid>, SaveComponentCommandHandler<FarmWater>>()
-                .AddTransient<IRequestHandler<SaveComponentCommand<FarmPesticide>, Guid>, SaveComponentCommandHandler<FarmPesticide>>()
-                .AddTransient<IRequestHandler<SaveComponentCommand<FarmFertilize>, Guid>, SaveComponentCommandHandler<FarmFertilize>>()
+                .AddComponentReplicateCommand<FarmSoil, SupplyContext>()
+                .AddComponentReplicateCommand<FarmSeed, SupplyContext>()
+                .AddComponentReplicateCommand<FarmEquipment, SupplyContext>()
+                .AddComponentReplicateCommand<FarmWater, SupplyContext>()
+                .AddComponentReplicateCommand<FarmPesticide, SupplyContext>()
+                .AddComponentReplicateCommand<FarmFertilize, SupplyContext>()
+                
                 ;
 
             return services;

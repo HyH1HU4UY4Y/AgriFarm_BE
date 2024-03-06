@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace SharedApplication.Times.Services
 {
-    internal class ScheduleSupporter
+    public class TimePickerHelper
     {
 
+        public bool IsNotAfterDate(DateTime date)
+        {
+            return DateTime.Today > date;
+        }
     }
 }

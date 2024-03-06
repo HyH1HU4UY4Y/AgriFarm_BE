@@ -1,4 +1,4 @@
-﻿namespace Service.FarmCultivation.DTOs
+﻿namespace Service.FarmCultivation.DTOs.Seasons
 {
     public class SeasonDetailResponse
     {

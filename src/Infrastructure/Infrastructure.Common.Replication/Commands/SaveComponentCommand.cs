@@ -1,18 +1,13 @@
 ﻿using AutoMapper;
 using EventBus.Defaults;
 using EventBus.Utils;
-using Infrastructure.Supply.Contexts;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Repositories.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Infrastructure.Supply.Commands.Base
+namespace Infrastructure.Common.Replication.Commands
 {
     public class SaveComponentCommand<T> : IRequest<Guid> where T : BaseComponent
     {
@@ -20,17 +15,18 @@ namespace Infrastructure.Supply.Commands.Base
         public EventState State { get; set; }
     }
 
-    public class SaveComponentCommandHandler<TComp> : IRequestHandler<SaveComponentCommand<TComp>, Guid> where TComp : BaseComponent
+    public class SaveComponentCommandHandler<TComp, TDBContext> : IRequestHandler<SaveComponentCommand<TComp>, Guid> 
+        where TComp : BaseComponent where TDBContext : DbContext
     {
 
-        private ISQLRepository<SupplyContext, BaseComponent> _components;
-        private IUnitOfWork<SupplyContext> _unit;
-        private ILogger<SaveComponentCommandHandler<TComp>> _logger;
+        private ISQLRepository<TDBContext, BaseComponent> _components;
+        private IUnitOfWork<TDBContext> _unit;
+        private ILogger<SaveComponentCommandHandler<TComp, TDBContext>> _logger;
         private IMapper _mapper;
 
-        public SaveComponentCommandHandler(ISQLRepository<SupplyContext, BaseComponent> components,
-            IUnitOfWork<SupplyContext> unit,
-            ILogger<SaveComponentCommandHandler<TComp>> logger,
+        public SaveComponentCommandHandler(ISQLRepository<TDBContext, BaseComponent> components,
+            IUnitOfWork<TDBContext> unit,
+            ILogger<SaveComponentCommandHandler<TComp, TDBContext>> logger,
             IMapper mapper)
         {
             _components = components;
@@ -42,11 +38,11 @@ namespace Infrastructure.Supply.Commands.Base
         public async Task<Guid> Handle(SaveComponentCommand<TComp> request, CancellationToken cancellationToken)
         {
 
-            
+
             _components.ProcessComponentReplicate(request.Item, request.State);
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return request.Item?.Id??Guid.Empty;
+            return request.Item?.Id ?? Guid.Empty;
         }
     }
 }

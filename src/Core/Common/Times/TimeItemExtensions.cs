@@ -12,7 +12,7 @@ namespace SharedApplication.Times
     {
         public static IServiceCollection AddTimeModule(this IServiceCollection services)
         {
-            services.AddScoped<ScheduleSupporter>();
+            services.AddScoped<TimePickerHelper>();
 
             return services;
         }

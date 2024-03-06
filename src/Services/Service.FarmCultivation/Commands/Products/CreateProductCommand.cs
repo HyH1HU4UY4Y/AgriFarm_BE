@@ -9,24 +9,25 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.FarmCultivation.Commands.Products
 {
-    public class CreateHarvestProductCommand : IRequest<Guid>
+    public class CreateProductCommand : IRequest<ProductResponse>
     {
-        public Guid? SiteId { get; set; }
-        public HarvestProductRequest HarvestProduct { get; set; }
+        public Guid SiteId { get; set; }
+        public Guid SeasonId { get; set; }
+        public ProductRequest Product { get; set; }
     }
 
-    public class CreateHarvestProductCommandHandler : IRequestHandler<CreateHarvestProductCommand, Guid>
+    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ProductResponse>
     {
         private ISQLRepository<CultivationContext, HarvestProduct> _products;
         private ISQLRepository<CultivationContext, CultivationSeason> _seasons;
         private IMapper _mapper;
         private IUnitOfWork<CultivationContext> _unit;
-        private ILogger<CreateHarvestProductCommandHandler> _logger;
+        private ILogger<CreateProductCommandHandler> _logger;
 
-        public CreateHarvestProductCommandHandler(ISQLRepository<CultivationContext, HarvestProduct> products,
+        public CreateProductCommandHandler(ISQLRepository<CultivationContext, HarvestProduct> products,
             IMapper mapper,
             IUnitOfWork<CultivationContext> unit,
-            ILogger<CreateHarvestProductCommandHandler> logger,
+            ILogger<CreateProductCommandHandler> logger,
             ISQLRepository<CultivationContext, CultivationSeason> seasons)
         {
             _products = products;
@@ -36,25 +37,26 @@ namespace Service.FarmCultivation.Commands.Products
             _seasons = seasons;
         }
 
-        public async Task<Guid> Handle(CreateHarvestProductCommand request, CancellationToken cancellationToken)
+        public async Task<ProductResponse> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            var item = _mapper.Map<HarvestProduct>(request.HarvestProduct);
-
             /*
             TODO:
-                - Authorize and check for each site
+                - check valid time
             */
-            if (request.SiteId == null)
-            {
-                //temp
-                item.SiteId = new Guid(TempData.FarmId);
-            }
-            
+
+            var item = _mapper.Map<HarvestProduct>(request.Product);
+            item.SiteId = request.SiteId;
+            item.SeasonId = request.SeasonId;
+            item.Name = $"{item.Seed.Name} ({item.Land.Name})";
+            item.SeedId = item.Seed.Id;
+            item.LandId = item.Land.Id;
+            item.Seed = null;
+            item.Land = null;
 
             await _products.AddAsync(item);
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<ProductResponse>(item);
 
         }
     }

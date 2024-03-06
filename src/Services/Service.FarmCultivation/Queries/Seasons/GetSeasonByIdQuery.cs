@@ -2,6 +2,7 @@
 using Infrastructure.FarmCultivation.Contexts;
 using MediatR;
 using Service.FarmCultivation.DTOs;
+using Service.FarmCultivation.DTOs.Seasons;
 using SharedDomain.Entities.Schedules;
 using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;

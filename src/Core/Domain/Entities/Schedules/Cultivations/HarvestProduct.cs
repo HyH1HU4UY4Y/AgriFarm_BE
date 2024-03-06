@@ -16,7 +16,7 @@ namespace SharedDomain.Entities.Schedules.Cultivations
         public DateTime? HarvestTime { get; set; }
         public double? TotalQuantity { get; set; } = 0;
         public double? Quantity { get; set; } = 0;
-        public string Unit { get; set; }
+        public string? Unit { get; set; } = "kg";
         private string _traceability;
 
         public string? Traceability {

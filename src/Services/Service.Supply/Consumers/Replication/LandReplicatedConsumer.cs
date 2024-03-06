@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
 using EventBus.Events.Messages;
-using EventBus.Events;
+using Infrastructure.Common.Replication.Commands;
 using MassTransit;
-using Service.Supply.Commands.Supplies;
-using Service.Supply.Consumers.Supplying;
 using MediatR;
 using SharedDomain.Entities.FarmComponents;
-using Infrastructure.Supply.Commands.Base;
-using EventBus.Defaults;
 
 namespace Service.Supply.Consumers.Replication
 {

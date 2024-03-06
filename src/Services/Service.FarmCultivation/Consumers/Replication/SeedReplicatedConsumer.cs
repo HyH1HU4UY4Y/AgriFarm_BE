@@ -5,29 +5,29 @@ using MassTransit;
 using MediatR;
 using SharedDomain.Entities.FarmComponents;
 
-namespace Service.Supply.Consumers.Replication
+namespace Service.FarmCultivation.Consumers.Replication
 {
-    public class FertilizeReplicatedConsumer : IConsumer<IntegrationEventMessage<FarmFertilize>>
+    public class SeedReplicatedConsumer : IConsumer<IntegrationEventMessage<FarmSeed>>
     {
         private IMapper _mapper;
         private IMediator _mediator;
-        private ILogger<FertilizeReplicatedConsumer> _logger;
+        private ILogger<SeedReplicatedConsumer> _logger;
 
-        public FertilizeReplicatedConsumer(IMapper mapper,
+        public SeedReplicatedConsumer(IMapper mapper,
             IMediator mediator,
-            ILogger<FertilizeReplicatedConsumer> logger)
+            ILogger<SeedReplicatedConsumer> logger)
         {
             _mapper = mapper;
             _mediator = mediator;
             _logger = logger;
         }
 
-        public async Task Consume(ConsumeContext<IntegrationEventMessage<FarmFertilize>> context)
+        public async Task Consume(ConsumeContext<IntegrationEventMessage<FarmSeed>> context)
         {
             var detail = context.Message.Data;
 
 
-            await _mediator.Send(new SaveComponentCommand<FarmFertilize>
+            await _mediator.Send(new SaveComponentCommand<FarmSeed>
             {
                 Item = detail,
                 State = context.Message.State

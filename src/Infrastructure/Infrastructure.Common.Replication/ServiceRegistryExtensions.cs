@@ -11,11 +11,21 @@ namespace Infrastructure.Common.Replication
 {
     public static class ServiceRegistryExtensions
     {
-        public static IServiceCollection AddReplicateCommand<TEntity, TDBContext>(this IServiceCollection services)
+        public static IServiceCollection AddEntityReplicateCommand<TEntity, TDBContext>(this IServiceCollection services)
             where TEntity : class, IBaseEntity<Guid> where TDBContext: DbContext
         {
             services
                 .AddTransient<IRequestHandler<SaveEntityCommand<TEntity>, Guid>, SaveEntityCommandHandler<TEntity, TDBContext>>()
+                ;
+
+            return services;
+        }
+        
+        public static IServiceCollection AddComponentReplicateCommand<TEntity, TDBContext>(this IServiceCollection services)
+            where TEntity : BaseComponent where TDBContext : DbContext
+        {
+            services
+                .AddTransient<IRequestHandler<SaveComponentCommand<TEntity>, Guid>, SaveComponentCommandHandler<TEntity, TDBContext>>()
                 ;
 
             return services;
