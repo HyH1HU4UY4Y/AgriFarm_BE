@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 using Service.Payment.Commands;
 using Service.Payment.Commands.MerchantCommands;
 using Service.Payment.DTOs.MerchantDTOs;
@@ -13,6 +14,7 @@ using Service.Payment.Queries.MerchantQueries;
 using Service.Payment.Queries.Payment;
 using System;
 using Mapster;
+using Humanizer.Configuration;
 
 namespace Service.Payment.Controllers
 {
@@ -22,107 +24,27 @@ namespace Service.Payment.Controllers
     {
         private readonly IMediator _mediator;
         private readonly VnpayConfig _vnpayConfig;
+        private IConfiguration _configuration;
 
         public PaymentsController(IMediator mediator, 
-            IOptions<VnpayConfig> vnpayConfigOptions)
+            IOptions<VnpayConfig> vnpayConfigOptions, IConfiguration configuration)
         {
             this._mediator = mediator;
             this._vnpayConfig = vnpayConfigOptions.Value;
+            _configuration = configuration;
         }
 
-        /*//[Authorize(Roles = Roles.SuperAdmin)]
-        [HttpGet("get")]
-        public async Task<IActionResult> Get([FromQuery] MerchantRequest request)
-        {
-            MerchantResponse response = new MerchantResponse();
-            // Get all data
-            var rsAll = await _mediator.Send(new GetMerchantQuery
-            {
-                keyword = request.keyword,
-                searchDateFrom = request.searchDateFrom,
-                searchDateTo = request.searchDateTo
-            });
-            // Search, pagination
-            if (rsAll.Count() > 0)
-            {
-                if (request.perPage == 0)
-                {
-                    request.perPage = (int)PaginationDefault.perPage;
-                }
-                if (request.pageId == 0)
-                {
-                    request.pageId = (int)PaginationDefault.pageId;
-                }
-                var rsSearch = await _mediator.Send(new GetMerchantQuery
-                {
-                    keyword = request.keyword,
-                    searchDateFrom = request.searchDateFrom,
-                    searchDateTo = request.searchDateTo,
-                    perPage = request.perPage,
-                    pageId = request.pageId,
-                    getAllDataFlag = false
-                });
-                response.data = rsSearch;
-                response.Pagination = new Pagination
-                {
-                    totalRecord = rsAll.Count(),
-                    perPage = request.perPage,
-                    pageId = request.pageId
-                };
-                response.statusCode = Ok().StatusCode;
-            }
-            if (response.Pagination.totalRecord == 0)
-            {
-                response.statusCode = NoContent().StatusCode;
-                response.message = new List<string> {
-                    "Data not found!"
-                };
-            }
-            return Ok(response);
-        }
-
-        */
-
-        //[Authorize(Roles = Roles.Admin)]
-        /* [HttpGet("get-by-id")]
-         [Route("vnpay-return")]
-         public async Task<IActionResult> VnpayReturn([FromQuery] Guid id)
-         {
-             PaymentDetailResponse response = new PaymentDetailResponse();
-             var rs = await _mediator.Send(new GetPaymentByQuery
-             {
-                 PaymentId = id
-             });
-             if (rs != null)
-             {
-                 response.Id = rs.Id;
-                 response.PaymentStatus = rs.PaymentStatus;
-                 response.PaymentMessage = rs.PaymentLastMessage;
-                 response.PaymentDate = rs.PaymentDate;
-                 response.PaymentRefId = rs.PaymentRefId;
-                 response.Amount = rs.PaidAmount;
-                 response.Signature = rs.Signature;
-                 response.statusCode = Ok().StatusCode;
-             }
-             else
-             {
-                 response.statusCode = NoContent().StatusCode;
-                 response.message = new List<string> {
-                     "Data not found!"
-                 };
-             }
-             return Ok(response);
-         }*/
 
         [HttpGet]
         [Route("vnpay-return")]
         public async Task<IActionResult> VnpayReturn([FromQuery] VnpayPayResponse response)
         {
+            string urlRedirect = _configuration["Vnpay:RedirectUrl"];
             string returnUrl = string.Empty;
             var returnModel = new PaymentReturnDTO();
             var processResult = await _mediator.Send(response.Adapt<ProcessVnpayPaymentReturn>());
 
-            if (processResult != (null,null))
+            if (processResult != (null, null))
             {
                 returnModel = processResult.Item1 as PaymentReturnDTO;
                 returnUrl = processResult.Item2 as string;
@@ -130,9 +52,17 @@ namespace Service.Payment.Controllers
 
             if (returnUrl.EndsWith("/"))
                 returnUrl = returnUrl.Remove(returnUrl.Length - 1, 1);
-            return Redirect("http://localhost:3000/login"); 
-                /*Redirect($"{returnUrl}?{returnModel.ToQueryString()}"); NoContent();*/
+
+            if (!string.IsNullOrEmpty(urlRedirect))
+            {
+                return Redirect(urlRedirect);
+            }
+            else
+            {
+                return Redirect("http://localhost:3000/vi/error");
+            }
         }
+
 
         [HttpPost("add")]
         public async Task<IActionResult> InsertPayment([FromBody] PaymentInsertRequest request)
