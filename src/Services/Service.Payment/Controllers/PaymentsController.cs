@@ -15,10 +15,12 @@ using Service.Payment.Queries.Payment;
 using System;
 using Mapster;
 using Humanizer.Configuration;
+using Asp.Versioning;
 
 namespace Service.Payment.Controllers
 {
-    [Route("api/payment/")]
+    [Route("api/v{version:apiVersion}/payment/")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class PaymentsController : ControllerBase
     {
