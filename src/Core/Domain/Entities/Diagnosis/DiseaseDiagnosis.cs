@@ -8,6 +8,7 @@ namespace SharedDomain.Entities.Diagnosis
     {
         public Guid PlantDiseaseId { get; set; }
         public DiseaseInfo? PlantDisease { get; set; }
+        [StringLength(Int32.MaxValue)]
         public string? Description { get; set; }
         [StringLength(2000)]
         public string? Feedback { get; set; }
