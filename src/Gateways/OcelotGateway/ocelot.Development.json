@@ -172,20 +172,6 @@
         }
       ]
     },
-    // Soil
-    {
-      "UpstreamPathTemplate": "/api/{version}/soil/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-
-      "DownstreamScheme": "https",
-      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7042
-        }
-      ]
-    },
     // Payment
     {
       "UpstreamPathTemplate": "/api/{version}/pay/{controller}/{action}",

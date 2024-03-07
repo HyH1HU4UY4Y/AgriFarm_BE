@@ -36,29 +36,8 @@ builder.Services.AddDefaultVersioning();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(
-    options =>
-    {
-        options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
-        {
-            Version = "v1",
-            Title = "AgriFarm Payment service api",
-            Description = "AgriFarm .NET payment api",
-            Contact = new Microsoft.OpenApi.Models.OpenApiContact()
-            {
-                Name = "AgriFarm",
-                Url = new Uri("https://globalfarm.vercel.app/en/register")
-            }
-        });
-        var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        var path = Path.Combine(AppContext.BaseDirectory, xmlFileName);
-        options.IncludeXmlComments(path);
-    });
+builder.Services.AddSwaggerGen();
 
-/*builder.Services.AddMediatR(r =>
-{
-    r.RegisterServicesFromAssembly(typeof(CreateMerchantCommand).Assembly);
-});*/
 
 builder.Services.Configure<VnpayConfig>(
     builder.Configuration.GetSection(VnpayConfig.ConfigName));

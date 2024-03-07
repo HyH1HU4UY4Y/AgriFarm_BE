@@ -48,7 +48,7 @@ namespace Service.Payment.Controllers
 
             if (!string.IsNullOrEmpty(urlRedirect))
             {
-                return Redirect(urlRedirect+"?id=" + response.id.ToString());
+                return Redirect(urlRedirect/*+"?id=" + response.id.ToString()*/);
             }
 
             return Redirect("https://devfarm.vercel.app/en/error");
@@ -76,7 +76,7 @@ namespace Service.Payment.Controllers
                     CreatedBy = request.CreatedBy!,
                     Signature = request.Signature,
 
-                    IdRegisterForm = request.IdRegisterForm!,
+                    //IdRegisterForm = request.IdRegisterForm!,
 
                 });
                 if (rs == null)
