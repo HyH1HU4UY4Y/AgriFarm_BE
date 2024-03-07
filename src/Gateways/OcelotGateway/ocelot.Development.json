@@ -145,20 +145,62 @@
     },
 
     //Service.Disease
-
     {
-      "UpstreamPathTemplate": "/api/v1/disease/{controller}/{action}",
+      "UpstreamPathTemplate": "/api/{version}/disease/{controller}/{action}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
       "DownstreamScheme": "https",
-      "DownstreamPathTemplate": "/api/v1/disease/{controller}/{action}",
+      "DownstreamPathTemplate": "/api/{version}/disease/{controller}/{action}",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": 7201
         }
       ]
+    },
+    // ChecklistGlobalGAP
+    {
+      "UpstreamPathTemplate": "/api/{version}/checklist/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7058
+        }
+      ]
+    },
+    // Soil
+    {
+      "UpstreamPathTemplate": "/api/{version}/soil/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7042
+        }
+      ]
+    },
+    // Payment
+    {
+      "UpstreamPathTemplate": "/api/{version}/pay/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7218
+        }
+      ]
     }
+
 
   ]
 

@@ -38,8 +38,8 @@ namespace Infrastructure.Disease.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(300)
-                        .HasColumnType("character varying(300)");
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("text");
 
                     b.Property<string>("Feedback")
                         .HasMaxLength(2000)
@@ -68,7 +68,7 @@ namespace Infrastructure.Disease.Migrations
 
                     b.HasIndex("PlantDiseaseId");
 
-                    b.ToTable("DiseaseDiagnoses");
+                    b.ToTable("DiseaseDiagnoses", (string)null);
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.Diagnosis.DiseaseInfo", b =>
@@ -122,7 +122,7 @@ namespace Infrastructure.Disease.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DiseaseInfos");
+                    b.ToTable("DiseaseInfos", (string)null);
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.Diagnosis.DiseaseDiagnosis", b =>

@@ -29,6 +29,8 @@ namespace Service.Payment.Commands
         public Guid? CreatedBy { get; set; }
 
         public string? Signature { get; set; } = string.Empty;
+
+        public Guid? IdRegisterForm { get; set; }
     }
 
     public class CreatePaymentCommandHandler : IRequestHandler<CreatePaymentCommand, PaymentDTO>
@@ -60,9 +62,10 @@ namespace Service.Payment.Commands
             try
             {
                 var id = Guid.NewGuid();
+                var idRegisterForm = request.IdRegisterForm;
                 var vnpayPayRequest = new VnpayPayRequest(_vnpayConfig.Version,
                                 _vnpayConfig.TmnCode, DateTime.Now, _currentUserService.IpAddress ?? string.Empty, request.RequiredAmount ?? 0, request.PaymentCurrency ?? string.Empty,
-                                "other", request.PaymentContent ?? string.Empty, _vnpayConfig.ReturnUrl, /*"166117"*/ id.ToString());
+                                "other", request.PaymentContent ?? string.Empty, _vnpayConfig.ReturnUrl +"?id="+ idRegisterForm.ToString(), /*"166117"*/ id.ToString());
                 var paymentUrl = vnpayPayRequest.GetLink(_vnpayConfig.PaymentUrl, _vnpayConfig.HashSecret);
 
 

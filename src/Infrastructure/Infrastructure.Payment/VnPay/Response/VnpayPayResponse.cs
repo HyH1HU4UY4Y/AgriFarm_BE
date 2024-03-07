@@ -36,6 +36,8 @@ namespace Infrastructure.Payment.VnPay.Response
         public string? vnp_ResponseCode { get; set; }
         public string vnp_PayDate { get; set; } = string.Empty;
 
+        public Guid? id { get; set; }
+
         public bool IsValidSignature(string secretKey)
         {
             MakeResponseData();
