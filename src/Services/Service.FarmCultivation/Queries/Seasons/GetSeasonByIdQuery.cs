@@ -34,7 +34,7 @@ namespace Service.FarmCultivation.Queries.Seasons
 
         public async Task<SeasonDetailResponse> Handle(GetSeasonByIdQuery request, CancellationToken cancellationToken)
         {
-            var item = _seasons.GetOne(e => e.Id == request.Id);
+            var item = await _seasons.GetOne(e => e.Id == request.Id);
 
             if (item == null)
             {

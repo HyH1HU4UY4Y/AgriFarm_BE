@@ -52,21 +52,24 @@ namespace Service.FarmRegistry.Commands
 
             var site = _sites.GetOne(e => e.Name == request.SiteName).Result;
             var user = _users.GetOne(e => e.UserName == request.Email).Result;
-            //var forms = await _forms.GetMany();
-            if (site?.Name == request.SiteName 
-                /*|| forms.Any(e=>e.SiteName == request.SiteName 
-                            && e.IsApprove == DecisonOption.Waiting)*/
-                ) msg += "Farm Name already exists.";
+            var forms = _forms.GetMany(e=>e.SiteName == request.SiteName
+                                        || e.SiteCode == request.SiteCode
+                                        || e.Email == request.Email
+                                        ).Result??new();
+            if (site?.Name == request.SiteName
+                || forms.Any(e => e.SiteName == request.SiteName
+                            && e.IsApprove != DecisonOption.No)
+                ) msg += "Farm Name not valid.";
 
             if (site?.SiteCode == request.SiteCode
-                /*|| forms.Any(e => e.SiteCode == request.SiteCode
-                            && e.IsApprove == DecisonOption.Waiting)*/
-                ) msg += " Farm Code already exists.";
+                || forms.Any(e => e.SiteCode == request.SiteCode
+                            && e.IsApprove != DecisonOption.No)
+                ) msg += " Farm Code not valid.";
 
             if (user?.UserName == request.Email
-                /*|| forms.Any(e => e.Email == request.Email
-                            && e.IsApprove == DecisonOption.Waiting)*/
-                ) msg += " Email already exists.";
+                || forms.Any(e => e.Email == request.Email
+                            && e.IsApprove == DecisonOption.No)
+                ) msg += " Email not valid.";
 
             if (!string.IsNullOrEmpty(msg.Trim())) { 
                 throw new BadRequestException(msg.Trim());

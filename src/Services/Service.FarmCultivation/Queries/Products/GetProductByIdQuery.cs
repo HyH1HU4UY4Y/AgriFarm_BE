@@ -38,7 +38,7 @@ namespace Service.FarmCultivation.Queries.Products
 
         public async Task<ProductResponse> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var item = _products.GetOne(e => e.Id == request.Id,
+            var item = await _products.GetOne(e => e.Id == request.Id,
                                         ls => ls.Include(x => x.Season)
                                               .Include(x => x.Land)
                                               .Include(x=>x.Seed));

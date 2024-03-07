@@ -40,6 +40,7 @@ namespace Service.FarmSite.Consumers
                 {
                     Name = form.SiteName,
                     SiteCode = form.SiteCode,
+                    Address = form.Address
                 },
                 
                 IsActive = true
