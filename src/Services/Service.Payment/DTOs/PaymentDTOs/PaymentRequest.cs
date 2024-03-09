@@ -23,6 +23,6 @@
         public Guid? CreatedBy { get; set; }
         public string? Signature { get; set; } = string.Empty;
 
-        public Guid? IdRegisterForm { get; set; }
+       /* public Guid? IdRegisterForm { get; set; }*/
     }
 }
