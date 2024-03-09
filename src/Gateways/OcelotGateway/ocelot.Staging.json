@@ -171,6 +171,34 @@
           "Port": 80
         }
       ]
+    },
+    // ChecklistGlobalGAP
+    {
+      "UpstreamPathTemplate": "/api/{version}/checklist/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.38.0.19",
+          "Port": 80
+        }
+      ]
+    },
+    // Payment
+    {
+      "UpstreamPathTemplate": "/api/{version}/pay/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamScheme": "http",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.38.0.20",
+          "Port": 80
+        }
+      ]
     }
 
 

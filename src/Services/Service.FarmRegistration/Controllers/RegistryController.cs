@@ -1,6 +1,5 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
-using Infrastructure.FarmRegistry.Contexts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,17 +10,16 @@ using Service.Registration.Queries;
 using SharedApplication.Pagination;
 using SharedDomain.Common;
 using SharedDomain.Defaults;
-using SharedDomain.Entities.Subscribe;
-using SharedDomain.Repositories.Base;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Service.FarmRegistry.Controllers
 {
-    
+
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
     [ApiVersion("1.0")]
     [ApiController]
+    [Authorize(Roles = Roles.SuperAdmin)]
     public class RegistryController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -35,7 +33,6 @@ namespace Service.FarmRegistry.Controllers
         }
 
 
-        [Authorize(Roles = Roles.SuperAdmin)]
         [HttpGet]
         public async Task<IActionResult> Get(
             [FromHeader] int? pageNumber = null, [FromHeader] int? pageSize = null
@@ -67,7 +64,7 @@ namespace Service.FarmRegistry.Controllers
             });
         }
 
-        [Authorize(Roles = Roles.SuperAdmin)]
+        
 
         [HttpPut]
         public async Task<IActionResult> Put([FromQuery]Guid id, [FromBody] ResolveFormRequest request)
@@ -88,7 +85,7 @@ namespace Service.FarmRegistry.Controllers
             return NoContent();
         }
 
-        // DELETE api/<RegistryController>/5
+
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] Guid id)
         {
