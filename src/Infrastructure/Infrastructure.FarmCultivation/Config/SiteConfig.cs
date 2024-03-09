@@ -10,7 +10,7 @@ using SharedApplication.Persistence.Configs;
 
 namespace Infrastructure.FarmCultivation.Config
 {
-    public class SiteConfig : IEntityTypeConfiguration<Site>
+    /*public class SiteConfig : IEntityTypeConfiguration<Site>
     {
         public void Configure(EntityTypeBuilder<Site> builder)
         {
@@ -18,5 +18,5 @@ namespace Infrastructure.FarmCultivation.Config
 
 
         }
-    }
+    }*/
 }

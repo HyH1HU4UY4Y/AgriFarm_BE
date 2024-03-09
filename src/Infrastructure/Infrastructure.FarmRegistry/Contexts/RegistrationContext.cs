@@ -5,6 +5,8 @@ using SharedDomain.Entities.Subscribe;
 using Application.CommonExtensions;
 using SharedDomain.Entities.Base;
 using SharedDomain.Entities.FarmComponents;
+using SharedDomain.Entities.Users;
+using SharedApplication.Persistence.Configs;
 
 namespace Infrastructure.FarmRegistry.Contexts
 {
@@ -20,6 +22,8 @@ namespace Infrastructure.FarmRegistry.Contexts
 
         public DbSet<PackageSolution> PackageSolutions { get; set; }
         public DbSet<FarmRegistration> FarmRegistrations { get; set;}
+        public DbSet<MinimalUserInfo> UserInfos { get; set;}
+        public DbSet<Site> SiteInfos { get; set;}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -35,7 +39,7 @@ namespace Infrastructure.FarmRegistry.Contexts
 
             //modelBuilder.ApplyConfigurationsFromAssembly(typeof(FarmRegistrationConfig).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(PackageSolutionConfig).Assembly);
-            //modelBuilder.SetQueryFilterOnAllEntities<ITraceableItem>(e => !e.IsDeleted);
+            modelBuilder.Entity<Site>().ExtractSite();
 
         }
     }

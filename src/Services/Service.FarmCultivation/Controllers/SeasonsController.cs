@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.FarmCultivation.DTOs;
 using Service.FarmCultivation.Queries.Seasons;
@@ -7,12 +6,18 @@ using SharedDomain.Common;
 using System.ComponentModel.DataAnnotations;
 
 using SharedApplication.Pagination;
-using Service.FarmCultivation.Commands.Products;
+using Asp.Versioning;
+using Service.FarmCultivation.DTOs.Seasons;
+using Microsoft.AspNetCore.Authorization;
+using SharedApplication.Authorize;
+using SharedApplication.Authorize.Values;
 
 namespace Service.FarmCultivation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     [ApiController]
+    [Authorize]
     public class SeasonsController : ControllerBase
     {
 
@@ -24,13 +29,27 @@ namespace Service.FarmCultivation.Controllers
         }
 
         [HttpGet("get")]
-        public async Task<IActionResult> Get([FromQuery] Guid? id = null)
+        public async Task<IActionResult> Get(
+            [FromQuery] Guid? id = null,
+            [FromQuery] Guid? siteId = null,
+            [FromHeader] int? pageNumber = null, [FromHeader] int? pageSize = null
+            )
         {
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
+
             if (id == null)
             {
+                if (identity == SystemIdentity.Supervisor && siteId == null)
+                {
+                    return StatusCode(404);
+                }
+
+                PaginationRequest page = new(pageNumber, pageSize);
+
                 var items = await _mediator.Send(new GetSeasonsQuery
                 {
-
+                    Pagination = page,
+                    SiteId = identity == SystemIdentity.Supervisor ? siteId.Value : sId
                 });
 
                 Response.AddPaginationHeader(items.MetaData);
@@ -58,20 +77,34 @@ namespace Service.FarmCultivation.Controllers
 
 
         [HttpPost("post")]
-        public async Task<IActionResult> Post([FromBody] SeasonRequest request)
+        public async Task<IActionResult> Post(
+            [FromBody] SeasonCreateRequest request,
+            [FromQuery] Guid? siteId = null
+            )
         {
+            var identity = HttpContext.User.TryCheckIdentity(out var uId, out var sId);
+            if (identity == SystemIdentity.Supervisor && siteId == null)
+            {
+                return StatusCode(404);
+            }
+
             var rs = await _mediator.Send(new CreateSeasonCommand
             {
-                Season = request
+                Season = request,
+                SiteId = identity == SystemIdentity.Supervisor ? siteId.Value : sId
             });
 
 
-            return StatusCode(201);
+            return StatusCode(201, new DefaultResponse<SeasonDetailResponse>
+            {
+                Data = rs,
+                Status = 201
+            });
         }
 
 
         [HttpPut("put")]
-        public async Task<IActionResult> Put([Required][FromQuery] Guid id, [FromBody] SeasonRequest request)
+        public async Task<IActionResult> Put([Required][FromQuery] Guid id, [FromBody] SeasonEditRequest request)
         {
             var rs = await _mediator.Send(new UpdateSeasonCommand
             {
@@ -79,7 +112,11 @@ namespace Service.FarmCultivation.Controllers
                 Season = request
             });
 
-            return NoContent();
+            return Ok(new DefaultResponse<SeasonDetailResponse>
+            {
+                Data = rs,
+                Status = 200
+            });
         }
 
 

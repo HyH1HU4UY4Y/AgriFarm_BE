@@ -2,6 +2,7 @@
 using Infrastructure.FarmCultivation.Contexts;
 using MediatR;
 using Service.FarmCultivation.DTOs;
+using Service.FarmCultivation.DTOs.Seasons;
 using SharedDomain.Entities.Schedules;
 using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
@@ -33,7 +34,7 @@ namespace Service.FarmCultivation.Queries.Seasons
 
         public async Task<SeasonDetailResponse> Handle(GetSeasonByIdQuery request, CancellationToken cancellationToken)
         {
-            var item = _seasons.GetOne(e => e.Id == request.Id);
+            var item = await _seasons.GetOne(e => e.Id == request.Id);
 
             if (item == null)
             {

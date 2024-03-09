@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using EventBus.Defaults;
+using EventBus.Utils;
 using Infrastructure.FarmSite.Contexts;
+using MassTransit;
 using MediatR;
 using Service.FarmSite.DTOs;
 using SharedDomain.Entities.FarmComponents;
@@ -20,16 +23,19 @@ namespace Service.FarmSite.Commands.Farms
         private readonly IUnitOfWork<SiteContext> _context;
         private readonly IMapper _mapper;
         private readonly ILogger<CreateNewFarmCommandHandler> _logger;
+        private readonly IBus _bus;
 
         public CreateNewFarmCommandHandler(IUnitOfWork<SiteContext> context,
             ISQLRepository<SiteContext, Site> sites,
             IMapper mapper,
-            ILogger<CreateNewFarmCommandHandler> logger)
+            ILogger<CreateNewFarmCommandHandler> logger,
+            IBus bus)
         {
             _context = context;
             _sites = sites;
             _mapper = mapper;
             _logger = logger;
+            _bus = bus;
         }
 
         public async Task<Guid> Handle(CreateNewFarmCommand request, CancellationToken cancellationToken)
@@ -44,6 +50,8 @@ namespace Service.FarmSite.Commands.Farms
             {
                 throw new NotFoundException("Not Found!");
             }
+
+            await _bus.ReplicateFarm(site, EventState.Add);
 
             return site.Id;
         }
