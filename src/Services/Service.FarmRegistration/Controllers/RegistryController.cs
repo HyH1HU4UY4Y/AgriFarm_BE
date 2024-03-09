@@ -67,7 +67,8 @@ namespace Service.FarmRegistry.Controllers
             });
         }
 
-        
+        [Authorize(Roles = Roles.SuperAdmin)]
+
         [HttpPut]
         public async Task<IActionResult> Put([FromQuery]Guid id, [FromBody] ResolveFormRequest request)
         {
