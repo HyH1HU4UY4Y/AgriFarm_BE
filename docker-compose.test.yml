@@ -94,3 +94,13 @@ services:
         environment:
             - ASPNETCORE_ENVIRONMENT=Testing
             - ASPNETCORE_URLS=http://+:80
+
+    service.globalgap:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80
+
+    service.payment:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Testing
+            - ASPNETCORE_URLS=http://+:80

@@ -178,6 +178,28 @@ services:
           agri.network:
             ipv4_address: 10.38.0.18
 
+    service.globalgap:
+        build:
+          context: .
+          dockerfile: src/Services/Service.ChecklistGlobalGAP/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Staging
+            - ASPNETCORE_URLS=http://+:80
+        networks:
+          agri.network:
+            ipv4_address: 10.38.0.19
+
+    service.payment:
+        build:
+          context: .
+          dockerfile: src/Services/Service.Payment/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Staging
+            - ASPNETCORE_URLS=http://+:80
+        networks:
+          agri.network:
+            ipv4_address: 10.38.0.20
+
 
 networks:
   agri.network:
