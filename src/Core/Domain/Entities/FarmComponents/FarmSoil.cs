@@ -28,7 +28,7 @@ namespace SharedDomain.Entities.FarmComponents
             set => _positionStr = JsonConvert.SerializeObject(value);
         }
 
-        public double Acreage { get; set; }
+        public double Acreage { get; set; } = 0;
 
         public DateTime? ExpiredIn { get; set; }
 

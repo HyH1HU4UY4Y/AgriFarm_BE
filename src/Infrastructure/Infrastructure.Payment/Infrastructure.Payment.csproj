@@ -9,7 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Common\SharedApplication.csproj" />
     <ProjectReference Include="..\..\Core\Domain\SharedDomain.csproj" />
-    <ProjectReference Include="..\..\Services\Service.RiskAssessment\Service.RiskAssessment.csproj" />
   </ItemGroup>
 
 </Project>
