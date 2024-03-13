@@ -59,21 +59,34 @@ namespace Service.FarmRegistry.Commands
             if (site?.Name == request.SiteName
                 || forms.Any(e => e.SiteName == request.SiteName
                             && e.IsApprove != DecisonOption.No)
-                ) msg += "Farm Name not valid.";
+                )
+            {
+                msg += "Farm Name not valid.";
+            }
 
-            if (site?.SiteCode == request.SiteCode
-                || forms.Any(e => e.SiteCode == request.SiteCode
+             if (site?.SiteCode == request.SiteCode
+                 || forms.Any(e => e.SiteCode == request.SiteCode
+                             && e.IsApprove != DecisonOption.No)
+                 )
+            {
+                msg += " Farm Code not valid.";
+            }
+
+             if (user?.UserName == request.Email
+                || forms.Any(e => e.Email.Equals(request.Email)
                             && e.IsApprove != DecisonOption.No)
-                ) msg += " Farm Code not valid.";
+                )
+            {
+                msg += " Email not valid.";
+            }
+           
 
-            if (user?.UserName == request.Email
-                || forms.Any(e => e.Email == request.Email
-                            && e.IsApprove == DecisonOption.No)
-                ) msg += " Email not valid.";
-
-            if (!string.IsNullOrEmpty(msg.Trim())) { 
+            if (!string.IsNullOrEmpty(msg.Trim()))
+            {
                 throw new BadRequestException(msg.Trim());
             }
+          
+
 
             var entity = _mapper.Map<FarmRegistration>(request);
             entity.Cost = solution.Price;
