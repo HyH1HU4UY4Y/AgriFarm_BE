@@ -74,7 +74,8 @@ namespace Service.RiskAssessment.Controllers
             return Ok(response);
         }
 
-        [HttpGet("get-by-id")]
+        [HttpGet("detail")]
+        [Authorize(Roles = Roles.SuperAdmin)]
         public async Task<IActionResult> GetById([FromQuery] Guid id)
         {
             // Get by id
