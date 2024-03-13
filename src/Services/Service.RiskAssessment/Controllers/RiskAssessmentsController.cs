@@ -1,16 +1,21 @@
-﻿using MediatR;
+﻿using Asp.Versioning;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Disease.Commands;
 using Service.RiskAssessment.Commands;
 using Service.RiskAssessment.DTOs;
 using Service.RiskAssessment.Queries;
+using SharedDomain.Defaults;
 using Pagination = Service.RiskAssessment.DTOs.Pagination;
 using PaginationDefault = SharedDomain.Defaults.Pagination;
 
 namespace Service.RiskAssessment.Controllers
 {
-    [Route("api/risk-assessment/")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/risk-assessment/")]
+    [ApiVersion("1.0")]
+    [Authorize]
     public class RiskAssessmentsController : ControllerBase
     {
         private IMediator _mediator;
@@ -20,9 +25,8 @@ namespace Service.RiskAssessment.Controllers
             _mediator = mediator;
         }
 
-        // GET: api/<DiseaseInfosController>
-        //[Authorize(Roles = Roles.Admin)]
-        [HttpGet("get")]
+        [HttpGet("get-list-master")]
+        [Authorize(Roles = Roles.SuperAdmin)]
         public async Task<IActionResult> Get([FromQuery] RiskMasterRequest request)
         {
             RiskMasterResponse response = new RiskMasterResponse();

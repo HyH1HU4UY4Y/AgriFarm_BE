@@ -13,15 +13,14 @@ namespace SharedDomain.Entities.Risk
     {
         [JsonIgnore]
         public Guid RiskMasterId { get; set; }
-        [JsonIgnore]
-        public RiskMaster? RiskMaster { get; set; }
         public string? RiskItemTitle { get; set; }
         public string? RiskItemDiv { get; set; }
         public string? RiskItemType { get; set; }
         public string? Must { get; set; }
         public Guid? CreateBy { get; set; }
         public Guid? UpdateBy { get; set; }
-
+        [JsonIgnore]
+        public RiskMaster? RiskMaster { get; set; }
         public ICollection<RiskItemContent>? RiskItemContents { get; set; }
     }
 }

@@ -14,19 +14,6 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/api/{version}/register/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-
-      "DownstreamScheme": "https",
-      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7248
-        }
-      ]
-    },
-    {
       "UpstreamPathTemplate": "/api/{version}/farm/{controller}/{action}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
@@ -39,112 +26,7 @@
         }
       ]
     },
-    {
-      "UpstreamPathTemplate": "/api/{version}/soil/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-
-      "DownstreamScheme": "https",
-      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7042
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/api/{version}/seed/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-
-      "DownstreamScheme": "https",
-      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7264
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/api/{version}/ppp/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-
-      "DownstreamScheme": "https",
-      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7055
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/api/{version}/fert/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-
-      "DownstreamScheme": "https",
-      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7236
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/api/{version}/equip/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-
-      "DownstreamScheme": "https",
-      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7128
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/api/{version}/water/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-
-      "DownstreamScheme": "https",
-      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7295
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/api/{version}/cult/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-
-      "DownstreamScheme": "https",
-      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7207
-        }
-      ]
-    },
-    {
-      "UpstreamPathTemplate": "/api/{version}/sup/{controller}/{action}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-
-      "DownstreamScheme": "https",
-      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7087
-        }
-      ]
-    },
-
-    //Service.Disease
+    // Disease
     {
       "UpstreamPathTemplate": "/api/{version}/disease/{controller}/{action}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
@@ -172,6 +54,20 @@
         }
       ]
     },
+    // Soil
+    {
+      "UpstreamPathTemplate": "/api/{version}/soil/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7042
+        }
+      ]
+    },
     // Payment
     {
       "UpstreamPathTemplate": "/api/{version}/pay/{controller}/{action}",
@@ -185,9 +81,21 @@
           "Port": 7218
         }
       ]
+    },
+    // Risk
+    {
+      "UpstreamPathTemplate": "/api/{version}/risk/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7181
+        }
+      ]
     }
-
-
   ]
 
 }

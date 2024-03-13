@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Infrastructure.Common.Replication\Infrastructure.Common.Replication.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
