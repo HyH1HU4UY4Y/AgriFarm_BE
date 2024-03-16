@@ -38,6 +38,11 @@ namespace Infrastructure.RiskAssessment.Context
             .WithOne(ri => ri.RiskMaster)
             .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<RiskMaster>()
+            .HasMany(rm => rm.RiskMappings)
+            .WithOne(ri => ri.RiskMaster)
+            .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<RiskItem>()
                 .HasMany(ri => ri.RiskItemContents)
                 .WithOne(ric => ric.RiskItem)

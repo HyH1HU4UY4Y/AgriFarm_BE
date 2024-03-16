@@ -11,21 +11,58 @@ namespace Service.RiskAssessment.DTOs
         public bool? isDraft { get; set; }
     }
 
-    public class RiskAssessmentInsertRequest 
+    public class RiskAssessmentInsertRequest
     {
-        public string? RiskName { get; set; }
-        public string? RiskDescription { get; set; }
-        public Guid? CreateBy { get; set; }
-        public List<RiskItem>? RiskItems { get; set; }
+        public string? riskName { get; set; }
+        public string? riskDescription { get; set; }
+        public Guid? createBy { get; set; }
+        public List<RiskAssessmentItemDef>? riskItems { get; set; }
     }
+    public class RiskAssessmentItemDef
+    {
+        public string? riskItemTile { get; set; }
+        public string? riskItemDiv { get; set; }
+        public string? riskItemType { get; set; }
+        public string? riskItemContent { get; set; }
+        public string? must { get; set; }
 
+    }
+    public class RiskAssessmentItemUpdDef : RiskAssessmentItemDef
+    {
+        public Guid itemId { get; set; }
+    }
     public class RiskAssessmentUpdateRequest
     {
-        public Guid Id { get; set; }
-        public string? RiskName { get; set; }
-        public string? RiskDescription { get; set; }
-        public bool IsDraft { get; set; }
-        public Guid? UpdateBy { get; set; }
-        public List<RiskItem>? RiskItems { get; set; }
+        public string? riskName { get; set; }
+        public string? riskDescription { get; set; }
+        public Guid? createBy { get; set; }
+        public List<RiskAssessmentItemUpdDef>? riskItems { get; set; }
+    }
+    public class RiskAssessmentImplDef
+    {
+        public Guid riskItemId { get; set; }
+        public Guid riskMappingId { get; set; }
+        public string? answer { get; set; }
+    }
+    public class RiskAssessmentImplRequset
+    {
+        public List<RiskAssessmentImplDef>? riskAssessmentImpl { get; set; }
+    }
+    public class RiskAssessmentMappingRequest
+    {
+        public Guid riskMasterId { get; set; }
+        public Guid taskId { get; set; }
+    }
+    public class RiskAssessmentListMappingRequest
+    {
+        public Guid taskId { get; set; }
+        public int perPage { get; set; }
+        public int pageId { get; set; }
+
+    }
+    public class RiskAssessmentCheckStatusRequest
+    {
+        public Guid riskMasterId { get; set; }
+        public Guid riskMappingId { get; set; }
     }
 }

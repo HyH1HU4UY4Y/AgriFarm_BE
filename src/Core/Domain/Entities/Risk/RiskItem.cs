@@ -1,4 +1,5 @@
 ﻿using SharedDomain.Entities.Base;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace SharedDomain.Entities.Risk
@@ -9,6 +10,7 @@ namespace SharedDomain.Entities.Risk
         public string? RiskItemTitle { get; set; }
         public string? RiskItemDiv { get; set; }
         public string? RiskItemType { get; set; }
+        [StringLength(Int32.MaxValue)]
         public string? RiskItemContent { get; set; }
         public string? Must { get; set; }
         public Guid? CreateBy { get; set; }

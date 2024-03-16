@@ -1,4 +1,5 @@
 ﻿using SharedDomain.Entities.Base;
+using System.Text.Json.Serialization;
 
 namespace SharedDomain.Entities.Risk
 {
@@ -10,5 +11,7 @@ namespace SharedDomain.Entities.Risk
         public Guid? CreateBy { get; set; }
         public Guid? UpdateBy { get; set; }
         public ICollection<RiskItem>? RiskItems { get; set; }
+        [JsonIgnore]
+        public ICollection<RiskMapping>? RiskMappings { get; set; }
     }
 }

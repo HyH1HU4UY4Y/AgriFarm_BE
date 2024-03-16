@@ -12,6 +12,7 @@ namespace Service.Disease.Mapper
             CreateMap<RiskMaster, RiskMasterDTO>().ReverseMap();
             CreateMap<RiskItem, RiskItemDTO>().ReverseMap();
             CreateMap<RiskItemContent, RiskItemContentDTO>().ReverseMap();
+            CreateMap<RiskMapping, RiskMappingDTO>().ReverseMap();
 
             CreateMap<RiskMaster, CreateRiskMasterCommand>().ReverseMap();
             CreateMap<RiskItem, CreateRiskMasterCommand>().ReverseMap();
