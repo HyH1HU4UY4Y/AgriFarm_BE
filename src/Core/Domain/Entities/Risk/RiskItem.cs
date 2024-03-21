@@ -8,11 +8,11 @@ namespace SharedDomain.Entities.Risk
     {
         public Guid RiskMasterId { get; set; }
         public string? RiskItemTitle { get; set; }
-        public string? RiskItemDiv { get; set; }
-        public string? RiskItemType { get; set; }
+        public int? RiskItemDiv { get; set; }
+        public int? RiskItemType { get; set; }
         [StringLength(Int32.MaxValue)]
         public string? RiskItemContent { get; set; }
-        public string? Must { get; set; }
+        public int? Must { get; set; }
         public Guid? CreateBy { get; set; }
         public Guid? UpdateBy { get; set; }
         [JsonIgnore]

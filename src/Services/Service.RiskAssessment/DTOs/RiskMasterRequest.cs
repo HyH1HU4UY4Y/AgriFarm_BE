@@ -21,10 +21,10 @@ namespace Service.RiskAssessment.DTOs
     public class RiskAssessmentItemDef
     {
         public string? riskItemTile { get; set; }
-        public string? riskItemDiv { get; set; }
-        public string? riskItemType { get; set; }
+        public int? riskItemDiv { get; set; }
+        public int? riskItemType { get; set; }
         public string? riskItemContent { get; set; }
-        public string? must { get; set; }
+        public int? must { get; set; }
 
     }
     public class RiskAssessmentItemUpdDef : RiskAssessmentItemDef
