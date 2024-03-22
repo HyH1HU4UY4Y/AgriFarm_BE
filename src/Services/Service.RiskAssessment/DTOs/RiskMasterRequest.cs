@@ -16,6 +16,7 @@ namespace Service.RiskAssessment.DTOs
         public string? riskName { get; set; }
         public string? riskDescription { get; set; }
         public Guid? createBy { get; set; }
+        public bool isDraft { get; set; } = true;
         public List<RiskAssessmentItemDef>? riskItems { get; set; }
     }
     public class RiskAssessmentItemDef

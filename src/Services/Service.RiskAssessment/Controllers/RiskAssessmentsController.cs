@@ -111,7 +111,9 @@ namespace Service.RiskAssessment.Controllers
                 var riskMaster = new RiskMaster
                 {
                     RiskName = request.riskName,
-                    RiskDescription = request.riskDescription
+                    RiskDescription = request.riskDescription,
+                    CreateBy = request.createBy,
+                    IsDraft = request.isDraft
                 };
                 var riskItems = new List<RiskItem>();
                 // Risk Item
@@ -125,6 +127,7 @@ namespace Service.RiskAssessment.Controllers
                             RiskItemContent = item.riskItemContent,
                             RiskItemDiv = item.riskItemDiv,
                             RiskItemType = item.riskItemType,
+                            Must = item.must,
                             RiskMaster = riskMaster
                         });
                     }
