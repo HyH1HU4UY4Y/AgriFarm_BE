@@ -23,6 +23,7 @@ namespace Infrastructure.RiskAssessment.Context
         public DbSet<RiskMaster> RiskMasters { get; set; }
         public DbSet<RiskItem> RiskItems { get; set; }
         public DbSet<RiskItemContent> RiskItemContents { get; set; }
+        public DbSet<RiskMaster> RiskMappings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -37,13 +38,15 @@ namespace Infrastructure.RiskAssessment.Context
             .WithOne(ri => ri.RiskMaster)
             .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<RiskMaster>()
+            .HasMany(rm => rm.RiskMappings)
+            .WithOne(ri => ri.RiskMaster)
+            .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<RiskItem>()
                 .HasMany(ri => ri.RiskItemContents)
                 .WithOne(ric => ric.RiskItem)
                 .OnDelete(DeleteBehavior.Cascade);
-
         }
-
-
     }
 }

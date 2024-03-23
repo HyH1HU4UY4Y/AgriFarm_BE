@@ -26,7 +26,7 @@ namespace Service.RiskAssessment.Queries
         public async Task<RiskMasterDTO> Handle(GetRiskByIdQuery request, CancellationToken cancellationToken)
         {
             var rs = await _repo.GetOne(e => (e.Id == request.RiskMasterId && e.IsDeleted == false), 
-                r => r.Include(e => e.RiskItems!).ThenInclude(ri => ri.RiskItemContents!));
+                r => r.Include(m => m!.RiskItems)!.ThenInclude(ri => ri.RiskItemContents!));
 
             return _mapper.Map<RiskMasterDTO>(rs);
         }

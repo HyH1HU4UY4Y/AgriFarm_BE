@@ -8,8 +8,7 @@ using Infrastructure.Disease;
 using SharedApplication.Persistence;
 using Infrastructure.RiskAssessment.Context;
 using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
-using System;
+using SharedApplication.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +21,7 @@ builder.Services.AddInfras(builder.Configuration);
 builder.Services.AddSharedApplication<Program>();
 builder.Services.AddJWTAuthorization();
 builder.Services.AddGlobalErrorMiddleware();
+builder.Services.AddDefaultVersioning();
 
 
 

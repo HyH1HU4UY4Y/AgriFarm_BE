@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Infrastructure.RiskAssessment.Context;
 using MediatR;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.Mapping;
 using Service.RiskAssessment.DTOs;
 using SharedDomain.Entities.Risk;
 using SharedDomain.Exceptions;
@@ -11,20 +12,23 @@ namespace Service.RiskAssessment.Commands
     public class CreateRiskMasterCommand : IRequest<RiskMasterDTO>
     {
         public RiskMaster? riskMaster { get; set; }
+        public List<RiskItem>? riskItems { get; set; } 
     }
 
     public class CreateRiskMasterCommandHandler : IRequestHandler<CreateRiskMasterCommand, RiskMasterDTO>
     {
-        private ISQLRepository<RiskAssessmentContext, RiskMaster> _repo;
+        private ISQLRepository<RiskAssessmentContext, RiskMaster> _repoMaster;
+        private ISQLRepository<RiskAssessmentContext, RiskItem> _repoItem;
         private readonly IUnitOfWork<RiskAssessmentContext> _context;
         private IMapper _mapper;
         private ILogger<CreateRiskMasterCommandHandler> _logger;
 
-        public CreateRiskMasterCommandHandler(IUnitOfWork<RiskAssessmentContext> context, ISQLRepository<RiskAssessmentContext, RiskMaster> repo,
+        public CreateRiskMasterCommandHandler(IUnitOfWork<RiskAssessmentContext> context, ISQLRepository<RiskAssessmentContext, RiskMaster> repoMaster, ISQLRepository<RiskAssessmentContext, RiskItem> repoItem,
         IMapper mapper, ILogger<CreateRiskMasterCommandHandler> logger)
         {
             _context = context;
-            _repo = repo;
+            _repoMaster = repoMaster;
+            _repoItem = repoItem;
             _mapper = mapper;
             _logger = logger;
         }
@@ -34,15 +38,18 @@ namespace Service.RiskAssessment.Commands
             _logger.LogInformation("Starting insert...");
             try
             {                
-                await _repo.AddAsync(request.riskMaster!);
-                var rs = _context.SaveChangesAsync(cancellationToken).Result > 0;
-               
-                _logger.LogInformation("End insert...");
-                if (!rs)
+                if (request.riskMaster != null && request.riskItems != null)
                 {
-                    return _mapper.Map<RiskMasterDTO>(null);
+                    await _repoMaster.AddAsync(request.riskMaster);
+                    await _repoItem.AddBatchAsync(request.riskItems);
+                    var rs = _context.SaveChangesAsync(cancellationToken).Result > 0;
+                    if (rs)
+                    {
+                        _logger.LogInformation("End insert...");
+                        return _mapper.Map<RiskMasterDTO>(request.riskMaster);
+                    }
                 }
-                return _mapper.Map<RiskMasterDTO>(request.riskMaster!);
+                return _mapper.Map<RiskMasterDTO>(null);
             }
             catch (Exception ex)
             {

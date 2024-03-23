@@ -19,7 +19,8 @@ namespace Infrastructure.Disease
             services
                 .AddSQLRepo<RiskAssessmentContext, RiskMaster > ()
                 .AddSQLRepo<RiskAssessmentContext, RiskItem>()
-                .AddSQLRepo<RiskAssessmentContext, RiskItemContent> ();
+                .AddSQLRepo<RiskAssessmentContext, RiskItemContent> ()
+                .AddSQLRepo<RiskAssessmentContext, RiskMapping>();
 
 
             return services;
