@@ -198,8 +198,21 @@
           "Port": 7218
         }
       ]
-    }
+    },
+    // Risk
+    {
+      "UpstreamPathTemplate": "/api/{version}/risk/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 
+      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7181
+        }
+      ]
+    }
 
   ]
 
