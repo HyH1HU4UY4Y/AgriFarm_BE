@@ -1,6 +1,6 @@
 ﻿namespace Service.Training.DTOs
 {
-    public class TrainingDetailRequest
+    public class DetailRequest
     {
     }
 }

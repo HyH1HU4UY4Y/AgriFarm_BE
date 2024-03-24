@@ -2,7 +2,7 @@
 using Infrastructure.Training.Contexts;
 using MediatR;
 using Service.Training.DTOs;
-using SharedDomain.Entities.Schedules.Training;
+using SharedDomain.Entities.Training;
 using SharedDomain.Repositories.Base;
 
 namespace Service.Training.Commands.Experts
@@ -10,6 +10,7 @@ namespace Service.Training.Commands.Experts
     public class AddExpertCommand : IRequest<Guid>
     {
         public ExpertRequest Expert { get; set; }
+        public Guid SiteId { get; set; }
     }
 
     public class AddExpertCommandHandler : IRequestHandler<AddExpertCommand, Guid>
@@ -38,9 +39,10 @@ namespace Service.Training.Commands.Experts
             */
 
             var item = _mapper.Map<ExpertInfo>(request.Expert);
+            item.SiteId = request.SiteId;
+            item.Certificates = new();
 
             await _experts.AddAsync(item);
-
             await _unit.SaveChangesAsync(cancellationToken);
 
             return item.Id;

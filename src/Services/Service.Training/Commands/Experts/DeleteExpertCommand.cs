@@ -1,27 +1,27 @@
 ﻿using AutoMapper;
 using Infrastructure.Training.Contexts;
 using MediatR;
-using SharedDomain.Entities.Schedules.Training;
+using SharedDomain.Entities.Training;
 using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
 
 namespace Service.Training.Commands.Experts
 {
-    public class RemoveExpertCommand : IRequest<Guid>
+    public class DeleteExpertCommand : IRequest<Guid>
     {
         public Guid Id { get; set; }
     }
 
-    public class RemoveExpertCommandHandler : IRequestHandler<RemoveExpertCommand, Guid>
+    public class DeleteExpertCommandHandler : IRequestHandler<DeleteExpertCommand, Guid>
     {
         private ISQLRepository<TrainingContext, ExpertInfo> _experts;
         private IUnitOfWork<TrainingContext> _unit;
         private IMapper _mapper;
-        private ILogger<RemoveExpertCommandHandler> _logger;
+        private ILogger<DeleteExpertCommandHandler> _logger;
 
-        public RemoveExpertCommandHandler(ISQLRepository<TrainingContext, ExpertInfo> experts,
+        public DeleteExpertCommandHandler(ISQLRepository<TrainingContext, ExpertInfo> experts,
             IMapper mapper,
-            ILogger<RemoveExpertCommandHandler> logger,
+            ILogger<DeleteExpertCommandHandler> logger,
             IUnitOfWork<TrainingContext> unit)
         {
             _experts = experts;
@@ -30,7 +30,7 @@ namespace Service.Training.Commands.Experts
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(RemoveExpertCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(DeleteExpertCommand request, CancellationToken cancellationToken)
         {
             /*
             TODO:

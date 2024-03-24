@@ -3,14 +3,21 @@ using Infrastructure.Training.Contexts;
 using MediatR;
 using Service.Training.DTOs;
 using Service.Training.Queries.TrainingDetails;
-using SharedDomain.Entities.Schedules.Training;
+using SharedDomain.Defaults;
+using SharedDomain.Entities.Schedules.Additions;
 using SharedDomain.Repositories.Base;
 
 namespace Service.Training.Commands.TrainingDetails
 {
     public class AddTrainingDetailCommand : IRequest<Guid>
     {
-        public TrainingDetailRequest TrainingDetail { get; set; }
+        public Guid Id { get; set; }
+        public DetailRequest TrainingDetail { get; set; }
+        public Guid ActivityId { get; set; }
+        public Guid ContentId { get; set; }
+        public Guid ExpertId { get; set; }
+        public string AdditionType { get; set; }
+        public string? Description { get; set; }
     }
 
     public class AddTrainingDetailCommandHandler : IRequestHandler<AddTrainingDetailCommand, Guid>
@@ -38,13 +45,21 @@ namespace Service.Training.Commands.TrainingDetails
                 - check integrated with TrainingDetail info
             */
 
-            var item = _mapper.Map<TrainingDetail>(request.TrainingDetail);
+            
 
-            await _trainings.AddAsync(item);
+            await _trainings.AddAsync(new()
+            {
+                Id = request.Id,
+                ActivityId = request.ActivityId,
+                ContentId = request.ContentId,
+                ExpertId = request.ExpertId,
+                AdditionType = AdditionType.Training,
+                Description = request.Description
+            });
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return request.Id;
         }
     }
 }

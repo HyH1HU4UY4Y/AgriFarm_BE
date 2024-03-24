@@ -3,17 +3,18 @@ using Infrastructure.Training.Contexts;
 using MediatR;
 using Service.Training.DTOs;
 using SharedApplication.Pagination;
-using SharedDomain.Entities.Schedules.Training;
+using SharedDomain.Entities.Training;
 using SharedDomain.Repositories.Base;
 
 namespace Service.Training.Queries.TrainingContents
 {
-    public class GetTrainingContentsQuery : IRequest<PagedList<TrainingContentResponse>>
+    public class GetTrainingContentsQuery : IRequest<PagedList<FullContentResponse>>
     {
         public PaginationRequest Pagination { get; set; } = new();
+        public Guid SiteId { get; set; }
     }
 
-    public class GetTrainingContentsQueryHandler : IRequestHandler<GetTrainingContentsQuery, PagedList<TrainingContentResponse>>
+    public class GetTrainingContentsQueryHandler : IRequestHandler<GetTrainingContentsQuery, PagedList<FullContentResponse>>
     {
 
         private ISQLRepository<TrainingContext, TrainingContent> _trainings;
@@ -32,14 +33,14 @@ namespace Service.Training.Queries.TrainingContents
             _unit = unit;
         }
 
-        public async Task<PagedList<TrainingContentResponse>> Handle(GetTrainingContentsQuery request, CancellationToken cancellationToken)
+        public async Task<PagedList<FullContentResponse>> Handle(GetTrainingContentsQuery request, CancellationToken cancellationToken)
         {
-            var items = await _trainings.GetMany();
+            var items = await _trainings.GetMany(e=>e.SiteId == request.SiteId);
 
 
 
-            return PagedList<TrainingContentResponse>.ToPagedList(
-                    _mapper.Map<List<TrainingContentResponse>>(items),
+            return PagedList<FullContentResponse>.ToPagedList(
+                    _mapper.Map<List<FullContentResponse>>(items),
                     request.Pagination.PageNumber,
                     request.Pagination.PageSize
                 );

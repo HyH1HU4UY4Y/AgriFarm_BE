@@ -3,7 +3,7 @@ using Infrastructure.Training.Contexts;
 using MediatR;
 using Service.Training.DTOs;
 using Service.Training.Queries.TrainingDetails;
-using SharedDomain.Entities.Schedules.Training;
+using SharedDomain.Entities.Schedules.Additions;
 using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
 
@@ -12,7 +12,7 @@ namespace Service.Training.Commands.TrainingDetails
     public class UpdateTrainingDetailCommand : IRequest<Guid>
     {
         public Guid Id { get; set; }
-        public TrainingDetailRequest TrainingDetail { get; set; }
+        public DetailRequest TrainingDetail { get; set; }
     }
 
     public class UpdateTrainingDetailCommandHandler : IRequestHandler<UpdateTrainingDetailCommand, Guid>

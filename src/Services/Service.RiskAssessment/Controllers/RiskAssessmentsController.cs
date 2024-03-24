@@ -7,8 +7,10 @@ using Service.Disease.Commands;
 using Service.RiskAssessment.Commands;
 using Service.RiskAssessment.DTOs;
 using Service.RiskAssessment.Queries;
+using SharedDomain.Common;
 using SharedDomain.Defaults;
 using SharedDomain.Entities.Risk;
+using System.ComponentModel.DataAnnotations;
 using System.Net.WebSockets;
 using Pagination = Service.RiskAssessment.DTOs.Pagination;
 using PaginationDefault = SharedDomain.Defaults.Pagination;
@@ -424,6 +426,19 @@ namespace Service.RiskAssessment.Controllers
                     };
             }
             return Ok(response);
+        }
+        [HttpGet("get-by-task")]
+        public async Task<IActionResult> GetByActivity([FromQuery][Required]Guid taskId)
+        {
+            var rs = await _mediator.Send(new GetRiskMappingDetailQuery { 
+                taskId = taskId 
+            });
+
+            return Ok(new DefaultResponse<RiskMappingResponse>
+            {
+                Data = rs,
+                Status = Ok().StatusCode,
+            });
         }
         [HttpGet("check-status")]
         public async Task<IActionResult> CheckStatus([FromQuery] RiskAssessmentCheckStatusRequest request)
