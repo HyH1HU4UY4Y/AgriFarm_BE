@@ -2,7 +2,8 @@
 using SharedDomain.Entities.Schedules.Cultivations;
 using SharedDomain.Entities.Schedules;
 using Service.Training.DTOs;
-using SharedDomain.Entities.Schedules.Training;
+using SharedDomain.Entities.Schedules.Additions;
+using SharedDomain.Entities.Training;
 
 namespace Service.Training.Mapper
 {
@@ -10,11 +11,16 @@ namespace Service.Training.Mapper
     {
         public MapperProfile()
         {
-            CreateMap<TrainingDetailRequest, TrainingDetail>().ReverseMap();
-            CreateMap<TrainingDetail, TrainingDetailResponse>().ReverseMap();
+            CreateMap<DetailRequest, TrainingDetail>().ReverseMap();
+            CreateMap<TrainingDetail, DetailResponse>().ReverseMap();
             
             CreateMap<ExpertRequest, ExpertInfo>().ReverseMap();
             CreateMap<ExpertInfo, ExpertResponse>().ReverseMap();
+            CreateMap<ExpertInfo, FullExpertResponse>().ReverseMap();
+
+            CreateMap<ContentRequest, TrainingContent>().ReverseMap();
+            CreateMap<TrainingContent, ContentResponse>().ReverseMap();
+            CreateMap<TrainingContent, FullContentResponse>().ReverseMap();
 
         }
     }

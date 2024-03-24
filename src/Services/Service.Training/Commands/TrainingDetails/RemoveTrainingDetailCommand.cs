@@ -2,7 +2,7 @@
 using Infrastructure.Training.Contexts;
 using MediatR;
 using Service.Training.Queries.TrainingDetails;
-using SharedDomain.Entities.Schedules.Training;
+using SharedDomain.Entities.Schedules.Additions;
 using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
 

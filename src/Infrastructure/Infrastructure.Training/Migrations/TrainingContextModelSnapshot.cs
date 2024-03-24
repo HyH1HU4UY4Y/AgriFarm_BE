@@ -22,14 +22,21 @@ namespace Infrastructure.Training.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.Training.ExpertInfo", b =>
+            modelBuilder.Entity("SharedDomain.Entities.Schedules.Additions.TrainingDetail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Certificates")
-                        .HasColumnType("varchar(150)");
+                    b.Property<Guid>("ActivityId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AdditionType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ContentId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone");
@@ -38,13 +45,11 @@ namespace Infrastructure.Training.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Description")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
-                    b.Property<string>("ExpertField")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("FullName")
-                        .HasColumnType("varchar(150)");
+                    b.Property<Guid>("ExpertId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -52,20 +57,70 @@ namespace Infrastructure.Training.Migrations
                     b.Property<DateTime>("LastModify")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("Title")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContentId");
+
+                    b.HasIndex("ExpertId");
+
+                    b.ToTable("Trainings");
+                });
+
+            modelBuilder.Entity("SharedDomain.Entities.Training.ExpertInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Certificate")
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("text");
+
+                    b.Property<string>("ExpertField")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("FullName")
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastModify")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("SiteId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.ToTable("ExpertInfos");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.Training.TrainingContent", b =>
+            modelBuilder.Entity("SharedDomain.Entities.Training.TrainingContent", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(8000)
+                        .HasColumnType("character varying(8000)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone");
@@ -80,81 +135,37 @@ namespace Infrastructure.Training.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Resource")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("text");
 
-                    b.Property<Guid?>("TrainingDetailId")
+                    b.Property<Guid>("SiteId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                    b.HasIndex("TrainingDetailId");
+                    b.HasKey("Id");
 
                     b.ToTable("Contents");
                 });
 
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.Training.TrainingDetail", b =>
+            modelBuilder.Entity("SharedDomain.Entities.Schedules.Additions.TrainingDetail", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                    b.HasOne("SharedDomain.Entities.Training.TrainingContent", "Content")
+                        .WithMany()
+                        .HasForeignKey("ContentId")
+                        .IsRequired();
 
-                    b.Property<Guid>("ActivityId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("AdditionType")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<Guid>("ExpertId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastModify")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExpertId");
-
-                    b.ToTable("Trainings");
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.Training.TrainingContent", b =>
-                {
-                    b.HasOne("SharedDomain.Entities.Schedules.Training.TrainingDetail", null)
-                        .WithMany("Contents")
-                        .HasForeignKey("TrainingDetailId");
-                });
-
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.Training.TrainingDetail", b =>
-                {
-                    b.HasOne("SharedDomain.Entities.Schedules.Training.ExpertInfo", "Expert")
+                    b.HasOne("SharedDomain.Entities.Training.ExpertInfo", "Expert")
                         .WithMany()
                         .HasForeignKey("ExpertId")
                         .IsRequired();
 
-                    b.Navigation("Expert");
-                });
+                    b.Navigation("Content");
 
-            modelBuilder.Entity("SharedDomain.Entities.Schedules.Training.TrainingDetail", b =>
-                {
-                    b.Navigation("Contents");
+                    b.Navigation("Expert");
                 });
 #pragma warning restore 612, 618
         }

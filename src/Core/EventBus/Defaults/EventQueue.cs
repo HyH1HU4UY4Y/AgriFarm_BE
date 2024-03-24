@@ -22,11 +22,19 @@ namespace EventBus.Defaults
         public const string PesticideReplicationQueue = nameof(PesticideReplicationQueue);
         public const string WaterReplicationQueue = nameof(WaterReplicationQueue);
 
+        public const string SeasonReplicationQueue = nameof(SeasonReplicationQueue);
+
+
         //supply
         public const string PesticideSupplyingQueue = nameof(PesticideSupplyingQueue);
         public const string FertilizeSupplyingQueue = nameof(FertilizeSupplyingQueue);
         public const string SeedSupplyingQueue = nameof(SeedSupplyingQueue);
         public const string EquipmentSupplyingQueue = nameof(EquipmentSupplyingQueue);
         public const string LandSupplyingQueue = nameof(LandSupplyingQueue);
+
+        //activity
+        public const string TrainingDetailReplicationQueue = nameof(TrainingDetailReplicationQueue);
+        public const string RiskMappingTrackingQueue = nameof(RiskMappingTrackingQueue);
+
     }
 }

@@ -8,7 +8,7 @@ using Infrastructure.Fertilize.Contexts;
 using SharedDomain.Entities.FarmComponents.Common;
 using Microsoft.AspNetCore.Builder;
 using SharedApplication.Times;
-using SharedDomain.Defaults;
+using SharedDomain.Defaults.Temps;
 
 namespace Infrastructure.Fertilize
 {

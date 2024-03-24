@@ -5,8 +5,8 @@ using SharedApplication.Persistence;
 using Infrastructure.Soil.Contexts;
 using SharedApplication.MultiTenant;
 using Microsoft.AspNetCore.Builder;
-using SharedDomain.Defaults;
 using Newtonsoft.Json;
+using SharedDomain.Defaults.Temps;
 
 namespace Infrastructure.Soil
 {

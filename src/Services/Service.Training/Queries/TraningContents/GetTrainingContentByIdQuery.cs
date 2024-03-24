@@ -2,18 +2,19 @@
 using Infrastructure.Training.Contexts;
 using MediatR;
 using Service.Training.DTOs;
-using SharedDomain.Entities.Schedules.Training;
+using SharedDomain.Entities.Training;
 using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
 
 namespace Service.Training.Queries.TrainingContents
 {
-    public class GetTrainingContentByIdQuery : IRequest<TrainingContentResponse>
+    public class GetTrainingContentByIdQuery : IRequest<FullContentResponse>
     {
         public Guid Id { get; set; }
+        public Guid SiteId { get; set; }
     }
 
-    public class GetTrainingContentByIdQueryHandler : IRequestHandler<GetTrainingContentByIdQuery, TrainingContentResponse>
+    public class GetTrainingContentByIdQueryHandler : IRequestHandler<GetTrainingContentByIdQuery, FullContentResponse>
     {
 
         private ISQLRepository<TrainingContext, TrainingContent> _trainings;
@@ -32,16 +33,16 @@ namespace Service.Training.Queries.TrainingContents
             _unit = unit;
         }
 
-        public async Task<TrainingContentResponse> Handle(GetTrainingContentByIdQuery request, CancellationToken cancellationToken)
+        public async Task<FullContentResponse> Handle(GetTrainingContentByIdQuery request, CancellationToken cancellationToken)
         {
-            var item = _trainings.GetOne(e => e.Id == request.Id);
+            var item = await _trainings.GetOne(e => e.Id == request.Id && e.SiteId == request.SiteId);
 
             if (item == null)
             {
                 throw new NotFoundException("Item not exist");
             }
 
-            return _mapper.Map<TrainingContentResponse>(item);
+            return _mapper.Map<FullContentResponse>(item);
         }
     }
 }

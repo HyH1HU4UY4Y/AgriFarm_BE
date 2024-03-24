@@ -7,7 +7,7 @@ using SharedDomain.Entities.FarmComponents;
 using SharedApplication.MultiTenant;
 using SharedDomain.Entities.FarmComponents.Others;
 using Microsoft.AspNetCore.Builder;
-using SharedDomain.Defaults;
+using SharedDomain.Defaults.Temps;
 
 namespace Infrastructure.FarmSite
 {

@@ -2,18 +2,18 @@
 using Infrastructure.Training.Contexts;
 using MediatR;
 using Service.Training.DTOs;
-using SharedDomain.Entities.Schedules.Training;
+using SharedDomain.Entities.Schedules.Additions;
 using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
 
 namespace Service.Training.Queries.TrainingDetails
 {
-    public class GetTrainingDetailByIdQuery : IRequest<TrainingDetailResponse>
+    public class GetTrainingDetailByIdQuery : IRequest<DetailResponse>
     {
         public Guid Id { get; set; }
     }
 
-    public class GetTrainingDetailByIdQueryHandler : IRequestHandler<GetTrainingDetailByIdQuery, TrainingDetailResponse>
+    public class GetTrainingDetailByIdQueryHandler : IRequestHandler<GetTrainingDetailByIdQuery, DetailResponse>
     {
 
         private ISQLRepository<TrainingContext, TrainingDetail> _trainings;
@@ -32,7 +32,7 @@ namespace Service.Training.Queries.TrainingDetails
             _unit = unit;
         }
 
-        public async Task<TrainingDetailResponse> Handle(GetTrainingDetailByIdQuery request, CancellationToken cancellationToken)
+        public async Task<DetailResponse> Handle(GetTrainingDetailByIdQuery request, CancellationToken cancellationToken)
         {
             var item = _trainings.GetOne(e => e.Id == request.Id);
 
@@ -41,7 +41,7 @@ namespace Service.Training.Queries.TrainingDetails
                 throw new NotFoundException("Item not exist");
             }
 
-            return _mapper.Map<TrainingDetailResponse>(item);
+            return _mapper.Map<DetailResponse>(item);
         }
     }
 }

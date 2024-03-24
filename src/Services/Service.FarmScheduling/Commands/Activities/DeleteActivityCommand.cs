@@ -2,12 +2,14 @@
 using Infrastructure.FarmScheduling.Contexts;
 using MediatR;
 using SharedDomain.Entities.Schedules;
+using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
 
 namespace Service.FarmScheduling.Commands.Activities
 {
     public class DeleteActivityCommand: IRequest<Guid>
     {
+        public Guid Id { get; set; }
     }
 
     public class DeleteActivityCommandHandler : IRequestHandler<DeleteActivityCommand, Guid>
@@ -28,9 +30,18 @@ namespace Service.FarmScheduling.Commands.Activities
             _logger = logger;
         }
 
-        public Task<Guid> Handle(DeleteActivityCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(DeleteActivityCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var item = await _activities.GetOne(e=>e.Id == request.Id);
+            if (item == null)
+            {
+                throw new NotFoundException();
+
+            }
+            await _activities.SoftDeleteAsync(item);
+            await _unit.SaveChangesAsync(cancellationToken);
+
+            return item.Id;
         }
     }
 }

@@ -10,9 +10,11 @@ namespace Service.Disease.Mapper
         public MapProfile()
         {
             CreateMap<RiskMaster, RiskMasterDTO>().ReverseMap();
+            CreateMap<RiskMaster, RiskMasterMinResponse>().ReverseMap();
             CreateMap<RiskItem, RiskItemDTO>().ReverseMap();
             CreateMap<RiskItemContent, RiskItemContentDTO>().ReverseMap();
             CreateMap<RiskMapping, RiskMappingDTO>().ReverseMap();
+            CreateMap<RiskMapping, RiskMappingResponse>().ReverseMap();
 
             CreateMap<RiskMaster, CreateRiskMasterCommand>().ReverseMap();
             CreateMap<RiskItem, CreateRiskMasterCommand>().ReverseMap();

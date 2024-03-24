@@ -6,7 +6,7 @@ using SharedApplication.MultiTenant;
 using Infrastructure.Equipment.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Newtonsoft.Json;
-using SharedDomain.Defaults;
+using SharedDomain.Defaults.Temps;
 
 namespace Infrastructure.Equipment
 {

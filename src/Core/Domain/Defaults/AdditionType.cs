@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace SharedDomain.Defaults
 {
-    public enum AdditionType
+    public class AdditionType
     {
-        Cultivation,
-        Training,
-        Assessment
+        public const string Use = "use";
+        public const string Training = "training";
+        public const string Assessment = "assessment";
+        public const string Treatment = "treatment";
+        public const string Harvest = "harvest";
     }
 }

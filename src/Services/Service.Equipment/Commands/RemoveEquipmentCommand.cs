@@ -5,7 +5,6 @@ using Infrastructure.Equipment.Contexts;
 using MassTransit;
 using MediatR;
 using SharedDomain.Entities.FarmComponents;
-using SharedDomain.Entities.Schedules.Training;
 using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
 

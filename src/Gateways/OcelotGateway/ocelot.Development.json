@@ -156,6 +156,33 @@
         }
       ]
     },
+    {
+      "UpstreamPathTemplate": "/api/{version}/training/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7060
+        }
+      ]
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/{version}/media/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+
+      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7013
+        }
+      ]
+    },
 
     //Service.Disease
     {

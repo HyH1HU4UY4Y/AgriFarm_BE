@@ -8,8 +8,8 @@ using SharedApplication.MultiTenant;
 using Infrastructure.Pesticide.Contexts;
 using Microsoft.AspNetCore.Builder;
 using SharedApplication.Times;
-using SharedDomain.Defaults;
 using SharedDomain.Entities.FarmComponents.Common;
+using SharedDomain.Defaults.Temps;
 
 
 namespace Infrastructure.Pesticide

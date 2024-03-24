@@ -1,6 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
+using SharedDomain.Entities.FarmComponents;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using SharedDomain.Entities.Schedules;
+using SharedApplication.Persistence.Configs;
 
 namespace Infrastructure.FarmScheduling.Config
 {
@@ -8,8 +15,11 @@ namespace Infrastructure.FarmScheduling.Config
     {
         public void Configure(EntityTypeBuilder<CultivationSeason> builder)
         {
-            builder
-                .Ignore(e => e.Products);
+            builder.ExtractSeason()
+                ;
+            //builder.ToTable("Locations");
+
+
         }
     }
 }

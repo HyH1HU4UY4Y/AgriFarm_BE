@@ -2,18 +2,18 @@
 using Infrastructure.Training.Contexts;
 using MediatR;
 using Service.Training.DTOs;
-using SharedDomain.Entities.Schedules.Training;
+using SharedDomain.Entities.Training;
 using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
 
 namespace Service.Training.Queries.Experts
 {
-    public class GetExpertByIdQuery : IRequest<ExpertResponse>
+    public class GetExpertByIdQuery : IRequest<FullExpertResponse>
     {
         public Guid Id { get; set; }
     }
 
-    public class GetExpertByIdQueryHandler : IRequestHandler<GetExpertByIdQuery, ExpertResponse>
+    public class GetExpertByIdQueryHandler : IRequestHandler<GetExpertByIdQuery, FullExpertResponse>
     {
 
         private ISQLRepository<TrainingContext, ExpertInfo> _experts;
@@ -32,7 +32,7 @@ namespace Service.Training.Queries.Experts
             _unit = unit;
         }
 
-        public async Task<ExpertResponse> Handle(GetExpertByIdQuery request, CancellationToken cancellationToken)
+        public async Task<FullExpertResponse> Handle(GetExpertByIdQuery request, CancellationToken cancellationToken)
         {
             var item = _experts.GetOne(e => e.Id == request.Id);
 
@@ -41,7 +41,7 @@ namespace Service.Training.Queries.Experts
                 throw new NotFoundException("Item not exist");
             }
 
-            return _mapper.Map<ExpertResponse>(item);
+            return _mapper.Map<FullExpertResponse>(item);
         }
     }
 }
