@@ -32,4 +32,15 @@
     public class RiskAssessmentDeleteResponse : ResponseStatus
     {
     }
+
+    public class RiskAssessmentImplResponse : ResponseStatus { }
+    public class RiskAssessmentMappingResponse : ResponseStatus { }
+    public class RiskAssessmentListMappingResponse : ResponseStatus {
+        public List<RiskMappingDTO> data { get; set; } = new List<RiskMappingDTO>();
+        public Pagination Pagination { get; set; } = new Pagination();
+    }
+    public class RiskAssessmentCheckStatus : ResponseStatus
+    {
+        public int status { get; set; }
+    }
 }

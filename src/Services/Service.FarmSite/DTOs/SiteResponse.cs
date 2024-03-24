@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SharedDomain.Entities.FarmComponents;
 
 namespace Service.FarmSite.DTOs
 {
@@ -13,5 +14,7 @@ namespace Service.FarmSite.DTOs
         public string? AvatarImg { get; set; }
         [JsonProperty("logo")]
         public string? LogoImg { get; set; }
+
+        public List<PositionPoint>? Positions { get; set; }
     }
 }

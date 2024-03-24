@@ -43,17 +43,22 @@ namespace Infrastructure.RiskAssessment.Migrations
                     b.Property<DateTime>("LastModify")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Must")
-                        .HasColumnType("varchar(150)");
+                    b.Property<int?>("Must")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("RiskItemDiv")
-                        .HasColumnType("varchar(150)");
+                    b.Property<string>("RiskItemContent")
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("text");
+
+                    b.Property<int?>("RiskItemDiv")
+                        .HasColumnType("integer");
 
                     b.Property<string>("RiskItemTitle")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
-                    b.Property<string>("RiskItemType")
-                        .HasColumnType("varchar(150)");
+                    b.Property<int?>("RiskItemType")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("RiskMasterId")
                         .HasColumnType("uuid");
@@ -75,10 +80,40 @@ namespace Infrastructure.RiskAssessment.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Anwser")
-                        .HasMaxLength(8000)
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("text");
 
-                    b.Property<Guid?>("CreateBy")
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastModify")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("RiskItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RiskMappingId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RiskItemId");
+
+                    b.HasIndex("RiskMappingId");
+
+                    b.ToTable("RiskItemContents");
+                });
+
+            modelBuilder.Entity("SharedDomain.Entities.Risk.RiskMapping", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedDate")
@@ -93,23 +128,17 @@ namespace Infrastructure.RiskAssessment.Migrations
                     b.Property<DateTime>("LastModify")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int?>("OrderBy")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("RiskItemContentTitle")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<Guid>("RiskItemId")
+                    b.Property<Guid>("RiskMasterId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("UpdateBy")
+                    b.Property<Guid>("TaskId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RiskItemId");
+                    b.HasIndex("RiskMasterId");
 
-                    b.ToTable("RiskItemContents");
+                    b.ToTable("RiskMapping");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.Risk.RiskMaster", b =>
@@ -137,18 +166,19 @@ namespace Infrastructure.RiskAssessment.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("RiskDescription")
-                        .HasMaxLength(8000)
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<string>("RiskName")
-                        .HasColumnType("varchar(150)");
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
 
                     b.Property<Guid?>("UpdateBy")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.ToTable("RiskMasters");
+                    b.ToTable("RiskMaster");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.Risk.RiskItem", b =>
@@ -170,7 +200,25 @@ namespace Infrastructure.RiskAssessment.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SharedDomain.Entities.Risk.RiskMapping", "RiskMapping")
+                        .WithMany()
+                        .HasForeignKey("RiskMappingId")
+                        .IsRequired();
+
                     b.Navigation("RiskItem");
+
+                    b.Navigation("RiskMapping");
+                });
+
+            modelBuilder.Entity("SharedDomain.Entities.Risk.RiskMapping", b =>
+                {
+                    b.HasOne("SharedDomain.Entities.Risk.RiskMaster", "RiskMaster")
+                        .WithMany("RiskMappings")
+                        .HasForeignKey("RiskMasterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RiskMaster");
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.Risk.RiskItem", b =>
@@ -181,6 +229,8 @@ namespace Infrastructure.RiskAssessment.Migrations
             modelBuilder.Entity("SharedDomain.Entities.Risk.RiskMaster", b =>
                 {
                     b.Navigation("RiskItems");
+
+                    b.Navigation("RiskMappings");
                 });
 #pragma warning restore 612, 618
         }
