@@ -5,12 +5,12 @@ using Microsoft.Extensions.DependencyInjection;
 using SharedDomain.Entities.Subscribe;
 using SharedApplication.MultiTenant;
 using Microsoft.AspNetCore.Builder;
-using SharedDomain.Defaults;
 using MediatR;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Entities.Users;
 using Infrastructure.Common.Replication.Commands;
 using Infrastructure.Common.Replication;
+using SharedDomain.Defaults.Temps;
 
 namespace Infrastructure.FarmRegistry
 {

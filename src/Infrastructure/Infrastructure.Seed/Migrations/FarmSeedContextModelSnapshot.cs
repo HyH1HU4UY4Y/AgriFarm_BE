@@ -28,6 +28,9 @@ namespace Infrastructure.Seed.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("Available")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone");
 

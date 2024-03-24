@@ -54,7 +54,7 @@ namespace Infrastructure.FarmSite.Migrations
 
                     b.HasIndex("SiteId");
 
-                    b.ToTable("CapitalStates");
+                    b.ToTable("CapitalStates", (string)null);
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Others.ComponentDocument", b =>
@@ -85,7 +85,7 @@ namespace Infrastructure.FarmSite.Migrations
 
                     b.HasIndex("DocumentId");
 
-                    b.ToTable("ComponentDocuments");
+                    b.ToTable("ComponentDocuments", (string)null);
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Others.Document", b =>
@@ -128,7 +128,7 @@ namespace Infrastructure.FarmSite.Migrations
 
                     b.HasIndex("SiteId");
 
-                    b.ToTable("Documents");
+                    b.ToTable("Documents", (string)null);
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Site", b =>
@@ -187,7 +187,7 @@ namespace Infrastructure.FarmSite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sites");
+                    b.ToTable("Sites", (string)null);
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.Subscribe.Subscripton", b =>
@@ -227,7 +227,7 @@ namespace Infrastructure.FarmSite.Migrations
 
                     b.HasIndex("SiteId");
 
-                    b.ToTable("SubscriptonBills");
+                    b.ToTable("SubscriptonBills", (string)null);
                 });
 
             modelBuilder.Entity("SharedDomain.Entities.FarmComponents.Others.CapitalState", b =>

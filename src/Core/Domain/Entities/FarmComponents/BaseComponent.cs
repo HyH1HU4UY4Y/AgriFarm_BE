@@ -18,6 +18,7 @@ namespace SharedDomain.Entities.FarmComponents
         public string Name { get; set; }
         [MaxLength(8000)]
         public string? Description { get; set; } = "not set";
+        public bool Available { get; set; } = true;
         public bool IsConsumable { get; set; } = false;
         [Column("MeasureUnit")]
         public string? Unit { get; set; }

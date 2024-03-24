@@ -6,7 +6,6 @@ using MassTransit;
 using MediatR;
 using Service.Equipment.DTOs;
 using SharedDomain.Entities.FarmComponents;
-using SharedDomain.Entities.Schedules.Training;
 using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
 
