@@ -61,7 +61,7 @@ namespace SharedApplication.Persistence.Configs
             return builder;
         }
 
-        public static EntityTypeBuilder<FarmProduct> ExtractProduct(this EntityTypeBuilder<FarmProduct> builder)
+        /*public static EntityTypeBuilder<FarmProduct> ExtractProduct(this EntityTypeBuilder<FarmProduct> builder)
         {
             builder
                 .Ignore(e => e.ProductTypes)
@@ -69,7 +69,7 @@ namespace SharedApplication.Persistence.Configs
                 ;
 
             return builder;
-        }
+        }*/
 
         public static EntityTypeBuilder<FarmSoil> ExtractSoil(this EntityTypeBuilder<FarmSoil> builder)
         {

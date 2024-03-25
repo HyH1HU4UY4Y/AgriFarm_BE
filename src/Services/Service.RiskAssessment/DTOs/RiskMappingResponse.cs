@@ -3,6 +3,7 @@
     public class RiskMappingResponse
     {
         public Guid Id { get; set; }
+        public Guid TaskId { get; set; }
         public RiskMasterMinResponse CheckList { get; set; }
     }
 

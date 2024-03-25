@@ -424,7 +424,7 @@ namespace SharedDomain.Defaults.Temps
             EndIn = new DateTime(2024, 3, 20, 9, 0, 0),
         };
 
-        public static FarmProduct[] Products = new FarmProduct[]
+        /*public static FarmProduct[] Products = new FarmProduct[]
         {
             new()
             {
@@ -475,7 +475,7 @@ namespace SharedDomain.Defaults.Temps
 
             },
 
-        };
+        };*/
 
         
     }

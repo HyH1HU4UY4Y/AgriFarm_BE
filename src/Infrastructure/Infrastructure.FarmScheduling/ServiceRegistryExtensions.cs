@@ -27,7 +27,7 @@ namespace Infrastructure.FarmScheduling
                     .AddSQLRepo<ScheduleContext, Tag>()
                     .AddSQLRepo<ScheduleContext, AdditionOfActivity>()
                     .AddSQLRepo<ScheduleContext, UsingDetail>()
-                    .AddSQLRepo<ScheduleContext, HarvestDetail>()
+                    //.AddSQLRepo<ScheduleContext, HarvestDetail>()
                     .AddSQLRepo<ScheduleContext, TrainingDetail>()
                     .AddSQLRepo<ScheduleContext, TreatmentDetail>()
                     .AddSQLRepo<ScheduleContext, BaseComponent>()

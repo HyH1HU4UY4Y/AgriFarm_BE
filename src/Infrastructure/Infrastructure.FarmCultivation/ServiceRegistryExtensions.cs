@@ -12,6 +12,7 @@ using SharedDomain.Defaults;
 using SharedDomain.Entities.Schedules.Cultivations;
 using SharedApplication.Times;
 using Infrastructure.Common.Replication;
+using SharedDomain.Defaults.Temps;
 
 namespace Infrastructure.FarmCultivation
 {
