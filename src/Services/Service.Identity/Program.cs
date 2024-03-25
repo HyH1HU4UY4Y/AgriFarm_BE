@@ -16,6 +16,7 @@ using MediatR;
 using Service.Identity.DTOs;
 using Service.Identity.Commands.Users;
 using SharedDomain.Defaults;
+using SharedDomain.Defaults.Temps;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.

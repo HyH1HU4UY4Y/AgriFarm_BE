@@ -117,6 +117,9 @@ namespace Infrastructure.Soil.Migrations
                     b.Property<double>("Acreage")
                         .HasColumnType("double precision");
 
+                    b.Property<bool>("Available")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone");
 

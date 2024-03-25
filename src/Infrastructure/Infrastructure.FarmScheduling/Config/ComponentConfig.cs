@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharedApplication.Persistence.Configs;
 
 namespace Infrastructure.FarmScheduling.Config
 {
@@ -14,14 +15,16 @@ namespace Infrastructure.FarmScheduling.Config
         public void Configure(EntityTypeBuilder<BaseComponent> builder)
         {
 
-            builder
-                .Ignore(e => e.Notes)
-                .Ignore(e => e.CreatedDate)
-                .Ignore(e => e.LastModify)
-                .Ignore(e => e.States)
-                .Ignore(e => e.Properties)
-                .Ignore(e => e.Documents)
+            builder.ExtractComponent()
                 ;
+            builder.UseTphMappingStrategy()
+                .HasDiscriminator<string>("Type")
+                .HasValue<FarmSoil>(nameof(FarmSoil).Substring(4))
+                .HasValue<FarmSeed>(nameof(FarmSeed).Substring(4))
+                .HasValue<FarmFertilize>(nameof(FarmFertilize).Substring(4))
+                .HasValue<FarmPesticide>(nameof(FarmPesticide).Substring(4))
+                .HasValue<FarmWater>(nameof(FarmWater).Substring(4))
+                .HasValue<FarmEquipment>(nameof(FarmEquipment).Substring(4));
         }
     }
 }

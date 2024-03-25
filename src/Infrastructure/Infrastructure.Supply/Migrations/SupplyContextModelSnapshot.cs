@@ -28,6 +28,9 @@ namespace Infrastructure.Supply.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("Available")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
 

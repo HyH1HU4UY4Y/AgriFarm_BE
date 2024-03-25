@@ -2,19 +2,19 @@
 using Infrastructure.Training.Contexts;
 using MediatR;
 using Service.Training.DTOs;
-using SharedDomain.Entities.Schedules.Training;
+using SharedDomain.Entities.Training;
 using SharedDomain.Exceptions;
 using SharedDomain.Repositories.Base;
 
 namespace Service.Training.Commands.Experts
 {
-    public class UpdateExpertCommand : IRequest<Guid>
+    public class UpdateExpertCommand : IRequest<FullExpertResponse>
     {
         public Guid Id { get; set; }
         public ExpertRequest Expert { get; set; }
     }
 
-    public class UpdateExpertCommandHandler : IRequestHandler<UpdateExpertCommand, Guid>
+    public class UpdateExpertCommandHandler : IRequestHandler<UpdateExpertCommand, FullExpertResponse>
     {
         private ISQLRepository<TrainingContext, ExpertInfo> _experts;
         private IUnitOfWork<TrainingContext> _unit;
@@ -32,7 +32,7 @@ namespace Service.Training.Commands.Experts
             _unit = unit;
         }
 
-        public async Task<Guid> Handle(UpdateExpertCommand request, CancellationToken cancellationToken)
+        public async Task<FullExpertResponse> Handle(UpdateExpertCommand request, CancellationToken cancellationToken)
         {
             var item = await _experts.GetOne(e => e.Id == request.Id);
 
@@ -47,7 +47,7 @@ namespace Service.Training.Commands.Experts
 
             await _unit.SaveChangesAsync(cancellationToken);
 
-            return item.Id;
+            return _mapper.Map<FullExpertResponse>(item);
         }
     }
 }

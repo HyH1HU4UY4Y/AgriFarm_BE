@@ -1,5 +1,6 @@
 using SharedApplication;
 using SharedApplication.Middleware;
+using EventBus;
 
 using SharedApplication.CORS;
 using SharedApplication.Authorize;
@@ -9,6 +10,8 @@ using SharedApplication.Persistence;
 using Infrastructure.RiskAssessment.Context;
 using System.Text.Json.Serialization;
 using SharedApplication.Versioning;
+using Service.RiskAssessment.Consumers;
+using EventBus.Defaults;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +26,13 @@ builder.Services.AddJWTAuthorization();
 builder.Services.AddGlobalErrorMiddleware();
 builder.Services.AddDefaultVersioning();
 
+builder.Services.AddDefaultEventBusExtension<Program>(
+    builder.Configuration,
+    (config, context) =>
+    {
+        config.AddReceiveEndpoint<RiskMappingConsumer>(EventQueue.RiskMappingTrackingQueue, context);
+
+    });
 
 
 builder.Services.AddControllers().AddJsonOptions(options =>

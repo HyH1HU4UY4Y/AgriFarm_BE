@@ -57,37 +57,17 @@ namespace Infrastructure.Supply.Contexts
             modelBuilder.Ignore<ComponentProperty>();
             modelBuilder.Ignore<ComponentState>();
             modelBuilder.Ignore<ComponentDocument>();
+            //modelBuilder.Ignore<FarmProduct>();
         }
 
         private void ReduceComponent(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<FarmFertilize>()
-                        .Ignore(e=>e.Stock)
-                        .Ignore(e=>e.UnitPrice)
-                        .Ignore(e=>e.ReferenceId)
-                        .Ignore(e=>e.Reference)
-                        ;
-            modelBuilder.Entity<FarmPesticide>()
-                        .Ignore(e=>e.Stock)
-                        .Ignore(e=>e.UnitPrice)
-                        .Ignore(e=>e.ReferenceId)
-                        .Ignore(e=>e.Reference)
-                        ;
-            modelBuilder.Entity<FarmSeed>()
-                        .Ignore(e=>e.Stock)
-                        .Ignore(e=>e.UnitPrice)
-                        .Ignore(e=>e.ReferenceId)
-                        .Ignore(e=>e.Reference)
-                        ;
-            modelBuilder.Entity<FarmEquipment>().ExtractEquipment()
-                        ;
-            modelBuilder.Entity<FarmWater>()
-                        .Ignore(e=>e.Acreage)
-                        .Ignore(e=>e.FromSource)
-                        .Ignore(e=>e.Position)
-                        ;
-            modelBuilder.Entity<FarmSoil>().ExtractSoil()
-                        ;
+            modelBuilder.Entity<FarmFertilize>().ExtractFertilize();
+            modelBuilder.Entity<FarmPesticide>().ExtractPesticide();
+            modelBuilder.Entity<FarmSeed>().ExtractSeed();
+            modelBuilder.Entity<FarmEquipment>().ExtractEquipment();
+            modelBuilder.Entity<FarmWater>().ExtractWater();
+            modelBuilder.Entity<FarmSoil>().ExtractSoil();
 
         }
     }

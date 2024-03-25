@@ -10,7 +10,7 @@ namespace Service.FarmScheduling.Commands.Activities
     public class UpdateActivityCommand: IRequest<Guid>
     {
         public Guid Id { get; set; }
-        public ActivityRequest Activity { get; set; }
+        public ActivityCreateRequest Activity { get; set; }
     }
 
     public class UpdateActivityCommandHandler : IRequestHandler<UpdateActivityCommand, Guid>

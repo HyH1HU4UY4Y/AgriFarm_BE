@@ -156,6 +156,19 @@
         }
       ]
     },
+    {
+      "UpstreamPathTemplate": "/api/{version}/training/{controller}/{action}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+
+      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/api/{version}/{controller}/{action}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "10.38.0.21"
+        }
+      ]
+    },
 
     //Service.Disease
 

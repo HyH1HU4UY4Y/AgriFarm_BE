@@ -8,8 +8,8 @@ using SharedDomain.Entities.PreHarvest;
 using Infrastructure.Supply.Contexts;
 using Microsoft.AspNetCore.Builder;
 using SharedDomain.Repositories.Base;
-using SharedDomain.Defaults;
 using Infrastructure.Common.Replication;
+using SharedDomain.Defaults.Temps;
 
 namespace Infrastructure.Supply
 {

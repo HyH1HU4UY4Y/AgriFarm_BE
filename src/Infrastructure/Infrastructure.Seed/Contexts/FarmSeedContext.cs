@@ -5,7 +5,7 @@ using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Entities.FarmComponents.Common;
 using SharedDomain.Entities.FarmComponents.Others;
 using SharedDomain.Entities.Schedules;
-using SharedDomain.Entities.Schedules.Cultivations;
+using SharedDomain.Entities.Schedules.Additions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +42,7 @@ namespace Infrastructure.Seed.Contexts
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SiteConfig).Assembly);
             modelBuilder.Ignore<Activity>();
-            modelBuilder.Ignore<ConsumeCultivation>();
+            modelBuilder.Ignore<UsingDetail>();
             modelBuilder.Ignore<ComponentDocument>();
             modelBuilder.Ignore<ComponentState>();
 

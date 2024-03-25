@@ -28,6 +28,9 @@ namespace Infrastructure.FarmCultivation.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("Available")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -41,6 +44,10 @@ namespace Infrastructure.FarmCultivation.Migrations
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("character varying(300)");
+
+                    b.Property<string>("Resource")
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("text");
 
                     b.Property<Guid>("SiteId")
                         .HasColumnType("uuid");

@@ -2,7 +2,8 @@
 using SharedApplication.Persistence;
 using SharedDomain.Entities.FarmComponents;
 using SharedDomain.Entities.Schedules;
-using SharedDomain.Entities.Schedules.Training;
+using SharedDomain.Entities.Schedules.Additions;
+using SharedDomain.Entities.Training;
 using System;
 using System.Collections.Generic;
 using System.Linq;

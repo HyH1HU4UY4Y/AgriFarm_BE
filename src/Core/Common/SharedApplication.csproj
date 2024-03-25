@@ -24,5 +24,9 @@
   <ItemGroup>
     <ProjectReference Include="../Domain/SharedDomain.csproj" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="Persistence\Utils\" />
+  </ItemGroup>
 
 </Project>

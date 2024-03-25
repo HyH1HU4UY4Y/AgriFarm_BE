@@ -3,17 +3,18 @@ using Infrastructure.Training.Contexts;
 using MediatR;
 using Service.Training.DTOs;
 using SharedApplication.Pagination;
-using SharedDomain.Entities.Schedules.Training;
+using SharedDomain.Entities.Schedules.Additions;
 using SharedDomain.Repositories.Base;
 
 namespace Service.Training.Queries.TrainingDetails
 {
-    public class GetTrainingDetailsQuery : IRequest<PagedList<TrainingDetailResponse>>
+    public class GetTrainingDetailsQuery : IRequest<PagedList<DetailResponse>>
     {
         public PaginationRequest Pagination { get; set; } = new();
+        public Guid SiteId { get; set; }
     }
 
-    public class GetTrainingDetailsQueryHandler : IRequestHandler<GetTrainingDetailsQuery, PagedList<TrainingDetailResponse>>
+    public class GetTrainingDetailsQueryHandler : IRequestHandler<GetTrainingDetailsQuery, PagedList<DetailResponse>>
     {
 
         private ISQLRepository<TrainingContext, TrainingDetail> _trainings;
@@ -32,14 +33,14 @@ namespace Service.Training.Queries.TrainingDetails
             _unit = unit;
         }
 
-        public async Task<PagedList<TrainingDetailResponse>> Handle(GetTrainingDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<PagedList<DetailResponse>> Handle(GetTrainingDetailsQuery request, CancellationToken cancellationToken)
         {
             var items = await _trainings.GetMany();
 
 
 
-            return PagedList<TrainingDetailResponse>.ToPagedList(
-                    _mapper.Map<List<TrainingDetailResponse>>(items),
+            return PagedList<DetailResponse>.ToPagedList(
+                    _mapper.Map<List<DetailResponse>>(items),
                     request.Pagination.PageNumber,
                     request.Pagination.PageSize
                 );
