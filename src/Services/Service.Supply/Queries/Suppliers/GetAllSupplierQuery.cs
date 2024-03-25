@@ -10,13 +10,13 @@ using SharedDomain.Repositories.Base;
 
 namespace Service.Supply.Queries.Suppliers
 {
-    public class GetAllSupplierQuery : IRequest<PagedList<SupplierResponse>>
+    public class GetAllSupplierQuery : IRequest<PagedList<SupplierInfoResponse>>
     {
         public PaginationRequest Pagination { get; set; } = new();
         public Guid SiteId { get; set; }
     }
 
-    public class GetAllSupplierQueryHandler : IRequestHandler<GetAllSupplierQuery, PagedList<SupplierResponse>>
+    public class GetAllSupplierQueryHandler : IRequestHandler<GetAllSupplierQuery, PagedList<SupplierInfoResponse>>
     {
 
         private ISQLRepository<SupplyContext, Supplier> _suppliers;
@@ -35,12 +35,12 @@ namespace Service.Supply.Queries.Suppliers
             _mapper = mapper;
         }
 
-        public async Task<PagedList<SupplierResponse>> Handle(GetAllSupplierQuery request, CancellationToken cancellationToken)
+        public async Task<PagedList<SupplierInfoResponse>> Handle(GetAllSupplierQuery request, CancellationToken cancellationToken)
         {
             var rs = await _suppliers.GetMany(e=>e.CreatedByFarmId == request.SiteId);
 
-            return PagedList<SupplierResponse>.ToPagedList(
-                    _mapper.Map<List<SupplierResponse>>(rs),
+            return PagedList<SupplierInfoResponse>.ToPagedList(
+                    _mapper.Map<List<SupplierInfoResponse>>(rs),
                     request.Pagination.PageNumber,
                     request.Pagination.PageSize
                 );

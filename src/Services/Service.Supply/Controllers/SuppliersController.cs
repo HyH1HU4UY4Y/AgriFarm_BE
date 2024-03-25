@@ -56,7 +56,7 @@ namespace Service.Supply.Controllers
 
                 Response.AddPaginationHeader(items.MetaData);
 
-                return Ok(new DefaultResponse<List<SupplierResponse>>
+                return Ok(new DefaultResponse<List<SupplierInfoResponse>>
                 {
                     Data = items,
                     Status = 200
