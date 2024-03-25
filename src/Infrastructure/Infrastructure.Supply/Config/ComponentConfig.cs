@@ -15,7 +15,8 @@ namespace Infrastructure.Supply.Config
         public void Configure(EntityTypeBuilder<BaseComponent> builder)
         {
             builder.ExtractComponent()
-                    .Ignore(e => e.IsConsumable);
+                    .Ignore(e => e.IsConsumable)
+                    .Ignore(e => e.Resource);
 
             builder.UseTphMappingStrategy()
                 .HasDiscriminator<string>("Type")
