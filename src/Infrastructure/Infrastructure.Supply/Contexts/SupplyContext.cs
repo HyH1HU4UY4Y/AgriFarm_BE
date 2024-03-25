@@ -57,7 +57,7 @@ namespace Infrastructure.Supply.Contexts
             modelBuilder.Ignore<ComponentProperty>();
             modelBuilder.Ignore<ComponentState>();
             modelBuilder.Ignore<ComponentDocument>();
-            modelBuilder.Ignore<FarmProduct>();
+            //modelBuilder.Ignore<FarmProduct>();
         }
 
         private void ReduceComponent(ModelBuilder modelBuilder)
