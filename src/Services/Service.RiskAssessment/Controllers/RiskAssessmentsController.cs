@@ -125,7 +125,7 @@ namespace Service.RiskAssessment.Controllers
                     {
                         riskItems.Add(new RiskItem
                         {
-                            RiskItemTitle = item.riskItemTile,
+                            RiskItemTitle = item.riskItemTitle,
                             RiskItemContent = item.riskItemContent,
                             RiskItemDiv = item.riskItemDiv,
                             RiskItemType = item.riskItemType,
@@ -195,7 +195,9 @@ namespace Service.RiskAssessment.Controllers
                         {
                             Id = id,
                             RiskName = request.riskName,
-                            RiskDescription = request.riskDescription
+                            RiskDescription = request.riskDescription,
+                            UpdateBy=request.updateBy,
+                            IsDraft = request.isDraft
                         };
 
                         var riskItems = new List<RiskItem>();
@@ -204,15 +206,16 @@ namespace Service.RiskAssessment.Controllers
                         {
                             foreach (var item in request.riskItems!)
                             {
-                                if (item.itemId == Guid.Empty)
+                                if (item.id == Guid.Empty)
                                 {
                                     riskItems.Add(new RiskItem
                                     {
                                         RiskMasterId = id,
-                                        RiskItemTitle = item.riskItemTile,
+                                        RiskItemTitle = item.riskItemTitle,
                                         RiskItemContent = item.riskItemContent,
                                         RiskItemDiv = item.riskItemDiv,
                                         RiskItemType = item.riskItemType,
+                                        Must = item.must,
                                         RiskMaster = riskMaster
                                     });
                                 }
@@ -220,12 +223,13 @@ namespace Service.RiskAssessment.Controllers
                                 {
                                     riskItems.Add(new RiskItem
                                     {
-                                        Id = item.itemId,
+                                        Id = item.id,
                                         RiskMasterId = id,
-                                        RiskItemTitle = item.riskItemTile,
+                                        RiskItemTitle = item.riskItemTitle,
                                         RiskItemContent = item.riskItemContent,
                                         RiskItemDiv = item.riskItemDiv,
                                         RiskItemType = item.riskItemType,
+                                        Must = item.must,
                                         RiskMaster = riskMaster
                                     });
                                 }
@@ -317,7 +321,8 @@ namespace Service.RiskAssessment.Controllers
                     }
                     var rs = await _mediator.Send(new CreateRiskContentCommand
                     {
-                        riskItemContents = riskItemContents
+                        riskMappingId = request.riskAssessmentImpl[0].riskMappingId,
+                        riskItemContents = riskItemContents,
                     });
                     if (rs)
                     {

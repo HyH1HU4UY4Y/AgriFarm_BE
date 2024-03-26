@@ -21,7 +21,7 @@ namespace Service.RiskAssessment.DTOs
     }
     public class RiskAssessmentItemDef
     {
-        public string? riskItemTile { get; set; }
+        public string? riskItemTitle { get; set; }
         public int? riskItemDiv { get; set; }
         public int? riskItemType { get; set; }
         public string? riskItemContent { get; set; }
@@ -30,13 +30,14 @@ namespace Service.RiskAssessment.DTOs
     }
     public class RiskAssessmentItemUpdDef : RiskAssessmentItemDef
     {
-        public Guid itemId { get; set; }
+        public Guid id { get; set; }
     }
     public class RiskAssessmentUpdateRequest
     {
         public string? riskName { get; set; }
         public string? riskDescription { get; set; }
-        public Guid? createBy { get; set; }
+        public Guid? updateBy { get; set; }
+        public bool isDraft { get; set; }
         public List<RiskAssessmentItemUpdDef>? riskItems { get; set; }
     }
     public class RiskAssessmentImplDef
