@@ -115,14 +115,17 @@ namespace Service.RiskAssessment.Controllers
                     RiskName = request.riskName,
                     RiskDescription = request.riskDescription,
                     CreateBy = request.createBy,
+                    UpdateBy = request.createBy,
                     IsDraft = request.isDraft
                 };
                 var riskItems = new List<RiskItem>();
                 // Risk Item
                 if (request.riskItems!.Count() > 0)
                 {
+                    int count = 0;
                     foreach (var item in request.riskItems!)
                     {
+                        count++;
                         riskItems.Add(new RiskItem
                         {
                             RiskItemTitle = item.riskItemTitle,
@@ -130,6 +133,10 @@ namespace Service.RiskAssessment.Controllers
                             RiskItemDiv = item.riskItemDiv,
                             RiskItemType = item.riskItemType,
                             Must = item.must,
+                            CreatedDate = DateTime.Now.AddMilliseconds(count),
+                            LastModify = DateTime.Now.AddMilliseconds(count),
+                            CreateBy = request.createBy,
+                            UpdateBy = request.createBy,
                             RiskMaster = riskMaster
                         });
                     }
@@ -217,8 +224,10 @@ namespace Service.RiskAssessment.Controllers
                         // Risk Item
                         if (request.riskItems!.Count() > 0)
                         {
+                            int count = 0;
                             foreach (var item in request.riskItems!)
                             {
+                                count++;
                                 if (item.id == Guid.Empty)
                                 {
                                     riskItems.Add(new RiskItem
@@ -228,6 +237,8 @@ namespace Service.RiskAssessment.Controllers
                                         RiskItemContent = item.riskItemContent,
                                         RiskItemDiv = item.riskItemDiv,
                                         RiskItemType = item.riskItemType,
+                                        LastModify = DateTime.Now.AddMilliseconds(count),
+                                        UpdateBy = request.updateBy,
                                         Must = item.must,
                                         RiskMaster = riskMaster
                                     });
@@ -242,6 +253,8 @@ namespace Service.RiskAssessment.Controllers
                                         RiskItemContent = item.riskItemContent,
                                         RiskItemDiv = item.riskItemDiv,
                                         RiskItemType = item.riskItemType,
+                                        LastModify = DateTime.Now.AddMilliseconds(count),
+                                        UpdateBy = request.updateBy,
                                         Must = item.must,
                                         RiskMaster = riskMaster
                                     });

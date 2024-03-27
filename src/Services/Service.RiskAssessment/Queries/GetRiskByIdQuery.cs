@@ -27,7 +27,10 @@ namespace Service.RiskAssessment.Queries
         {
             var rs = await _repo.GetOne(e => (e.Id == request.RiskMasterId && e.IsDeleted == false), 
                 r => r.Include(m => m!.RiskItems)!.ThenInclude(ri => ri.RiskItemContents!));
-
+            if (rs?.RiskItems != null)
+            {
+                rs.RiskItems = rs.RiskItems.OrderBy(r => r.LastModify!).ToList();
+            }
             return _mapper.Map<RiskMasterDTO>(rs);
         }
     }
