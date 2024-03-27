@@ -178,6 +178,19 @@ namespace Service.RiskAssessment.Controllers
                     };
                 } else
                 {
+                    var checkRiskMappingExist = await _mediator.Send(new CheckRiskMasterQuery
+                    {
+                        RiskMasterId = id,
+                    });
+                    if (checkRiskMappingExist)
+                    {
+                        response.statusCode = NoContent().StatusCode;
+                        response.message = new List<string>
+                        {
+                            "Update fail!"
+                        };
+                        return Ok(response);
+                    }
                     var rsDel = await _mediator.Send(new DeleteRiskAssessmentCommand
                     {
                         Id = id,

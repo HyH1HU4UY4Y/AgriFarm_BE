@@ -55,6 +55,7 @@ namespace Service.RiskAssessment.Queries
                 {
                     rs = rs.Skip(request.perPage * (request.pageId - 1)).Take(request.perPage).ToList();
                 }
+                rs = rs.OrderByDescending(k => k.CreatedDate).ToList();
             }
             return _mapper.Map<List<RiskMasterDTO>>(rs);
 
