@@ -8,6 +8,7 @@ namespace Service.RiskAssessment.Commands
 {
     public class CreateRiskContentCommand: IRequest<bool>
     {
+        public Guid riskMappingId { get; set; }
         public List<RiskItemContent>? riskItemContents { get; set; }
     }
     public class CreateRiskContentCommandHandler : IRequestHandler<CreateRiskContentCommand, bool>
@@ -28,6 +29,12 @@ namespace Service.RiskAssessment.Commands
                 if (request.riskItemContents == null)
                 {
                     return false;
+                }
+                var riskItemContent = await _repo.GetMany(e => e.RiskMappingId == request.riskMappingId);
+                if (riskItemContent != null)
+                {
+                    await _repo.RawDeleteBatchAsync(riskItemContent);
+                    await _context.SaveChangesAsync();
                 }
                 await _repo.AddBatchAsync(request.riskItemContents);
                 var rs = _context.SaveChangesAsync(cancellationToken).Result > 0;

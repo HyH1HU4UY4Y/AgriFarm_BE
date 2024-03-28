@@ -115,21 +115,28 @@ namespace Service.RiskAssessment.Controllers
                     RiskName = request.riskName,
                     RiskDescription = request.riskDescription,
                     CreateBy = request.createBy,
+                    UpdateBy = request.createBy,
                     IsDraft = request.isDraft
                 };
                 var riskItems = new List<RiskItem>();
                 // Risk Item
                 if (request.riskItems!.Count() > 0)
                 {
+                    int count = 0;
                     foreach (var item in request.riskItems!)
                     {
+                        count++;
                         riskItems.Add(new RiskItem
                         {
-                            RiskItemTitle = item.riskItemTile,
+                            RiskItemTitle = item.riskItemTitle,
                             RiskItemContent = item.riskItemContent,
                             RiskItemDiv = item.riskItemDiv,
                             RiskItemType = item.riskItemType,
                             Must = item.must,
+                            CreatedDate = DateTime.Now.AddMilliseconds(count),
+                            LastModify = DateTime.Now.AddMilliseconds(count),
+                            CreateBy = request.createBy,
+                            UpdateBy = request.createBy,
                             RiskMaster = riskMaster
                         });
                     }
@@ -178,6 +185,19 @@ namespace Service.RiskAssessment.Controllers
                     };
                 } else
                 {
+                    var checkRiskMappingExist = await _mediator.Send(new CheckRiskMasterQuery
+                    {
+                        RiskMasterId = id,
+                    });
+                    if (checkRiskMappingExist)
+                    {
+                        response.statusCode = NoContent().StatusCode;
+                        response.message = new List<string>
+                        {
+                            "Update fail!"
+                        };
+                        return Ok(response);
+                    }
                     var rsDel = await _mediator.Send(new DeleteRiskAssessmentCommand
                     {
                         Id = id,
@@ -195,24 +215,31 @@ namespace Service.RiskAssessment.Controllers
                         {
                             Id = id,
                             RiskName = request.riskName,
-                            RiskDescription = request.riskDescription
+                            RiskDescription = request.riskDescription,
+                            UpdateBy=request.updateBy,
+                            IsDraft = request.isDraft
                         };
 
                         var riskItems = new List<RiskItem>();
                         // Risk Item
                         if (request.riskItems!.Count() > 0)
                         {
+                            int count = 0;
                             foreach (var item in request.riskItems!)
                             {
-                                if (item.itemId == Guid.Empty)
+                                count++;
+                                if (item.id == Guid.Empty)
                                 {
                                     riskItems.Add(new RiskItem
                                     {
                                         RiskMasterId = id,
-                                        RiskItemTitle = item.riskItemTile,
+                                        RiskItemTitle = item.riskItemTitle,
                                         RiskItemContent = item.riskItemContent,
                                         RiskItemDiv = item.riskItemDiv,
                                         RiskItemType = item.riskItemType,
+                                        LastModify = DateTime.Now.AddMilliseconds(count),
+                                        UpdateBy = request.updateBy,
+                                        Must = item.must,
                                         RiskMaster = riskMaster
                                     });
                                 }
@@ -220,12 +247,15 @@ namespace Service.RiskAssessment.Controllers
                                 {
                                     riskItems.Add(new RiskItem
                                     {
-                                        Id = item.itemId,
+                                        Id = item.id,
                                         RiskMasterId = id,
-                                        RiskItemTitle = item.riskItemTile,
+                                        RiskItemTitle = item.riskItemTitle,
                                         RiskItemContent = item.riskItemContent,
                                         RiskItemDiv = item.riskItemDiv,
                                         RiskItemType = item.riskItemType,
+                                        LastModify = DateTime.Now.AddMilliseconds(count),
+                                        UpdateBy = request.updateBy,
+                                        Must = item.must,
                                         RiskMaster = riskMaster
                                     });
                                 }
@@ -317,7 +347,8 @@ namespace Service.RiskAssessment.Controllers
                     }
                     var rs = await _mediator.Send(new CreateRiskContentCommand
                     {
-                        riskItemContents = riskItemContents
+                        riskMappingId = request.riskAssessmentImpl[0].riskMappingId,
+                        riskItemContents = riskItemContents,
                     });
                     if (rs)
                     {
